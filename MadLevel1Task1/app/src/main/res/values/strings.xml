@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MadLevel1Example</string>
+    <string name="what_kind_of_animal_is_this">What kind of animal is this?</string>
+    <string name="button">Confirm</string>
+    <string name="giraffe">Giraffe</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">Incorrect, the correct answer is Giraffe!</string>
+    <string name="image">image</string>
+    <string name="give_an_animal_name">Give an animal name</string>
+</resources>
