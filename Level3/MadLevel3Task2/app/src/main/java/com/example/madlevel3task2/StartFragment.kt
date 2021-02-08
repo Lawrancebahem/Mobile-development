@@ -73,20 +73,22 @@ class StartFragment : Fragment(), OnItemClick {
     /**
      * To listen to a click
      */
-    override fun onItemClick(index: Int) {
-        var clickedPortal = portals[index]
-        context?.let {context ->
-            clickedPortal.url?.let { url ->
-                openTabLink(url, context)
-            }
-        }
+    override fun onShortClick(index: Int) {
+        val clickedPortal = portals[index]
+        openTabLink(clickedPortal.url!!, requireContext())
     }
+
+    override fun onLongClick(index: Int) {
+        portals.removeAt(index)
+        portalAdapter.notifyDataSetChanged()
+    }
+
 
     /**
      * Method to open a tab in the browser with the given url
      */
     private fun openTabLink(url: String, context: Context) {
-        var customTabIntent = CustomTabsIntent.Builder().build()
+        val customTabIntent = CustomTabsIntent.Builder().build()
         customTabIntent.launchUrl(context, Uri.parse(url))
     }
 }

@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madlevel3task2.databinding.ItemPortalBinding
-import kotlinx.android.synthetic.main.item_portal.view.*
 
 class PortalAdapter(val portalsList: ArrayList<Portal>, var listener: OnItemClick) : RecyclerView.Adapter<PortalAdapter.PortalViewHolder>() {
 
@@ -30,7 +29,7 @@ class PortalAdapter(val portalsList: ArrayList<Portal>, var listener: OnItemClic
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position)
+                listener.onShortClick(position)
             }
         }
 
@@ -38,8 +37,7 @@ class PortalAdapter(val portalsList: ArrayList<Portal>, var listener: OnItemClic
         override fun onLongClick(v: View?): Boolean {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                portalsList.removeAt(position)
-                notifyDataSetChanged()
+                listener.onLongClick(position)
                 return true
             }
             return false

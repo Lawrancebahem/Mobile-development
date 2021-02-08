@@ -45,7 +45,6 @@ class QuizAdapter(private val quizzes: List<Quiz>, private val listener: OnItemC
         return quizzes.size
     }
 
-
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
