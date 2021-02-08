@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Truth table app</string>
+    <string name="incorrect">It is not correct</string>
+    <string name="correct">It is correct</string>
+    <string name="True">T</string>
+    <string name="False">F</string>
+    <string name="title">Conunction(AND)</string>
+
+    <string name="AB">A\t^\tB</string>
+    <string name="A">A</string>
+    <string name="B">B</string>
+    <string name="T">T</string>
+    <string name="F">F</string>
+    <string name="tab">\t\t\t\t\t\t\t\</string>
+    <string name="submitButton">SUBMIT</string>
+
+</resources>

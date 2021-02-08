@@ -1,0 +1,4 @@
+com/example/madlevel1exampletask1/BuildConfig.java
+ com.example.madlevel1exampletask1.BuildConfig
+com/example/madlevel1exampletask1/databinding/ActivityMainBinding.java
+ com.example.madlevel1exampletask1.databinding.ActivityMainBinding

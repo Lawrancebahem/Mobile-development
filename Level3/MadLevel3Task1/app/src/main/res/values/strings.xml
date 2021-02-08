@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MadLevel3Task1</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Welcome to the Games Rating app!</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="clickToStart">Click START to start rating :)</string>
+    <string name="startButton">START</string>
+    <string name="titleRating">Rate the following game from 1 to 5 stars!</string>
+    <string name="gameName">Red Dead Redemption 2</string>
+    <string name="summaryButton">TO SUMMARY</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="start_over">START OVER</string>
+</resources>

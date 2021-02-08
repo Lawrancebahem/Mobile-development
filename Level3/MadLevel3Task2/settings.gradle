@@ -1,0 +1,2 @@
+rootProject.name = "MadLevel3Task2"
+include ':app'

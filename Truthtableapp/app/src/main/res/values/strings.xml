@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Truth table app</string>
-    <string name="incorrect">It is not correct</string>
-    <string name="correct">It is correct</string>
-    <string name="True">True</string>
-    <string name="False">False</string>
-</resources>
