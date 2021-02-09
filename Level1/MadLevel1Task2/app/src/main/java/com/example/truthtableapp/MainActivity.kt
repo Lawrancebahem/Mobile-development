@@ -26,10 +26,10 @@ class MainActivity : AppCompatActivity() {
      * Check answers when submit button is clicked
      */
     private fun onSubmit() {
-        val fieldOne:Int = if (binding.fieldOne.text.toString() == getString(R.string.True)) 1 else 0
-        val fieldTwo:Int = if (binding.fieldTwo.text.toString() == getString(R.string.False)) 1 else 0
-        val fieldThree:Int = if (binding.fieldThree.text.toString() == getString(R.string.False)) 1 else 0
-        val fieldFour:Int = if (binding.fieldFour.text.toString() == getString(R.string.False)) 1 else 0
+        val fieldOne:Int = if (binding.fieldOne.text.toString().equals(getString(R.string.True), ignoreCase = true)) 1 else 0
+        val fieldTwo:Int = if (binding.fieldTwo.text.toString().equals(getString(R.string.False), ignoreCase = true)) 1 else 0
+        val fieldThree:Int = if (binding.fieldThree.text.toString().equals(getString(R.string.False), ignoreCase = true)) 1 else 0
+        val fieldFour:Int = if (binding.fieldFour.text.toString().equals(getString(R.string.False), ignoreCase = true)) 1 else 0
         val total:Int = fieldOne + fieldTwo  + fieldThree + fieldFour
         showToastMessage(total)
     }

@@ -58,17 +58,17 @@ class MainActivity : AppCompatActivity() {
     private fun onHighClick() {
         rollDice()
         if (currentThrow > lastThrow){
-            onCorrectAnswer()
+            showMessage(getString(R.string.correct))
         }else{
-            onIncorrectAnswer()
+            showMessage(getString(R.string.incorrect))
         }
     }
     private fun onLowClick() {
         rollDice()
         if (currentThrow < lastThrow){
-            onCorrectAnswer()
+            showMessage(getString(R.string.correct))
         }else{
-            onIncorrectAnswer()
+            showMessage(getString(R.string.incorrect))
         }
     }
 
@@ -78,9 +78,9 @@ class MainActivity : AppCompatActivity() {
     private fun onEqual() {
         rollDice()
         if (currentThrow == lastThrow){
-            onCorrectAnswer()
+            showMessage(getString(R.string.correct))
         }else{
-            onIncorrectAnswer()
+            showMessage(getString(R.string.incorrect))
         }
     }
 
@@ -97,14 +97,8 @@ class MainActivity : AppCompatActivity() {
     /**
      * To show a toast correct message
      */
-    private fun onCorrectAnswer(){
-        Toast.makeText(this,getString(R.string.correct), Toast.LENGTH_SHORT).show()
+    private fun showMessage(message:String){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show()
     }
 
-    /**
-     * To show toast incorrect message
-     */
-    private fun onIncorrectAnswer(){
-        Toast.makeText(this,getString(R.string.incorrect), Toast.LENGTH_SHORT).show()
-    }
 }

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Task1/MadLevel1Task1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ky/values-ky.xml",
+            "outputFile": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Level1/MadLevel1Task1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ky/values-ky.xml",
             "map": [
                 {
                     "source": "/Users/lawrancebahem/.gradle/caches/transforms-2/files-2.1/4102c377b7a8a929cfb8c6bcf858d486/appcompat-1.2.0/res/values-ky/values-ky.xml",

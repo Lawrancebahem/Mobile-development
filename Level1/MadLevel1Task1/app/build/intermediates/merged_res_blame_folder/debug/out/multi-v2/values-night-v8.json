@@ -1,8 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Task1/MadLevel1Task1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Level1/MadLevel1Task1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
+                {
+                    "source": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Level1/MadLevel1Task1/app/src/main/res/values-night/themes.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "100",
+                        "endLines": "14",
+                        "endColumns": "12",
+                        "endOffsets": "830"
+                    },
+                    "to": {
+                        "startLines": "9",
+                        "startColumns": "4",
+                        "startOffsets": "732",
+                        "endLines": "21",
+                        "endColumns": "12",
+                        "endOffsets": "1460"
+                    }
+                },
                 {
                     "source": "/Users/lawrancebahem/.gradle/caches/transforms-2/files-2.1/609e676f6a4a910fd3e0eed2deb73113/material-1.2.1/res/values-night-v8/values-night-v8.xml",
                     "from": {
@@ -35,25 +54,6 @@
                         "startOffsets": "100,170,254,338,434,536,638,3327",
                         "endColumns": "69,83,83,95,101,101,93,88",
                         "endOffsets": "165,249,333,429,531,633,727,3411"
-                    }
-                },
-                {
-                    "source": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Task1/MadLevel1Task1/app/src/main/res/values-night/themes.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "100",
-                        "endLines": "14",
-                        "endColumns": "12",
-                        "endOffsets": "830"
-                    },
-                    "to": {
-                        "startLines": "9",
-                        "startColumns": "4",
-                        "startOffsets": "732",
-                        "endLines": "21",
-                        "endColumns": "12",
-                        "endOffsets": "1460"
                     }
                 }
             ]
