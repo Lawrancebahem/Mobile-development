@@ -1,12 +1,9 @@
 package com.example.madlevel4task2.DAO
 
 import android.content.Context
-import android.content.res.Resources
 import com.example.madlevel4task2.Model.History
-import com.example.madlevel4task2.Model.RPS
-import com.example.madlevel4task2.Model.Result
 import com.example.madlevel4task2.Model.ResultOverView
-import com.example.madlevel4task2.R
+
 
 class HistoryRepository(context:Context){
 

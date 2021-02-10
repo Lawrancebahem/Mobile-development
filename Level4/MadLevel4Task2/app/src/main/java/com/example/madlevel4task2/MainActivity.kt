@@ -51,11 +51,8 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.history -> onHistory()
-//            R.id.delete -> onDelete()
             else ->
                 super.onOptionsItemSelected(item)
-
-
         }
         return true
     }
@@ -65,8 +62,6 @@ class MainActivity : AppCompatActivity() {
      */
     fun onHistory(){
         findNavController(R.id.nav_host).navigate(R.id.action_gameFragment_to_histroyFragment)
-        this.me.findItem(R.id.history).isVisible = false
-        this.me.findItem(R.id.delete).isVisible = true
     }
 
     /**

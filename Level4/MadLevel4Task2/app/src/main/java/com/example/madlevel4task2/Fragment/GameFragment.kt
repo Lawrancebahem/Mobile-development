@@ -1,6 +1,7 @@
 package com.example.madlevel4task2.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,8 +39,7 @@ class GameFragment : Fragment() {
         initView()
 
         historyRepository = HistoryRepository(requireContext())
-
-
+        getStatistics()
     }
 
     fun initView(){
@@ -87,6 +87,7 @@ class GameFragment : Fragment() {
             withContext(Dispatchers.IO){
                 historyRepository.insertHistory(history)
             }
+            getStatistics()
         }
     }
 
@@ -99,7 +100,9 @@ class GameFragment : Fragment() {
            val statistics =  withContext(Dispatchers.IO){
                historyRepository.getStatistics()
            }
-           binding.statistics.text =  getString(R.string.statistics, statistics.totalWins, statistics.totalDraws, statistics.totalLoss)
+            if ((statistics.totalDraws + statistics.totalWins + statistics.totalLoss) > 0){
+                binding.statistics.text =  getString(R.string.statistics, statistics.totalWins, statistics.totalDraws, statistics.totalLoss)
+            }
         }
     }
 
