@@ -41,18 +41,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI() {
         //set the text of the score to the last throw
         binding.scoreText.text = getString(R.string.last_throw, lastThrow)
-
-        when (currentThrow) {
-            1 -> binding.imageView.setImageResource(R.drawable.dice1)
-            2 -> binding.imageView.setImageResource(R.drawable.dice2)
-            3 -> binding.imageView.setImageResource(R.drawable.dice3)
-            4 -> binding.imageView.setImageResource(R.drawable.dice4)
-            5 -> binding.imageView.setImageResource(R.drawable.dice5)
-
-            else -> {
-                binding.imageView.setImageResource(R.drawable.dice6)
-            }
-        }
+        binding.imageView.setImageResource(resources.getIdentifier("dice${currentThrow}", "drawable", packageName))
     }
 
     private fun onHighClick() {
