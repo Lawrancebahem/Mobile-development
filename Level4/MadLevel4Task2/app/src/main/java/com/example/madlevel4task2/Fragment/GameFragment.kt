@@ -1,7 +1,6 @@
 package com.example.madlevel4task2.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,28 +45,29 @@ class GameFragment : Fragment() {
 
         binding.rockImage.setOnClickListener{
             onClick(RPS.ROCK)
-            getStatistics()
         }
 
         binding.paperImage.setOnClickListener{
             onClick(RPS.PAPER)
-            getStatistics()
         }
 
         binding.scissorsImage.setOnClickListener{
             onClick(RPS.SCISSORS)
-            getStatistics()
         }
     }
 
     //to generate random enum
     fun getRandomRPS() = RPS.values().random()
 
+
+    /**
+     * Once the user clicks on on of the images
+     */
     fun onClick(playerRPS:RPS){
 
         val computerRPS = getRandomRPS()
-        val result = History.getResult(computerRPS, playerRPS) // returns result object
-        val resultText = History.determineResult(result) // returns text
+        val result = History.getWinner(computerRPS, playerRPS) // returns result object
+        val resultText = History.determineResultAsText(result) // returns text
 
         binding.result.text = resultText
         binding.playerImage.setImageResource(History.getImageBasedOnRPS(playerRPS))

@@ -13,7 +13,7 @@ class HistoryViewHolder(view:View):RecyclerView.ViewHolder(view){
      * bind data of this given view to the given data of this history
      */
     fun bindData(history:History){
-        binding.resultText.text = History.determineResult(history.result) // returns text
+        binding.resultText.text = History.determineResultAsText(history.result) // returns text
         binding.timeResult.text = history.date.toString()
         binding.itemComputerImage.setImageResource(History.getImageBasedOnRPS(history.RPSComputer))
         binding.itemPalyerImage.setImageResource(History.getImageBasedOnRPS(history.RPSPlayer))

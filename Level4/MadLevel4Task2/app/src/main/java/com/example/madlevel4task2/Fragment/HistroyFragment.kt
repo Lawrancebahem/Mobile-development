@@ -120,8 +120,10 @@ class HistroyFragment : Fragment(), MenuItem.OnMenuItemClickListener {
         _binding = null
     }
 
+    /**
+     * Once the delete item is clicked, this method gets fired
+     */
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        Log.d("Has been deleted", "W")
         onDelete()
         return true
     }

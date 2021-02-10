@@ -1,4 +1,4 @@
-package com.example.madlevel4task2.Utilities
+package com.example.madlevel4task2.Database
 
 import androidx.room.TypeConverter
 import com.example.madlevel4task2.Model.RPS

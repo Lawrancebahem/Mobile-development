@@ -15,8 +15,8 @@ class History(
     val RPSPlayer: RPS,
     @ColumnInfo
     val date: Date,
-    @ColumnInfo(name = "result")
-    val result: Result,
+    @ColumnInfo
+    val result:Result,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     val id: Long? = null,
@@ -28,7 +28,7 @@ class History(
          * This is static method to determine the result
          */
 
-        fun getResult(computer: RPS, player: RPS): Result {
+        fun getWinner(computer: RPS, player: RPS): Result {
             when (computer) {
                 RPS.SCISSORS -> return when (player) {
                     RPS.SCISSORS -> Result.DRAW
@@ -65,7 +65,7 @@ class History(
         /**
          *
          */
-        fun determineResult(result: Result): String {
+        fun determineResultAsText(result: Result): String {
             return when (result) {
                 Result.PLAYER_WINS -> "You win"
                 Result.DRAW -> "Draw"

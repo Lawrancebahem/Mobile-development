@@ -19,6 +19,9 @@ interface HistoryDao {
     @Query("DELETE FROM History_table")
     suspend fun deleteAllHistories()
 
+    /**
+     *  0 refers to win, 1 refers to draw and 2 refers to loss
+     */
     @Query("SELECT count(case when result = 0 then 0 end) " +
             "as totalWins, count(case when result = 1 then 0 end) as totalDraws, " +
             "count(case when result = 2 then 0 end) as totalLoss FROM HISTORY_TABLE" )
