@@ -4,7 +4,7 @@
             "outputFile": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Level1/MadLevel1Task1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hdpi-v4/values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "/Users/lawrancebahem/.gradle/caches/transforms-2/files-2.1/4102c377b7a8a929cfb8c6bcf858d486/appcompat-1.2.0/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "source": "/Users/lawrancebahem/.gradle/caches/transforms-3/d2fedcb45aa62cb7059b92dbcad5f5c1/transformed/appcompat-1.2.0/res/values-hdpi-v4/values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

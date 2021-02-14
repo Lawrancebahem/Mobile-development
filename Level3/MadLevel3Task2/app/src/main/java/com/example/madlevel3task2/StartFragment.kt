@@ -65,7 +65,6 @@ class StartFragment : Fragment(), OnItemClick {
         setFragmentResultListener(KEY) { key, bundle ->
             val portal = bundle.get(BUNDLE_KEY) as Portal
             portals.add(portal)
-            Log.d("PORTAL LIST SIZE: ", portals.size.toString())
             portalAdapter.notifyDataSetChanged()
         }
     }

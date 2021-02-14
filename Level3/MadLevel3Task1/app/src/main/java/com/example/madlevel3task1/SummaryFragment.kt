@@ -41,11 +41,10 @@ class SummaryFragment : Fragment() {
 
         binding.txtSummary.text = String.format("you rated %s with %.1f stars! Thanks", gameName, gameRating)
 
-        binding.btnStartOver.setOnClickListener{
+        binding.btnStartOver.setOnClickListener {
             findNavController().navigate(R.id.action_summaryFragment_to_startFragment)
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

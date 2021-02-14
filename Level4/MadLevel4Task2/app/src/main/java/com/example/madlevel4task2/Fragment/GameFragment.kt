@@ -80,7 +80,7 @@ class GameFragment : Fragment() {
 
 
     /**
-     * To insert history into the databse
+     * To insert history into the database
      */
     fun insertHistoryToDatabase(history:History){
         CoroutineScope(Dispatchers.Main).launch {

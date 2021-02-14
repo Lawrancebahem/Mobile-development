@@ -19,14 +19,9 @@ class RatingFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentRatingBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,14 +42,13 @@ class RatingFragment : Fragment() {
 
     fun showRandomAssessableGame() {
         val randomGame =
-            listOf("Red Dead Redemption 2", "Rocket League", "Shadow of the Tombraider").random()
+            listOf("Red Dead Redemption 2", "Rocket League", "Shadow of the Tombraider")
+                    .random()
         binding.gameName.text = randomGame
-
     }
 
 
     fun navigateTosummary() {
-
         val args = Bundle()
         args.putFloat(ARG_GAME_RATING, binding.ratingBarGame.rating)
         args.putString(ARG_GAME_NAME, binding.gameName.text.toString())

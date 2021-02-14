@@ -126,7 +126,7 @@ class ShoppingListFragment : Fragment() {
 
 
     fun validateFields(textProductName:EditText, textAmount: EditText):Boolean{
-        return if(textProductName.text.toString().isNotEmpty() &&  textAmount.toString().isNotEmpty()){
+        return if(textProductName.text.toString().isNotEmpty() && textAmount.toString().isNotEmpty()){
             true
         }else{
             Toast.makeText(activity, "Please fill the fields", Toast.LENGTH_SHORT).show()

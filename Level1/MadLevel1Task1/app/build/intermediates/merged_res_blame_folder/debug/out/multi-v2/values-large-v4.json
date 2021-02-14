@@ -4,7 +4,7 @@
             "outputFile": "/Users/lawrancebahem/AndroidStudioProjects/Mobile-development/Level1/MadLevel1Task1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-large-v4/values-large-v4.xml",
             "map": [
                 {
-                    "source": "/Users/lawrancebahem/.gradle/caches/transforms-2/files-2.1/609e676f6a4a910fd3e0eed2deb73113/material-1.2.1/res/values-large-v4/values-large-v4.xml",
+                    "source": "/Users/lawrancebahem/.gradle/caches/transforms-3/ab9d9eb186c20f22f4476a7d9e998a4f/transformed/material-1.2.1/res/values-large-v4/values-large-v4.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/lawrancebahem/.gradle/caches/transforms-2/files-2.1/4102c377b7a8a929cfb8c6bcf858d486/appcompat-1.2.0/res/values-large-v4/values-large-v4.xml",
+                    "source": "/Users/lawrancebahem/.gradle/caches/transforms-3/d2fedcb45aa62cb7059b92dbcad5f5c1/transformed/appcompat-1.2.0/res/values-large-v4/values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

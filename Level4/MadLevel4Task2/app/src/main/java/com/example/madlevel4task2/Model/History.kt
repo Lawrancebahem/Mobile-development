@@ -23,6 +23,7 @@ class History(
 ) {
 
     companion object {
+        const val WINNER = "You win"
 
         /**
          * This is static method to determine the result
@@ -67,7 +68,7 @@ class History(
          */
         fun determineResultAsText(result: Result): String {
             return when (result) {
-                Result.PLAYER_WINS -> "You win"
+                Result.PLAYER_WINS -> WINNER
                 Result.DRAW -> "Draw"
                 else -> "Computer wins!"
             }

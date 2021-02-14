@@ -7,6 +7,10 @@ import java.util.*
 
 class Converter{
 
+    companion object{
+        const val ROCK = 0;
+        const val PAPER = 1;
+    }
 
     @TypeConverter
     fun fromTimestamp(value: Long): Date {
