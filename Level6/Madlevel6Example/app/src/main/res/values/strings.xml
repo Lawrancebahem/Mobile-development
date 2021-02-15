@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Madlevel6Example</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="action_settings">Settings</string>
+    <string name="instructions">Instructions: click the button to get a random number trivia</string>
+    <string name="trivia">Trivia</string>
+    <string name="floating_action_button">Floating Action Button</string>
+</resources>
