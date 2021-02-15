@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_const"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context=".ui.AddGameFragment">
+
+    <EditText
+        android:id="@+id/add_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/title_add_game"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/add_platform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/add_platform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/platform"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_title" />
+
+    <EditText
+        android:id="@+id/add_year"
+        android:layout_width="85dp"
+        android:layout_height="39dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/year"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add_day"
+        app:layout_constraintTop_toBottomOf="@+id/add_platform" />
+
+    <EditText
+        android:id="@+id/add_month"
+        android:layout_width="85dp"
+        android:layout_height="39dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/month"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/add_day"
+        app:layout_constraintEnd_toStartOf="@+id/add_year"
+        app:layout_constraintStart_toEndOf="@+id/add_day" />
+
+    <EditText
+        android:id="@+id/add_day"
+        android:layout_width="85dp"
+        android:layout_height="39dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/day"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/add_year"
+        app:layout_constraintEnd_toStartOf="@+id/add_year"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

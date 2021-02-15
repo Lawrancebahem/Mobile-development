@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/gameBacklogFragment">
+    <fragment
+        android:id="@+id/gameBacklogFragment"
+        android:name="com.example.madlevel5task2.ui.GameBacklogFragment"
+        android:label="fragment_game_backlog"
+        tools:layout="@layout/fragment_game_backlog" >
+        <action
+            android:id="@+id/action_gameBacklogFragment_to_addGameFragment2"
+            app:destination="@id/addGameFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGameFragment2"
+        android:name="com.example.madlevel5task2.ui.AddGameFragment"
+        android:label="fragment_add_game"
+        tools:layout="@layout/fragment_add_game" />
+</navigation>

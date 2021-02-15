@@ -1,7 +1,6 @@
 package com.example.madlevel5task1.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.madlevel5task1.model.Note
@@ -26,7 +25,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
         val newNote = Note(id = note.value?.id, title = title, lastUpdated = Date(), text = text)
 
-        if (isNotValid(newNote)) {
+        if (isValid(newNote)) {
             mainScope.launch {
                 withContext(Dispatchers.IO) {
                     noteRepository.updateNote(newNote)
@@ -36,7 +35,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun isNotValid(note: Note): Boolean {
+    private fun isValid(note: Note): Boolean {
         return when {
             note.title.isBlank() -> {
                 error.value = "Title must not be empty"
