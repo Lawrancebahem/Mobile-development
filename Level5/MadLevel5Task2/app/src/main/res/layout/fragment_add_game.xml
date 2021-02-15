@@ -5,77 +5,100 @@
     android:id="@+id/add_const"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:background="@color/colorBackgroundDark"
     tools:context=".ui.AddGameFragment">
 
-    <EditText
-        android:id="@+id/add_title"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/title_add_game"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/add_platform"
+        android:layout_margin="10dp"
+        android:background="@android:color/white"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.027">
 
-    <EditText
-        android:id="@+id/add_platform"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/platform"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_title" />
+        <EditText
+            android:id="@+id/add_platform"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="@string/platform"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_title" />
 
-    <EditText
-        android:id="@+id/add_year"
-        android:layout_width="85dp"
-        android:layout_height="39dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/year"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/add_day"
-        app:layout_constraintTop_toBottomOf="@+id/add_platform" />
+        <EditText
+            android:id="@+id/add_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="@string/title_add_game"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/add_month"
-        android:layout_width="85dp"
-        android:layout_height="39dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/month"
-        android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/add_day"
-        app:layout_constraintEnd_toStartOf="@+id/add_year"
-        app:layout_constraintStart_toEndOf="@+id/add_day" />
+        <EditText
+            android:id="@+id/add_month"
+            android:layout_width="85dp"
+            android:layout_height="39dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/month"
+            android:inputType="textPersonName"
+            app:layout_constraintBaseline_toBaselineOf="@+id/add_day"
+            app:layout_constraintEnd_toStartOf="@+id/add_year"
+            app:layout_constraintStart_toEndOf="@+id/add_day" />
 
-    <EditText
-        android:id="@+id/add_day"
-        android:layout_width="85dp"
-        android:layout_height="39dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/day"
-        android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/add_year"
-        app:layout_constraintEnd_toStartOf="@+id/add_year"
-        app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/add_day"
+            android:layout_width="85dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/day"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/add_month"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_platform"
+            app:layout_constraintVertical_bias="0.04" />
 
+        <EditText
+            android:id="@+id/add_year"
+            android:layout_width="85dp"
+            android:layout_height="39dp"
+            android:layout_marginEnd="68dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/year"
+            android:inputType="textPersonName"
+            app:layout_constraintBaseline_toBaselineOf="@+id/add_month"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/add_month" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
