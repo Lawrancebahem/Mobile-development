@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.madlevel6example.repository.TriviaRepository
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class TrivialViewModel (application: Application):AndroidViewModel(application){
 
