@@ -11,6 +11,4 @@ class MovieResponse(
     @SerializedName("total_results")
     var totalResults: Int? = null,
     var results: List<Movie>? = null
-) {
-
-}
+)

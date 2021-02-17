@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.madlevel7example.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_quizFragment5"
+            app:destination="@id/quizFragment5" />
+        <action
+            android:id="@+id/action_homeFragment_to_createQuizFragment"
+            app:destination="@id/createQuizFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createQuizFragment"
+        android:name="com.example.madlevel7example.ui.CreateQuizFragment"
+        android:label="fragment_create_quize"
+        tools:layout="@layout/fragment_create_quize" />
+    <fragment
+        android:id="@+id/quizFragment5"
+        android:name="com.example.madlevel7example.ui.QuizFragment"
+        android:label="QuizFragment" />
+</navigation>
