@@ -28,7 +28,6 @@ class QuizFragment : Fragment() {
         observeQuiz()
     }
 
-    @SuppressLint("LongLogTag")
     private fun observeQuiz() {
         viewModel.quiz.observe(viewLifecycleOwner) {
             val quiz = it
