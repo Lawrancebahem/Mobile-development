@@ -17,4 +17,6 @@
     <string name="current_page">%d/10</string>
     <string name="correct">Correct</string>
     <string name="wrong">Wrong</string>
+    <string name="reset_btn">RESEST</string>
+    <string name="total_good_anwers">you have %d good answers</string>
 </resources>

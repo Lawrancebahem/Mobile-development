@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.madlevel7task2.Model.Quiz
 import com.example.madlevel7task2.repsoitory.QuizRepository
@@ -17,6 +18,13 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     val quizList: LiveData<ArrayList<Quiz>> = quizRepository.quizList
     val error: LiveData<String> = quizRepository.error
 
+    private var _goodAnsweredQuestion:MutableLiveData<ArrayList<Quiz>> = MutableLiveData()
+
+    val wrongAnsweredQuestions:LiveData<ArrayList<Quiz>> get() = _goodAnsweredQuestion
+
+    fun setGoodAnsweredQuestion(list:ArrayList<Quiz>){
+        this._goodAnsweredQuestion.value = list
+    }
     /**
      * get all quizzes from firebase
      */
@@ -29,15 +37,4 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
-//    fun createQuiz() {
-//        viewModelScope.launch {
-//            try {
-//                quizRepository.createQuiz()
-//            } catch (ex: Exception) {
-//                Log.e(TAG, ex.message ?: "There is something wrong")
-//            }
-//        }
-//
-//    }
 }

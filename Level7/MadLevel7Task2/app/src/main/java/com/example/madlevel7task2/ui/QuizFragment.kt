@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.madlevel7task2.Model.Quiz
 import com.example.madlevel7task2.R
 import com.example.madlevel7task2.databinding.FragmentQuizBinding
@@ -22,22 +23,17 @@ class QuizFragment : Fragment() {
     private val quizViewModel: QuizViewModel by activityViewModels()
     private lateinit var quizList: ArrayList<Quiz>
     private var currentQuestionIndex = 0
+    private lateinit var nextQuestion: Quiz
+    private val goodAnsweredQuestion = ArrayList<Quiz>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
         return binding.root
-
     }
-
 
     private fun observeQuizzes() {
         quizViewModel.quizList.observe(viewLifecycleOwner) {
@@ -58,19 +54,20 @@ class QuizFragment : Fragment() {
      * To handle click on confirm button
      */
     private fun onConfirmClick() {
-        val currentQuestion = quizList[currentQuestionIndex]
-        if (checkAnswer(currentQuestion.goodAnswer!!)) {
+        if (currentQuestionIndex < quizList.size && checkAnswer(nextQuestion.goodAnswer!!)) {
             currentQuestionIndex++
-
             Handler().postDelayed(
-                {
-                    binding.radioGroup.clearCheck()
-                    getNextQuestion()
-                },
-                2000
+                    {
+                        binding.radioGroup.clearCheck()
+                        getNextQuestion()
+                    },
+                    2000
             )
             showToastMessage(getString(R.string.correct))
         } else {
+            if (currentQuestionIndex < quizList.size && goodAnsweredQuestion.indexOf(nextQuestion) == -1){
+                goodAnsweredQuestion.add(nextQuestion)
+            }
             showToastMessage(getString(R.string.wrong))
         }
     }
@@ -90,14 +87,16 @@ class QuizFragment : Fragment() {
      * To get the next question based on the currentPosition
      */
     private fun getNextQuestion() {
-
         if (currentQuestionIndex < quizList.size) {
-            val firstQuestion = quizList[currentQuestionIndex]
+            nextQuestion = quizList[currentQuestionIndex]
             binding.currentPage.text = (getString(R.string.current_page, currentQuestionIndex + 1))
-            binding.question.text = firstQuestion.question
-            binding.radioOne.text = firstQuestion.answersList!![0]
-            binding.radioTwo.text = firstQuestion.answersList[1]
-            binding.radioThree.text = firstQuestion.answersList[2]
+            binding.question.text = nextQuestion.question
+            binding.radioOne.text = nextQuestion.answersList!![0]
+            binding.radioTwo.text = nextQuestion.answersList!![1]
+            binding.radioThree.text = nextQuestion.answersList!![2]
+        } else {
+            quizViewModel.setGoodAnsweredQuestion(goodAnsweredQuestion)
+            findNavController().navigate(R.id.action_quizFragment_to_resultFragment)
         }
     }
 

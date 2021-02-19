@@ -22,4 +22,10 @@
     <style name="Theme.MadLevel7Task2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MadLevel7Task2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CircularDeterminateProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle</item>
+    </style>
+
 </resources>

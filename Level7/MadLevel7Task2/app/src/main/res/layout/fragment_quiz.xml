@@ -8,9 +8,10 @@
 
     <TextView
         android:id="@+id/question"
-        android:layout_width="206dp"
-        android:layout_height="19dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="212dp"
+        android:padding="10dp"
         android:text="@string/demo_question"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,9 +21,10 @@
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="264dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@+id/confrim_btin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -43,7 +45,7 @@
 
         <RadioButton
             android:id="@+id/radio_three"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="RadioButton" />
     </RadioGroup>
