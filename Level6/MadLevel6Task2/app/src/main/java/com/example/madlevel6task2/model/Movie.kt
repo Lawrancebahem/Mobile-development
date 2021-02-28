@@ -14,8 +14,6 @@ class Movie(
     @SerializedName("vote_average")
     val voteAverage: Double,
 
-
-
 ) {
     override fun toString(): String {
         return "Movie(backdropPath='$backdropPath', overview='$overview', posterPath='$posterPath', releaseDate='$releaseDate', title='$title', voteAverage=$voteAverage)"

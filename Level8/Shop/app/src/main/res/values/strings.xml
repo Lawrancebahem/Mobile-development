@@ -43,4 +43,9 @@
     <string name="skip">SKIP</string>
     <string name="Add">Add</string>
     <string name="amount">%d</string>
+    <string name="sureClose">Are you sure you want to close?</string>
+    <string name="sureDelete">Are you sure you want to delete?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="adOverview">Advertisement overview</string>
 </resources>
