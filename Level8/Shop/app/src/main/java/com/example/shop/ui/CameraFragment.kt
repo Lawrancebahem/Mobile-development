@@ -1,0 +1,544 @@
+package com.example.shop.ui
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.graphics.*
+import android.hardware.camera2.*
+import android.media.Image
+import android.media.ImageReader
+import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
+import android.util.Size
+import android.util.SparseIntArray
+import android.view.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shop.R
+import com.example.shop.adapter.ImageAdapter
+import com.example.shop.databinding.FragmentCameraBinding
+import com.example.shop.ml.ModelTF
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import java.util.*
+import kotlin.collections.ArrayList
+
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [CameraFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class CameraFragment : Fragment() {
+
+
+    private var btnCapture: Button? = null
+    private lateinit var binding: FragmentCameraBinding
+    private var textureView: TextureView? = null
+    private val fileName = "labels.txt"
+    private lateinit var inputString: String
+    private lateinit var capturedImage: ByteArray
+
+    private val imageBitmapList = ArrayList<Bitmap>()
+    private val imageAdapter = ImageAdapter(imageBitmapList, ::onClick)
+
+    private var cameraId: String? = null
+    private var cameraDevice: CameraDevice? = null
+    private var cameraCaptureSessions: CameraCaptureSession? = null
+    private var captureRequestBuilder: CaptureRequest.Builder? = null
+    private var imageDimension: Size? = null
+
+    //Save to FILE
+    private var mBackgroundHandler: Handler? = null
+    private var mBackgroundThread: HandlerThread? = null
+
+
+    companion object {
+        //Check state orientation of output image
+        private val ORIENTATIONS = SparseIntArray(4)
+        private const val REQUEST_CAMERA_PERMISSION = 200
+        private val paramsImageView = LinearLayout.LayoutParams(300, 300)
+
+        init {
+            ORIENTATIONS.append(Surface.ROTATION_0, 90)
+            ORIENTATIONS.append(Surface.ROTATION_90, 0)
+            ORIENTATIONS.append(Surface.ROTATION_180, 270)
+            ORIENTATIONS.append(Surface.ROTATION_270, 180)
+            paramsImageView.setMargins(0, 0, 1, 0)
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentCameraBinding.inflate(inflater, container, false)
+        textureView = binding.textureView
+        textureView!!.surfaceTextureListener = textureListener
+        btnCapture = binding.capture
+
+        btnCapture!!.setOnClickListener {
+            takePicture()
+            toggleCheckClearButtons(true)
+        }
+
+        //read the label text file
+        inputString = requireActivity().application.assets.open(fileName).bufferedReader().use { it.readText() }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        binding.imageView5.setImageResource(R.drawable.test)
+
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.imageContainer.layoutManager = layoutManager
+        binding.imageContainer.adapter = imageAdapter
+    }
+
+    //To create the camera from the device
+    private var stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
+        override fun onOpened(camera: CameraDevice) {
+            cameraDevice = camera
+            createCameraPreview()
+        }
+
+        override fun onDisconnected(cameraDevice: CameraDevice) {
+            cameraDevice.close()
+        }
+
+        override fun onError(cameraDevice: CameraDevice, i: Int) {
+            var cameraDevice: CameraDevice? = cameraDevice
+            cameraDevice!!.close()
+            cameraDevice = null
+        }
+    }
+
+    /**
+     * This method gets fired when the user click on capture button,
+     * the listener to the onCaptureCompleted, onImageAvailable are handled in this method
+     */
+    private fun takePicture() {
+        if (cameraDevice == null) return
+        val manager =
+                requireContext().getSystemService(AppCompatActivity.CAMERA_SERVICE) as CameraManager
+        try {
+            val characteristics = manager.getCameraCharacteristics(cameraDevice!!.id)
+            var jpegSizes: Array<Size>? = null
+            if (characteristics != null) jpegSizes =
+                    characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
+                            .getOutputSizes(
+                                    ImageFormat.JPEG
+                            )
+
+            //Capture image with custom size
+            var width = 640
+            var height = 480
+            if (jpegSizes != null && jpegSizes.isNotEmpty()) {
+                width = jpegSizes[0].width
+                height = jpegSizes[0].height
+            }
+            //read the image with the specified width, height nad format
+            val reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)
+            val outputSurface: MutableList<Surface> = ArrayList(2)
+            outputSurface.add(reader.surface)
+            //Set the captured image in the texture view
+            outputSurface.add(Surface(textureView!!.surfaceTexture))
+            val captureBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+            captureBuilder.addTarget(reader.surface)
+            captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
+
+            //Check orientation base on device
+            val rotation = requireActivity().windowManager.defaultDisplay.rotation
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[rotation])
+
+            //add onImageAvailable listener
+            val readerListener: ImageReader.OnImageAvailableListener = onImageAvailableListener(reader)
+            reader.setOnImageAvailableListener(readerListener, mBackgroundHandler)
+
+            //add capture listener
+            val captureListener: CameraCaptureSession.CaptureCallback = captureCallback()
+
+            //confiqure callback
+            onConfigureCallback(outputSurface, captureBuilder, captureListener)
+
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * To configure the capture session builder, by adding the captureListener and mBackgroundHandler
+     */
+    private fun onConfigureCallback(outputSurface: MutableList<Surface>, captureBuilder: CaptureRequest.Builder, captureListener: CameraCaptureSession.CaptureCallback) {
+        cameraDevice!!.createCaptureSession(outputSurface, object : CameraCaptureSession.StateCallback() {
+
+            override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
+                try {
+                    cameraCaptureSession.capture(
+                            captureBuilder.build(),
+                            captureListener,
+                            mBackgroundHandler
+                    )
+                } catch (e: CameraAccessException) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {}
+        },
+                mBackgroundHandler
+        )
+    }
+
+    /**
+     * This is a listener to the image is availability
+     */
+    private fun onImageAvailableListener(reader: ImageReader): ImageReader.OnImageAvailableListener {
+        val readerListener: ImageReader.OnImageAvailableListener = object :
+                ImageReader.OnImageAvailableListener {
+            //When the image is available recognise it and assign the bytes to capturedImage
+            override fun onImageAvailable(imageReader: ImageReader) {
+                var image: Image? = null
+                try {
+                    image = reader.acquireLatestImage()
+                    val buffer = image.planes[0].buffer
+                    val bytes = ByteArray(buffer.capacity())
+                    buffer[bytes]
+                    capturedImage = bytes
+                    //execute the recognising onto the main thread
+                    requireActivity().runOnUiThread {
+                        recogniseImage(bytes)
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    run { image?.close() }
+                }
+            }
+        }
+        return readerListener
+    }
+
+    /**
+     * To give a callback when the image is captured
+     */
+    private fun captureCallback(): CameraCaptureSession.CaptureCallback {
+        val captureListener: CameraCaptureSession.CaptureCallback = object : CameraCaptureSession.CaptureCallback() {
+            override fun onCaptureCompleted(session: CameraCaptureSession, request: CaptureRequest, result: TotalCaptureResult) {
+                super.onCaptureCompleted(session, request, result)
+
+                //this means skip the image
+                binding.clearBtn.setOnClickListener {
+                    toggleCheckClearButtons(false)
+                    createCameraPreview()
+                }
+
+                //this means add it to the image container
+                binding.checkBtn.setOnClickListener {
+                    toggleCheckClearButtons(false)
+                    addImageToContainer(capturedImage)
+                    createCameraPreview()
+                }
+            }
+        }
+        return captureListener
+    }
+
+    /**
+     * Set the preview in the texture
+     */
+    private fun createCameraPreview() {
+
+        try {
+            val texture = textureView!!.surfaceTexture!!
+            texture.setDefaultBufferSize(imageDimension!!.width, imageDimension!!.height)
+            val surface = Surface(texture)
+            captureRequestBuilder =
+                    cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+            captureRequestBuilder!!.addTarget(surface)
+
+            cameraDevice!!.createCaptureSession(
+                    listOf(surface),
+                    object : CameraCaptureSession.StateCallback() {
+
+                        override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
+                            if (cameraDevice == null) return
+                            cameraCaptureSessions = cameraCaptureSession
+                            updatePreview()
+                        }
+
+                        override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
+                            Toast.makeText(requireContext(), "Changed", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    null
+            )
+
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * This to update the preview once an image has been captured
+     */
+    private fun updatePreview() {
+        if (cameraDevice == null) Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT)
+                .show()
+        captureRequestBuilder!!.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO)
+        try {
+            cameraCaptureSessions!!.setRepeatingRequest(
+                    captureRequestBuilder!!.build(),
+                    null,
+                    mBackgroundHandler
+            )
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * get the camera from the manager and open it
+     */
+    private fun openCamera() {
+        transformImage()
+
+        val manager =
+                requireActivity().getSystemService(AppCompatActivity.CAMERA_SERVICE) as CameraManager
+        try {
+            cameraId = manager.cameraIdList[0]
+            val characteristics = manager.getCameraCharacteristics(cameraId!!)
+            val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
+            imageDimension = map.getOutputSizes(SurfaceTexture::class.java)[0]
+            //Check realtime permission if run higher API 23
+            if (ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(Manifest.permission.CAMERA),
+                        REQUEST_CAMERA_PERMISSION
+                )
+                return
+            }
+            manager.openCamera(cameraId!!, stateCallback, null)
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        }
+    }
+
+    var textureListener: TextureView.SurfaceTextureListener = object :
+            TextureView.SurfaceTextureListener {
+        //start the camera once the texture is ready
+        override fun onSurfaceTextureAvailable(surfaceTexture: SurfaceTexture, i: Int, i1: Int) {
+            openCamera()
+        }
+
+        override fun onSurfaceTextureSizeChanged(surfaceTexture: SurfaceTexture, i: Int, i1: Int) {}
+
+        override fun onSurfaceTextureDestroyed(surfaceTexture: SurfaceTexture): Boolean {
+            cameraDevice?.close()
+            return true
+        }
+
+        override fun onSurfaceTextureUpdated(surfaceTexture: SurfaceTexture) {
+//            updatePreview()
+        }
+    }
+
+    /**
+     * Result of the permission
+     */
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(
+                        requireContext(),
+                        "You can't use camera without permission",
+                        Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    override fun onResume() {
+        transformImage()
+        startBackgroundThread()
+        if (textureView!!.isAvailable) openCamera() else textureView!!.surfaceTextureListener =
+                textureListener
+        super.onResume()
+    }
+
+    override fun onPause() {
+        stopBackgroundThread()
+        super.onPause()
+    }
+//
+    /**
+     * Stop processing in the main
+     */
+    private fun stopBackgroundThread() {
+        mBackgroundThread?.quitSafely()
+        try {
+            mBackgroundThread?.join()
+            mBackgroundThread = null
+            mBackgroundHandler = null
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun startBackgroundThread() {
+        mBackgroundThread = HandlerThread("Camera Background")
+        mBackgroundThread?.start()
+        mBackgroundHandler = Handler(mBackgroundThread?.looper!!)
+    }
+
+
+    /**
+     * Recognise an image based on the given byteArray
+     */
+    private fun recogniseImage(data: ByteArray) {
+        val imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+
+        val resizedBitmap: Bitmap = Bitmap.createScaledBitmap(imageBitmap, 224, 224, true)
+
+        val model = ModelTF.newInstance(requireContext())
+
+        val tbuffer = TensorImage.fromBitmap(resizedBitmap)
+        val byteBuffer = tbuffer.buffer
+        // Creates inputs for reference.
+        val inputFeature0 =
+                TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.UINT8)
+        inputFeature0.loadBuffer(byteBuffer)
+
+        // Runs model inference and gets result.
+        val outputs = model.process(inputFeature0)
+        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+
+        val townList = inputString.split("\n")
+        val max = getMax(outputFeature0.floatArray)
+
+//        binding.textView.text = townList[max]
+        // Releases model resources if no longer used.
+        model.close()
+    }
+
+    /**
+     * To get the max floating index, which is the index of the label
+     */
+    private fun getMax(array: FloatArray): Int {
+        var index = 0;
+        var min = 0.0f
+        for (i in array.indices) {
+            if (array[i] > min) {
+                index = i
+                min = array[i]
+            }
+        }
+        return index
+    }
+
+    private fun transformImage() {
+        val width = binding.cameraTexture.width
+        val height = binding.cameraTexture.height
+        if (textureView == null) {
+            return
+        } else try {
+            run {
+                val matrix = Matrix()
+                val rotation = requireActivity().windowManager.defaultDisplay.rotation
+                val textureRectF = RectF(0F, 0F, width.toFloat(), height.toFloat())
+                val previewRectF =
+                        RectF(0F, 0F, textureView!!.height.toFloat(), textureView!!.width.toFloat())
+                val centerX = textureRectF.centerX()
+                val centerY = textureRectF.centerY()
+                if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+                    previewRectF.offset(
+                            centerX - previewRectF.centerX(),
+                            centerY - previewRectF.centerY()
+                    )
+                    matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
+                    val scale = (width.toFloat() / width).coerceAtLeast(height.toFloat() / width)
+                    matrix.postScale(scale, scale, centerX, centerY)
+                    matrix.postRotate((90 * (rotation - 2)).toFloat(), centerX, centerY)
+                }
+                textureView!!.setTransform(matrix)
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
+    /**
+     * To show/hide the check and clear buttons of the camera
+     */
+    private fun toggleCheckClearButtons(visible: Boolean) {
+        binding.clearBtn.isVisible = visible
+        binding.checkBtn.isVisible = visible;
+    }
+
+
+    /**
+     * To create an image view of the bytArray and add it to the container of the captured images
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private fun addImageToContainer(capturedImage: ByteArray) {
+        val bmp = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.size)
+        val scaledBitmap: Bitmap = Bitmap.createScaledBitmap(bmp, 250, 200, false)
+        val matrix = Matrix()
+        matrix.postRotate(90f)
+        val rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true)
+//        imageView.setImageBitmap(rotatedBitmap)
+
+        imageBitmapList.add(rotatedBitmap)
+        binding.amountImg.text = getString(R.string.amount, imageBitmapList.size)
+        imageAdapter.notifyDataSetChanged()
+        showButtonAndAmount()
+
+    }
+
+    private fun onClick(index:Int){
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Are you sure you want to Delete?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { dialog, id ->
+                    // Delete selected note from database
+                    imageBitmapList.removeAt(index)
+                    imageAdapter.notifyDataSetChanged()
+                    showButtonAndAmount()
+                }
+                .setNegativeButton("No") { dialog, id ->
+                    // Dismiss the dialog
+                    dialog.dismiss()
+                }
+        val alert = builder.create()
+        alert.show()
+    }
+
+    /**
+     * To show the the add button and the amount of taken images
+     */
+    private fun showButtonAndAmount(){
+        binding.amountImg.isVisible = imageBitmapList.size > 0
+        binding.addBtn.isVisible = imageBitmapList.size > 0
+        binding.amountImg.text = getString(R.string.amount, imageBitmapList.size)
+    }
+}

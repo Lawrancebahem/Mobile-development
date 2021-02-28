@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_24"
+        app:iconTint="@color/white"
+        android:title="@string/search"
+        android:background="@drawable/rounded"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:iconTint="@color/gray_400"
+        app:showAsAction="ifRoom"
+        tools:targetApi="o" />
+
+<!--    <item-->
+<!--        android:id="@+id/menu_bar"-->
+<!--        android:title="menu-bar"-->
+<!--        android:icon="@drawable/ic_baseline_settings_24"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        app:iconTint="@color/gray_400"-->
+<!--        tools:targetApi="o">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/item1_menu_bar"-->
+<!--                android:title="My Profile"-->
+<!--                app:showAsAction="never"-->
+<!--                android:iconTint="@color/white"-->
+<!--                tools:targetApi="o" />-->
+<!--            <item-->
+<!--                android:id="@+id/item2_menu_bar"-->
+<!--                android:title="My Shop"-->
+<!--                app:showAsAction="never"-->
+<!--                android:iconTint="@color/white"-->
+<!--                tools:targetApi="o" />-->
+
+<!--            <item-->
+<!--                android:id="@+id/item3_menu_bar"-->
+<!--                android:title="Settings"-->
+<!--                app:showAsAction="never"-->
+<!--                android:iconTint="@color/white"-->
+<!--                tools:targetApi="o" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:src="@drawable/ic_baseline_image_24"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/uploadPictureBtn"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.501"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_chainStyle="packed" />-->
+<!--        </menu>-->
+<!--    </item>-->
+
+</menu>

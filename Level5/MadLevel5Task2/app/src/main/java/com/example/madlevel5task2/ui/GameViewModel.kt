@@ -1,12 +1,9 @@
 package com.example.madlevel5task2.ui
 
 import android.app.Application
-import android.os.Build
 import android.widget.EditText
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.room.ColumnInfo
 import com.example.madlevel5task2.model.Game
 import com.example.madlevel5task2.repository.GameRepository
 import kotlinx.coroutines.CoroutineScope

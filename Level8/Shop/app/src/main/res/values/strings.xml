@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="firstName">First name</string>
+    <string name="lastName">Last name</string>
+    <string name="man">Man</string>
+    <string name="woman">Woman</string>
+    <string name="other">Other</string>
+    <string name="register">REGISTER</string>
+    <string name="day">DAY</string>
+    <string name="month">MONTH</string>
+    <string name="year">YEAR</string>
+    <string name="upload">UPLOAD</string>
+    <string name="invalidFields">All fields are required</string>
+    <string name="click_here">Click here</string>
+    <string name="not_registered">Not registered yet?</string>
+    <string name="search">Search</string>
+    <string name="forgotten_password">Forgotten Password?</string>
+    <string name="or">OR</string>
+    <string name="electronics">Electronics</string>
+    <string name="games">Games</string>
+    <string name="phones">Phones</string>
+    <string name="car">Cars</string>
+    <string name="home">Home</string>
+    <string name="bike">Bikes</string>
+    <string name="Plant">Plants</string>
+    <string name="tv"><![CDATA[TV & Audio]]></string>
+    <string name="baby">Children</string>
+    <string name="capture">Capture</string>
+    <string name="skip">SKIP</string>
+    <string name="Add">Add</string>
+    <string name="amount">%d</string>
+</resources>
