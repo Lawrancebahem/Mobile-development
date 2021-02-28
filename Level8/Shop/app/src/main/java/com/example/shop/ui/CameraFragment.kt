@@ -2,12 +2,16 @@ package com.example.shop.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.camera2.*
 import android.media.Image
 import android.media.ImageReader
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -19,7 +23,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +33,7 @@ import com.example.shop.ml.ModelTF
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import java.io.InputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -84,10 +88,6 @@ class CameraFragment : Fragment() {
         textureView!!.surfaceTextureListener = textureListener
         btnCapture = binding.capture
 
-        btnCapture!!.setOnClickListener {
-            takePicture()
-            toggleCheckClearButtons(true)
-        }
 
         //read the label text file
         inputString = requireActivity().application.assets.open(fileName).bufferedReader().use { it.readText() }
@@ -102,6 +102,63 @@ class CameraFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.imageContainer.layoutManager = layoutManager
         binding.imageContainer.adapter = imageAdapter
+
+        //capture button
+        btnCapture!!.setOnClickListener {
+            takePicture()
+            toggleCheckClearButtons(true)
+        }
+
+        binding.galleryBtn.setOnClickListener {
+            cameraDevice!!.close()
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+            }else{
+                pickFromGallery()
+            }
+        }
+    }
+
+
+    /**
+     * To handle the click to get images from the gallery
+     */
+    private fun pickFromGallery(){
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.setType("image/*")
+        startActivityForResult(intent, 1)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1 && resultCode == RESULT_OK){
+
+            val clipData: ClipData? = data!!.clipData
+            if (clipData != null){
+                for (i in 0 until clipData.itemCount){
+                    val imageUri: Uri? = clipData.getItemAt(i).uri
+                    try {
+                        val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri!!)
+                        val bitmap:Bitmap = BitmapFactory.decodeStream(inputStream)
+                        imageBitmapList.add(bitmap)
+                    }catch (e:Exception){
+                    }
+                }
+            }else{
+                val imageUri: Uri? = data.data
+                try {
+                    val inputStream: InputStream? = requireContext().contentResolver.openInputStream(imageUri!!)
+                    val bitmap:Bitmap = BitmapFactory.decodeStream(inputStream)
+                    imageBitmapList.add(bitmap)
+
+                }catch (e:Exception){
+
+                }
+            }
+            imageAdapter.notifyDataSetChanged()
+            showButtonAndAmount()
+        }
     }
 
     //To create the camera from the device
@@ -128,16 +185,13 @@ class CameraFragment : Fragment() {
      */
     private fun takePicture() {
         if (cameraDevice == null) return
-        val manager =
-                requireContext().getSystemService(AppCompatActivity.CAMERA_SERVICE) as CameraManager
+        val manager = requireContext().getSystemService(AppCompatActivity.CAMERA_SERVICE) as CameraManager
         try {
             val characteristics = manager.getCameraCharacteristics(cameraDevice!!.id)
             var jpegSizes: Array<Size>? = null
-            if (characteristics != null) jpegSizes =
-                    characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
-                            .getOutputSizes(
-                                    ImageFormat.JPEG
-                            )
+            if (characteristics != null) jpegSizes = characteristics
+                    .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
+                    .getOutputSizes(ImageFormat.JPEG)
 
             //Capture image with custom size
             var width = 640
@@ -515,7 +569,10 @@ class CameraFragment : Fragment() {
 
     }
 
-    private fun onClick(index:Int){
+    /**
+     * When the user clicks on an image, alert dialog will be prompted to confirm the deletion
+     */
+    private fun onClick(index: Int) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to Delete?")
                 .setCancelable(false)
@@ -536,7 +593,7 @@ class CameraFragment : Fragment() {
     /**
      * To show the the add button and the amount of taken images
      */
-    private fun showButtonAndAmount(){
+    private fun showButtonAndAmount() {
         binding.amountImg.isVisible = imageBitmapList.size > 0
         binding.addBtn.isVisible = imageBitmapList.size > 0
         binding.amountImg.text = getString(R.string.amount, imageBitmapList.size)
