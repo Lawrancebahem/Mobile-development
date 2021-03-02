@@ -16,6 +16,7 @@ import com.example.madlevel6task2.databinding.FragmentMovieDetailBinding
 import com.example.madlevel6task2.databinding.FragmentMovieOverviewBinding
 import com.example.madlevel6task2.model.Movie
 import com.example.madlevel6task2.vm.MovieViewModel
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -47,23 +48,35 @@ class MovieOverviewFragment : Fragment() {
         }
     }
 
+    /**
+     * Observe movie, set layout and adapter for recyclerView
+     */
     private fun initView(){
         observeMovies()
         binding.rcView.layoutManager = GridLayoutManager(context,2)
         binding.rcView.adapter = movieAdapter
     }
 
-    fun onSubmit(){
-        val year = binding.overviewYear.text.toString().toInt()
-        movieViewModel.getMoviesList(year)
+    private fun onSubmit(){
+        if (binding.overviewYear.text.isEmpty()){
+            Snackbar.make(binding.root,getString(R.string.yearRequired), Snackbar.LENGTH_SHORT).show()
+        }else{
+            val year = binding.overviewYear.text.toString().toInt()
+            movieViewModel.getMoviesList(year)
+        }
     }
 
-    fun onMovieClick(movie:Movie){
+    /**
+     * When user clicks a movie
+     */
+    private fun onMovieClick(movie:Movie){
         movieViewModel.setMovie(movie)
-        Log.d("The clicked Movie", movie.toString())
         findNavController().navigate(R.id.action_movieOverviewFragment2_to_movieDetailFragment2)
     }
 
+    /**
+     * Add the observed movies to the movie list
+     */
     private fun observeMovies(){
         movieViewModel.moviesList.observe(viewLifecycleOwner){
             movieList.clear()

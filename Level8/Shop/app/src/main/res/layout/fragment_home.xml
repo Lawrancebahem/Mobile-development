@@ -247,7 +247,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
-                android:text="@string/Plant" />
+                android:text="@string/plant" />
 
             <TextView
                 android:id="@+id/textView11"

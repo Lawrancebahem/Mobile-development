@@ -34,7 +34,6 @@ class ResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         progressBar()
 
-
         binding.resetBtn.setOnClickListener {
             onReset()
         }

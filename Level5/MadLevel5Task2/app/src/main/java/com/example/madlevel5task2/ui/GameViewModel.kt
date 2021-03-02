@@ -86,6 +86,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                     val month = monthEditText.text.toString().toInt()
                     val year = yearEditText.text.toString().toInt()
                     val gameReleaseDate = LocalDate.of(year, month, day)
+
                     val title = titleEdittext.text.toString()
                     val platform = platformEditText.text.toString()
 

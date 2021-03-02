@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../../../layout/custom_preview.xml" value="0.17685185185185184" />
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.2861111111111111" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20555555555555555" />
         <entry key="app/src/main/res/drawable/button_rounded.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/camera.xml" value="0.5" />
@@ -27,13 +27,13 @@
         <entry key="app/src/main/res/drawable/rounded.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/fragment_add_item.xml" value="0.22554347826086957" />
+        <entry key="app/src/main/res/layout/fragment_add_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_camera.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2857789855072464" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_not_logged_in.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/fragment_regsiter.xml" value="0.2552083333333333" />
+        <entry key="app/src/main/res/layout/fragment_regsiter.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_image.xml" value="0.2677083333333333" />
         <entry key="app/src/main/res/layout/sample_my_view.xml" value="0.297554347826087" />
         <entry key="app/src/main/res/menu-v26/menu_main.xml" value="0.5" />

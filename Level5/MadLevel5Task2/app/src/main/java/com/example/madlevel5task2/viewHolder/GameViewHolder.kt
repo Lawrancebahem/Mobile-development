@@ -11,7 +11,7 @@ class GameViewHolder(view:View):RecyclerView.ViewHolder(view){
 
     private val binding = ItemGameBinding.bind(view)
 
-    fun bindDate(game: Game){
+    fun bindData(game: Game){
         binding.itemTitle.text = game.title
         binding.itemPlatform.text = game.platform
         binding.itemRelases.text = getFormattedDate(game.releaseDate)

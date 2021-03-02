@@ -28,7 +28,6 @@ class QuizRepository {
                         for (document in querySnapshot.documents) {
                             val quiz = document.toObject(Quiz::class.java)
                             if (quiz != null) {
-                                Log.d("The quiz", quiz.toString())
                                 dataList.add(quiz)
                             }
                         }

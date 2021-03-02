@@ -35,10 +35,9 @@ class GameBacklogFragment : Fragment() {
     private val gameViewModel:GameViewModel by viewModels()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentGameBacklogBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,7 +50,6 @@ class GameBacklogFragment : Fragment() {
 
         createItemTouchHelper().attachToRecyclerView(binding.rcView)
     }
-
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -69,15 +67,10 @@ class GameBacklogFragment : Fragment() {
         // Callback which is used to create the ItemTouch helper. Only enables left swipe.
         // Use ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) to also enable right swipe.
         // WTF? ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT literally??
-        val callback =
-            object :
-                ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
                 // Enables or Disables the ability to move items up and down.
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
+                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
                 ): Boolean {
                     return false
                 }

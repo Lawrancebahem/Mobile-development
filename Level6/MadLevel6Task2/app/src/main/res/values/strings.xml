@@ -13,4 +13,5 @@
     <string name="button_submit">SUBMIT</string>
     <string name="hint_year">year</string>
     <string name="overview">Overview</string>
+    <string name="yearRequired">Please provide a year</string>
 </resources>

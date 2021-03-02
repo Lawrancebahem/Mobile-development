@@ -15,7 +15,7 @@ class GameAdapter(private val gameList:ArrayList<Game>):RecyclerView.Adapter<Gam
     }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
-        holder.bindDate(gameList[position])
+        holder.bindData(gameList[position])
     }
 
     override fun getItemCount(): Int {

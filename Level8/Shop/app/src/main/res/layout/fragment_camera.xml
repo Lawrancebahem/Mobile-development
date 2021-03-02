@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     android:scrollIndicators="top|left"
-    android:scrollbars="horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,7 +35,7 @@
         android:layout_height="70dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/circle"
-        android:isScrollContainer="false"
+        android:visibility="visible"
         app:backgroundTint="@color/light_blue_400"
         app:icon="@drawable/camera"
         app:iconSize="38dp"

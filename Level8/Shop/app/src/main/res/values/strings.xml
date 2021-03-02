@@ -36,7 +36,7 @@
     <string name="car">Cars</string>
     <string name="home">Home</string>
     <string name="bike">Bikes</string>
-    <string name="Plant">Plants</string>
+    <string name="plant">Plants</string>
     <string name="tv"><![CDATA[TV & Audio]]></string>
     <string name="baby">Children</string>
     <string name="capture">Capture</string>
@@ -48,4 +48,15 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="adOverview">Advertisement overview</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="price">Price</string>
+    <string name="post">POST</string>
+    <string name="choose">Choose category</string>
+
+    <string-array name="category_list">
+    </string-array>
+
+
 </resources>
