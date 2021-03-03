@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <com.denzcoskun.imageslider.ImageSlider-->
+<!--                android:id="@+id/slider"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="200dp"-->
+<!--                app:auto_cycle="true"-->
+<!--                app:corner_radius="20"-->
+<!--                app:delay="0"-->
+<!--                app:error_image="@drawable/bg_grey"-->
+<!--                app:period="1000"-->
+<!--                app:placeholder="@drawable/bg_grey" />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/button10"-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:isScrollContainer="false"-->
+<!--                app:icon="@drawable/heart"-->
+<!--                app:iconSize="38dp"-->
+<!--                app:iconTint="@color/gray_600"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/button11"-->
+<!--                app:layout_constraintHorizontal_bias="0.5"-->
+<!--                app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/button11"-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:isScrollContainer="false"-->
+<!--                app:icon="@drawable/chat"-->
+<!--                app:iconSize="38dp"-->
+<!--                app:iconTint="@color/gray_600"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.5"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/button10" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--    </LinearLayout>-->
+</androidx.cardview.widget.CardView>

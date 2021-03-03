@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.shop"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -86,6 +86,10 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.28.3-alpha"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
     kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
+
+
+    //image slider
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"

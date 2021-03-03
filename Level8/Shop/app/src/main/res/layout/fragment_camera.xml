@@ -41,14 +41,16 @@
         app:iconSize="38dp"
         app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cameraTexture"
-        app:layout_constraintStart_toStartOf="@+id/cameraTexture"
+        app:layout_constraintEnd_toStartOf="@+id/addBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/galleryBtn"
         app:layout_constraintTop_toBottomOf="@+id/imageContainer" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cameraTexture"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="5dp"
         app:layout_constraintBottom_toTopOf="@+id/imageContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -63,51 +65,63 @@
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/checkBtn"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/circle"
-            android:isScrollContainer="false"
-            app:backgroundTint="@color/dark_gray"
+        <ImageView
+            android:id="@+id/preview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
             android:visibility="invisible"
-            app:icon="@drawable/check"
-            app:iconSize="38dp"
-            app:iconTint="@color/gray_600"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.235"
-            app:layout_constraintStart_toEndOf="@+id/clearBtn" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textureView"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <Button
             android:id="@+id/clearBtn"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginStart="124dp"
-            android:layout_marginBottom="12dp"
+            android:layout_margin="5dp"
             android:background="@drawable/circle"
             android:isScrollContainer="false"
+            android:visibility="invisible"
             app:backgroundTint="@color/dark_gray"
             app:icon="@drawable/clear"
             app:iconSize="38dp"
-            android:visibility="invisible"
             app:iconTint="@color/gray_600"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/checkBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textureView" />
+
+        <Button
+            android:id="@+id/checkBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/circle"
+            android:isScrollContainer="false"
+            android:visibility="invisible"
+            app:backgroundTint="@color/green"
+            app:icon="@drawable/check"
+            app:iconSize="38dp"
+            app:iconTint="@color/gray_600"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textureView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/clearBtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/galleryBtn"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:background="?android:attr/selectableItemBackground"
         app:icon="@drawable/ic_baseline_image_24"
         app:iconSize="40dp"
@@ -115,7 +129,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/capture"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageContainer" />
 
@@ -137,16 +150,15 @@
         android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded"
         android:text="@string/Add"
         android:visibility="invisible"
-        app:icon="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/capture"
         app:layout_constraintTop_toBottomOf="@+id/imageContainer"
+        app:layout_constraintVertical_bias="0.555"
         app:tint="@color/dark_gray" />
 
     <TextView

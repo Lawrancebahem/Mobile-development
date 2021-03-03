@@ -1,6 +1,7 @@
 package com.example.shop.ui
 
 import android.Manifest
+import android.R.attr
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -16,7 +17,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.*
@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shop.R
@@ -42,6 +43,9 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.*
 import kotlin.collections.ArrayList
+import android.R.attr.bitmap
+import androidx.core.graphics.drawable.toBitmap
+
 
 /**
  * A simple [Fragment] subclass.
@@ -52,13 +56,13 @@ class CameraFragment : Fragment() {
 
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
 
+    private val REQUEST_CODE_GALLERY = 100
     private var btnCapture: Button? = null
     private lateinit var binding: FragmentCameraBinding
     private var textureView: TextureView? = null
     private val fileName = "labels.txt"
     private lateinit var inputString: String
     private lateinit var capturedImage: ByteArray
-
     private lateinit var imageAdapter: ImageAdapter
 
     private var cameraId: String? = null
@@ -70,7 +74,7 @@ class CameraFragment : Fragment() {
     //Save to FILE
     private var mBackgroundHandler: Handler? = null
     private var mBackgroundThread: HandlerThread? = null
-
+    private var isSave: Boolean = false
 
     companion object {
         //Check state orientation of output image
@@ -114,13 +118,18 @@ class CameraFragment : Fragment() {
             findNavController().navigate(R.id.addItemFragment)
         }
 
+        //skip and clear the bitmap
+        binding.skipBtn.setOnClickListener{
+            advertisementViewModel.bitmapList.value?.clear()
+            findNavController().navigate(R.id.addItemFragment)
+        }
+
         //capture button
         binding.capture.setOnClickListener {
 //            Toast.makeText(context, "is cliced", Toast.)
             takePicture()
-            toggleCheckClearButtons(true)
-
         }
+
 
         //get images from gallery
         binding.galleryBtn.setOnClickListener {
@@ -135,6 +144,25 @@ class CameraFragment : Fragment() {
 
         //show the clear/check buttons
         showButtonAndAmount()
+
+
+        //this means add it to the image container
+        binding.checkBtn.setOnClickListener {
+            try {
+                val bitm:Bitmap = (binding.preview.drawable).toBitmap()
+                addImageToContainer(getBytArray(bitm))
+                hidePreview()
+            }catch (e:Exception){
+
+            }
+            toggleCheckClearButtons(false)
+        }
+
+        binding.clearBtn.setOnClickListener {
+            isSave = false
+            toggleCheckClearButtons(false)
+            hidePreview()
+        }
     }
 
 
@@ -143,11 +171,11 @@ class CameraFragment : Fragment() {
      */
     private fun onGalleryClick() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
-        } else {
-            cameraDevice!!.close()
-            pickFromGallery()
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_GALLERY)
+            return
         }
+        cameraDevice!!.close()
+        pickFromGallery()
     }
 
     /**
@@ -157,7 +185,7 @@ class CameraFragment : Fragment() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.setType("image/*")
-        startActivityForResult(intent, 1)
+        startActivityForResult(intent, REQUEST_CODE_GALLERY)
     }
 
 
@@ -168,12 +196,11 @@ class CameraFragment : Fragment() {
         extractImagesFromGallery(requestCode, resultCode, data)
     }
 
-
     /**
      * To convert each chosen image to bitmap and add it to the bitmaplist
      */
     private fun extractImagesFromGallery(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
 
             val clipData: ClipData? = data!!.clipData
             if (clipData != null) {
@@ -200,7 +227,8 @@ class CameraFragment : Fragment() {
                     val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
                     val blob = ByteArrayOutputStream()
                     bitmap.compress(CompressFormat.PNG, 0 /* Ignored for PNGs */, blob)
-                    recogniseImage(blob.toByteArray())
+
+//                    recogniseImage(blob.toByteArray())
                     advertisementViewModel.bitmapList.value!!.add(bitmap)
 
                 } catch (e: Exception) {
@@ -267,9 +295,7 @@ class CameraFragment : Fragment() {
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[rotation])
 
             //add onImageAvailable listener
-            val readerListener: ImageReader.OnImageAvailableListener = onImageAvailableListener(
-                    reader
-            )
+            val readerListener: ImageReader.OnImageAvailableListener = onImageAvailableListener(reader)
             reader.setOnImageAvailableListener(readerListener, mBackgroundHandler)
 
             //add capture listener
@@ -277,6 +303,7 @@ class CameraFragment : Fragment() {
 
             //confiqure callback
             onConfigureCallback(outputSurface, captureBuilder, captureListener)
+
 
         } catch (e: CameraAccessException) {
             e.printStackTrace()
@@ -286,21 +313,14 @@ class CameraFragment : Fragment() {
     /**
      * To configure the capture session builder, by adding the captureListener and mBackgroundHandler
      */
-    private fun onConfigureCallback(
-            outputSurface: MutableList<Surface>,
-            captureBuilder: CaptureRequest.Builder,
-            captureListener: CameraCaptureSession.CaptureCallback
-    ) {
+    private fun onConfigureCallback(outputSurface: MutableList<Surface>, captureBuilder: CaptureRequest.Builder, captureListener: CameraCaptureSession.CaptureCallback) {
         cameraDevice!!.createCaptureSession(
                 outputSurface, object : CameraCaptureSession.StateCallback() {
 
             override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
                 try {
-                    cameraCaptureSession.capture(
-                            captureBuilder.build(),
-                            captureListener,
-                            mBackgroundHandler
-                    )
+                    cameraCaptureSession.capture(captureBuilder.build(), captureListener, mBackgroundHandler)
+
                 } catch (e: CameraAccessException) {
                     e.printStackTrace()
                 }
@@ -324,12 +344,12 @@ class CameraFragment : Fragment() {
                 try {
                     image = reader.acquireLatestImage()
                     val buffer = image.planes[0].buffer
-                    val bytes = ByteArray(buffer.capacity())
+                    val bytes = ByteArray(buffer.remaining())
                     buffer[bytes]
-                    capturedImage = bytes
                     //execute the recognising onto the main thread
                     requireActivity().runOnUiThread {
                         recogniseImage(bytes)
+                        //set preview for the user
                     }
 
                 } catch (e: Exception) {
@@ -347,25 +367,9 @@ class CameraFragment : Fragment() {
      */
     private fun captureCallback(): CameraCaptureSession.CaptureCallback {
         val captureListener: CameraCaptureSession.CaptureCallback = object : CameraCaptureSession.CaptureCallback() {
-            override fun onCaptureCompleted(
-                    session: CameraCaptureSession,
-                    request: CaptureRequest,
-                    result: TotalCaptureResult
-            ) {
+            override fun onCaptureCompleted(session: CameraCaptureSession, request: CaptureRequest, result: TotalCaptureResult) {
                 super.onCaptureCompleted(session, request, result)
-
-                //this means skip the image
-                binding.clearBtn.setOnClickListener {
-                    toggleCheckClearButtons(false)
-                    createCameraPreview()
-                }
-
-                //this means add it to the image container
-                binding.checkBtn.setOnClickListener {
-                    toggleCheckClearButtons(false)
-                    addImageToContainer(capturedImage)
-                    createCameraPreview()
-                }
+                createCameraPreview()
             }
         }
         return captureListener
@@ -384,8 +388,7 @@ class CameraFragment : Fragment() {
                     cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
             captureRequestBuilder!!.addTarget(surface)
 
-            cameraDevice!!.createCaptureSession(
-                    listOf(surface),
+            cameraDevice!!.createCaptureSession(listOf(surface),
                     object : CameraCaptureSession.StateCallback() {
 
                         override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
@@ -428,6 +431,7 @@ class CameraFragment : Fragment() {
      * get the camera from the manager and open it
      */
     fun openCamera() {
+//        transformImage()
         val manager = requireContext().getSystemService(AppCompatActivity.CAMERA_SERVICE) as CameraManager
         try {
             cameraId = manager.cameraIdList[0]
@@ -455,7 +459,7 @@ class CameraFragment : Fragment() {
         override fun onSurfaceTextureSizeChanged(surfaceTexture: SurfaceTexture, i: Int, i1: Int) {}
 
         override fun onSurfaceTextureDestroyed(surfaceTexture: SurfaceTexture): Boolean {
-            if(cameraDevice != null){
+            if (cameraDevice != null) {
                 cameraCaptureSessions?.close()
                 cameraDevice = null
             }
@@ -491,13 +495,10 @@ class CameraFragment : Fragment() {
     override fun onPause() {
         stopBackgroundThread()
         cameraCaptureSessions?.close()
+        cameraDevice?.close()
         super.onPause()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-    }
     //
     /**
      * Stop processing in the main
@@ -526,10 +527,11 @@ class CameraFragment : Fragment() {
     private fun recogniseImage(data: ByteArray) {
         val imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
 
+        //set preview for the user
+        previewCapturedImage(imageBitmap)
+
         val resizedBitmap: Bitmap = Bitmap.createScaledBitmap(imageBitmap, 224, 224, true)
-
         val model = ModelTF.newInstance(requireContext())
-
         val tbuffer = TensorImage.fromBitmap(resizedBitmap)
         val byteBuffer = tbuffer.buffer
         // Creates inputs for reference.
@@ -544,10 +546,26 @@ class CameraFragment : Fragment() {
         val townList = inputString.split("\n")
         val max = getMax(outputFeature0.floatArray)
 
-
 //        binding.textView14.text = townList[max]
         // Releases model resources if no longer used.
         model.close()
+    }
+
+
+    private fun getBytArray(imageBitmap:Bitmap): ByteArray {
+        val blob = ByteArrayOutputStream()
+        imageBitmap.compress(CompressFormat.PNG, 0 /* Ignored for PNGs */, blob)
+       return blob.toByteArray()
+    }
+    private fun hidePreview(){
+        binding.preview.isVisible = false
+        binding.preview.setImageBitmap(null)
+    }
+
+    private fun previewCapturedImage(imageBitmap: Bitmap){
+        binding.preview.setImageBitmap(imageBitmap)
+        binding.preview.isVisible = true
+        toggleCheckClearButtons(true)
     }
 
     /**
@@ -579,22 +597,14 @@ class CameraFragment : Fragment() {
      */
     @SuppressLint("NotifyDataSetChanged")
     private fun addImageToContainer(capturedImage: ByteArray) {
+        isSave = false
+        hidePreview()
         val bmp = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.size)
         val scaledBitmap: Bitmap = Bitmap.createScaledBitmap(bmp, 250, 200, false)
-        val matrix = Matrix()
-        matrix.postRotate(90f)
-        val rotatedBitmap = Bitmap.createBitmap(
-                scaledBitmap,
-                0,
-                0,
-                scaledBitmap.width,
-                scaledBitmap.height,
-                matrix,
-                true
-        )
+
 //        imageView.setImageBitmap(rotatedBitmap)
 
-        advertisementViewModel.bitmapList.value!!.add(rotatedBitmap)
+        advertisementViewModel.bitmapList.value!!.add(scaledBitmap)
         imageAdapter.notifyDataSetChanged()
         showButtonAndAmount()
 
@@ -632,6 +642,5 @@ class CameraFragment : Fragment() {
                 advertisementViewModel.bitmapList.value!!.size
         )
     }
-
 
 }

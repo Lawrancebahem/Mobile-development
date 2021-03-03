@@ -1,0 +1,11 @@
+0 Bike
+1 Animal
+2 Electro
+3 Mobile & Tablet
+4 Table
+5 Computer
+6 Watch
+7 Clothes
+8 Tv & Audio
+9 Home & Furniture
+10 Car

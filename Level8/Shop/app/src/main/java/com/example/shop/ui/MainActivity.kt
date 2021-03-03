@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("UseCompatTextViewDrawableApis")
     private fun setButtonColor(button: Button, color: String) {
-        button.compoundDrawableTintList = ColorStateList.valueOf(Color.parseColor(color))
+//        button.compoundDrawableTintList = ColorStateList.valueOf(Color.parseColor(color))
     }
 
     override fun onSupportNavigateUp(): Boolean {
