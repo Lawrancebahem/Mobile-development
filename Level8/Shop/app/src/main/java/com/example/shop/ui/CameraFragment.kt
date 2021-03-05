@@ -344,7 +344,7 @@ class CameraFragment : Fragment() {
                 try {
                     image = reader.acquireLatestImage()
                     val buffer = image.planes[0].buffer
-                    val bytes = ByteArray(buffer.remaining())
+                    val bytes = ByteArray(buffer.capacity())
                     buffer[bytes]
                     //execute the recognising onto the main thread
                     requireActivity().runOnUiThread {
@@ -637,6 +637,7 @@ class CameraFragment : Fragment() {
     private fun showButtonAndAmount() {
         binding.amountImg.isVisible = advertisementViewModel.bitmapList.value!!.size > 0
         binding.addBtn.isVisible = advertisementViewModel.bitmapList.value!!.size > 0
+        binding.imageContainer.isVisible = advertisementViewModel.bitmapList.value!!.size > 0
         binding.amountImg.text = getString(
                 R.string.amount,
                 advertisementViewModel.bitmapList.value!!.size

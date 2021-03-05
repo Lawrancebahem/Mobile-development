@@ -13,10 +13,17 @@ class Api<out T>(private val cls: Class<T>) {
 
     companion object {
 
-        private const val BASE_URL = "https://server-bd-shop.herokuapp.com/"
+        private const val LOCAL_URL = "http://192.168.178.22:8080/"
+
+        //heroku url
+//        private const val BASE_URL = "https://server-bd-shop.herokuapp.com/"
+
+
+        private const val BASE_URL = LOCAL_URL
+
+
         private const val API_KEY = "api_key"
         private const val API_VALUE = "bb7c29934be6882f5417e3b31e8905be"
-        public const val IMAGE_URL_VIEWER = "http://192.168.178.22/Users/lawrancebahem/Desktop/"
     }
 
 
@@ -30,7 +37,7 @@ class Api<out T>(private val cls: Class<T>) {
         }
     }
 
-    fun createShopService(): T {
+    fun createService(): T {
         // Create an OkHttpClient to be able to make a log of the network traffic
         val okHttpClient = OkHttpClient
             .Builder()

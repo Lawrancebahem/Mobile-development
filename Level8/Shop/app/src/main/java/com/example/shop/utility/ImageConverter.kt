@@ -16,17 +16,23 @@ class ImageConverter{
         /**
          * To encode the image into base64
          */
-        fun encode(imageUri: Uri, activity:Activity): String {
-            val input = activity?.contentResolver?.openInputStream(imageUri)
-            val image = BitmapFactory.decodeStream(input, null, null)
+        fun encode(imageUri: Uri, activity:Activity,bitmap: Bitmap?): String {
+            val image:Bitmap
+            image = if (bitmap != null){
+                bitmap
+            }else{
+                val input = activity.contentResolver?.openInputStream(imageUri)
+                BitmapFactory.decodeStream(input, null, null)!!
+            }
 
             // Encode image to base64 string
             val baos = ByteArrayOutputStream()
-            image?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             var imageBytes = baos.toByteArray()
             val imageString = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
             return imageString
         }
+
 
 
         /**

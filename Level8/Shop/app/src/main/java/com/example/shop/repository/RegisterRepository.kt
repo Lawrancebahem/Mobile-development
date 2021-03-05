@@ -6,14 +6,11 @@ import com.example.shop.api.Api
 import com.example.shop.api.ApiError
 import com.example.shop.api.RegisterApiService
 import com.example.shop.model.User
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.http.Part
 
 class RegisterRepository {
     private val TAG = "RegisterRepository"
     private val registerApiService: RegisterApiService =
-        Api(RegisterApiService::class.java).createShopService()
+        Api(RegisterApiService::class.java).createService()
 
     private var _user: MutableLiveData<User> = MutableLiveData()
     private var _error:MutableLiveData<String> = MutableLiveData()

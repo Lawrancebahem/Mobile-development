@@ -117,7 +117,7 @@ class RegisterFragment : Fragment() {
             password.isEmpty() -> null
             else -> {
                 if (filePath != null) {
-                    profileImage = ImageConverter.encode(filePath!!, requireActivity())
+                    profileImage = ImageConverter.encode(filePath!!, requireActivity(),null)
                 }
                 return User(0, firstName, lastName, email, password, profileImage)
             }

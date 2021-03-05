@@ -2,12 +2,12 @@ package com.example.shop.ui
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,15 +21,26 @@ import com.example.shop.databinding.FragmentAddItemBinding
 import com.example.shop.viewModel.AdvertisementViewModel
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.shop.model.Category
-
+import com.example.shop.model.Product
+import com.example.shop.utility.ImageConverter
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass.
  * Use the [AddItemFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class AddItemFragment : Fragment() {
+
+    private lateinit var userDatabaseViewModel: UserDatabaseViewModel
 
     private lateinit var binding: FragmentAddItemBinding
     private lateinit var imageAdapter: ImageAdapter
@@ -72,7 +83,7 @@ class AddItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        userDatabaseViewModel = ViewModelProvider(this).get(UserDatabaseViewModel::class.java)
         init()
     }
 
@@ -104,12 +115,87 @@ class AddItemFragment : Fragment() {
         binding.addMore.setOnClickListener{
             findNavController().navigate(R.id.cameraFragment)
         }
+        binding.postBtn.setOnClickListener{
+            addProduct()
+        }
+
+
+        //observe error message
+        advertisementViewModel.error.observe(viewLifecycleOwner){
+            showSnackBarMessage(it)
+        }
+    }
+
+    /**
+     * To add the product with the related images to it, once the user clicks on post button
+     */
+    private fun addProduct(){
+        val title:String = binding.title.text.toString()
+        val description:String = binding.description.text.toString()
+        val price:Double = binding.price.text.toString().toDouble()
+        val category:Category = binding.categoryDrop.selectedItem as Category
+        //validate fields
+        if (validateFields(title,description, price)){
+            CoroutineScope(Dispatchers.Main).launch{
+                //get current user
+                val user = withContext(Dispatchers.IO){
+                    userDatabaseViewModel.userRepository.getUser()
+                }
+                val product = Product( id = 0,title = title,
+                        description =  description, price = price, category = category,
+                        user = user[0],images = getImagesInBase64())
+
+                //add product to the database
+                advertisementViewModel.insertProduct(product)
+
+                //observe success message
+                advertisementViewModel.success.observe(viewLifecycleOwner){
+                    advertisementViewModel.bitmapList.value?.clear()
+                    findNavController().navigate(R.id.homeFragment)
+                }
+            }
+        }
+    }
+
+    /**
+     * Validate the fields
+     */
+    private fun validateFields(title:String, description:String, price:Double):Boolean{
+
+        return when{
+            title.isEmpty() ->{
+                showSnackBarMessage(getString(R.string.errorTitle))
+                false
+            }
+            description.isEmpty() ->{
+                showSnackBarMessage(getString(R.string.errorDescription))
+                false
+            }
+            price.isNaN() || price <= 0 ->{
+                showSnackBarMessage(getString(R.string.errorPrice))
+                false
+            }
+            else-> true
+        }
+    }
+
+    /**
+     * get all images encoded into base64 from the bitmapList from  advertisementViewModel
+     */
+    private fun getImagesInBase64():ArrayList<String>{
+
+        val bitmapList:ArrayList<String> = ArrayList()
+        for (i in advertisementViewModel.bitmapList.value!!){
+            val encoded:String = ImageConverter.encode(Uri.EMPTY, requireActivity(), i)
+            bitmapList.add(encoded)
+        }
+        return bitmapList
+    }
+
+    private fun showSnackBarMessage(message:String){
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
 
     }
-    private fun onAddMore() {
-
-    }
-
     /**
      * When the user wants to leave
      */

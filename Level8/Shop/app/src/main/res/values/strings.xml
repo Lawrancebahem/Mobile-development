@@ -54,9 +54,14 @@
     <string name="price">Price</string>
     <string name="post">POST</string>
     <string name="choose">Choose category</string>
+    <string name="EURO">€</string>
+    <string name="categ">Category: </string>
+    <string name="success">Successfully done</string>
+    <string name="errorTitle">Please fill the title</string>
+    <string name="errorPrice">Please fill the price</string>
+    <string name="errorDescription">Please fill the description</string>
 
     <string-array name="category_list">
     </string-array>
-
 
 </resources>

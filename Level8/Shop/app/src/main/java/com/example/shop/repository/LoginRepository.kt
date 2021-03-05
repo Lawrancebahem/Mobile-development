@@ -8,7 +8,7 @@ import com.example.shop.api.LoginApiService
 import com.example.shop.model.User
 
 class LoginRepository {
-    private val loginApiService: LoginApiService = Api(LoginApiService::class.java).createShopService()
+    private val loginApiService: LoginApiService = Api(LoginApiService::class.java).createService()
 
     private var _user: MutableLiveData<User> = MutableLiveData()
     val user: LiveData<User> get() = _user
