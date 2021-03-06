@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.shop.ui.LoginFragment"
+        android:name="com.example.shop.ui.main.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.shop.ui.RegisterFragment"
+        android:name="com.example.shop.ui.main.fragments.RegisterFragment"
         android:label="fragment_regsiter"
         tools:layout="@layout/fragment_regsiter" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/notLoggedIn"
-        android:name="com.example.shop.ui.NotLoggedIn"
+        android:name="com.example.shop.ui.main.fragments.NotLoggedIn"
         android:label="fragment_not_logged_in"
         tools:layout="@layout/fragment_not_logged_in" >
         <action
@@ -36,34 +36,22 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.shop.ui.HomeFragment"
+        android:name="com.example.shop.ui.main.fragments.HomeFragment"
         android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_homeFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
         <action
             android:id="@+id/action_homeFragment_to_productOverview"
             app:destination="@id/productOverview" />
-    </fragment>
-    <fragment
-        android:id="@+id/cameraFragment"
-        android:name="com.example.shop.ui.CameraFragment"
-        android:label="CameraFragment" >
         <action
-            android:id="@+id/action_cameraFragment_to_addItemFragment"
-            app:destination="@id/addItemFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addItemFragment"
-        android:name="com.example.shop.ui.AddItemFragment"
-        android:label="fragment_add_item"
-        tools:layout="@layout/fragment_add_item" >
-        <action
-            android:id="@+id/action_addItemFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_homeFragment_to_profileActivity"
+            app:destination="@id/profileActivity" />
     </fragment>
     <fragment
         android:id="@+id/productOverview"
-        android:name="com.example.shop.ui.ProductOverview"
+        android:name="com.example.shop.ui.main.fragments.ProductOverview"
         android:label="ProductOverview" />
+    <activity
+        android:id="@+id/profileActivity"
+        android:name="com.example.shop.ui.profile.ProfileActivity"
+        android:label="activity_profile"
+        tools:layout="@layout/activity_profile" />
 </navigation>

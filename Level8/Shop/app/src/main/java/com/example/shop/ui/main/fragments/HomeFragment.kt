@@ -1,19 +1,17 @@
-package com.example.shop.ui
+package com.example.shop.ui.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shop.R
-import com.example.shop.adapter.ProductAdapter
+import com.example.shop.ui.main.adapter.ProductAdapter
 import com.example.shop.databinding.FragmentHomeBinding
-import com.example.shop.model.Product
-import com.example.shop.viewModel.AdvertisementViewModel
+import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
+import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

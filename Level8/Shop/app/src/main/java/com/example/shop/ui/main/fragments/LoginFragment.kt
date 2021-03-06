@@ -1,4 +1,4 @@
-package com.example.shop.ui
+package com.example.shop.ui.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.myapplicationtest2.DAO.UserRepository
 import com.example.shop.R
 import com.example.shop.databinding.FragmentLoginBinding
-import com.example.shop.viewModel.LoginViewModel
+import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
+import com.example.shop.ui.main.viewModel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

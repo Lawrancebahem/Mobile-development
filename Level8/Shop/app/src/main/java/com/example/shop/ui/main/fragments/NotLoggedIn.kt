@@ -1,4 +1,4 @@
-package com.example.shop.ui
+package com.example.shop.ui.main.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.shop.R
 import com.example.shop.databinding.FragmentNotLoggedInBinding
-import com.example.shop.viewModel.NotLoggedInViewModel
+import com.example.shop.ui.main.viewModel.NotLoggedInViewModel
 
 /**
  * A simple [Fragment] subclass.

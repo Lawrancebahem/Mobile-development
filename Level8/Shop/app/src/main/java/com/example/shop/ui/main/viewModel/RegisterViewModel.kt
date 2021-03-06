@@ -1,4 +1,4 @@
-package com.example.shop.viewModel
+package com.example.shop.ui.main.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +8,6 @@ import com.example.shop.api.ApiError
 import com.example.shop.model.User
 import com.example.shop.repository.RegisterRepository
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.http.Part
 
 class RegisterViewModel : ViewModel() {
     private val SUCCESS_MESSAGE = "You're account has been created successfully"

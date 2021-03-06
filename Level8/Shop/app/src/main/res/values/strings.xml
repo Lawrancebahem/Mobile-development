@@ -61,7 +61,15 @@
     <string name="errorPrice">Please fill the price</string>
     <string name="errorDescription">Please fill the description</string>
 
-    <string-array name="category_list">
-    </string-array>
+    <string-array name="category_list"></string-array>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="chat">Chat</string>
+    <string name="camera">Camera</string>
+    <string name="notification">Notification</string>
+    <string name="myProfile">Profile</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.example.shop.adapter
+package com.example.shop.ui.main.adapter
 
 import android.graphics.Bitmap
 import com.smarteist.autoimageslider.SliderViewAdapter

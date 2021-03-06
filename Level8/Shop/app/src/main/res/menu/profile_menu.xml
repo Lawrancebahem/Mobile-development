@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <item
+            android:id="@+id/settings"
+            android:title="menu-bar"
+            android:icon="@drawable/ic_baseline_settings_24"
+            app:showAsAction="ifRoom"
+            app:iconTint="@color/gray_400"
+            tools:targetApi="o">
+            <menu>
+                <item
+                    android:id="@+id/myPro"
+                    android:title="My Profile"
+                    app:showAsAction="never"
+                    android:iconTint="@color/white"
+                    tools:targetApi="o" />
+                <item
+                    android:id="@+id/Mya"
+                    android:title="My Shop"
+                    app:showAsAction="never"
+                    android:iconTint="@color/white"
+                    tools:targetApi="o" />
+
+                <item
+                    android:id="@+id/e"
+                    android:title="Settings"
+                    app:showAsAction="never"
+                    android:iconTint="@color/white"
+                    tools:targetApi="o" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_baseline_image_24"
+                    app:layout_constraintBottom_toTopOf="@+id/uploadPictureBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+            </menu>
+        </item>
+
+</menu>

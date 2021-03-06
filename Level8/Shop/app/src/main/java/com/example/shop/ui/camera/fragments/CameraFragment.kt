@@ -1,7 +1,6 @@
-package com.example.shop.ui
+package com.example.shop.ui.camera.fragments
 
 import android.Manifest
-import android.R.attr
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -25,17 +24,17 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shop.R
-import com.example.shop.adapter.ImageAdapter
+import com.example.shop.ui.camera.adapter.ImageAdapter
 import com.example.shop.databinding.FragmentCameraBinding
 import com.example.shop.ml.ModelTF
-import com.example.shop.viewModel.AdvertisementViewModel
+import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
@@ -43,8 +42,6 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.*
 import kotlin.collections.ArrayList
-import android.R.attr.bitmap
-import androidx.core.graphics.drawable.toBitmap
 
 
 /**

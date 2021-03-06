@@ -1,18 +1,17 @@
-package com.example.shop.ui
+package com.example.shop.ui.main.fragments
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.shop.R
-import com.example.shop.adapter.ImageSliderAdapter
+import com.example.shop.ui.main.adapter.ImageSliderAdapter
 import com.example.shop.databinding.ProductOverviewBinding
 import com.example.shop.utility.ImageConverter
-import com.example.shop.viewModel.AdvertisementViewModel
+import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 
 class ProductOverview : Fragment() {
 

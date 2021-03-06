@@ -1,4 +1,4 @@
-package com.example.shop.ui
+package com.example.shop.ui.main.fragments
 
 import android.app.Activity
 import android.content.Intent
@@ -17,7 +17,7 @@ import com.example.shop.utility.ImageConverter
 import com.example.shop.R
 import com.example.shop.databinding.FragmentRegsiterBinding
 import com.example.shop.model.User
-import com.example.shop.viewModel.RegisterViewModel
+import com.example.shop.ui.main.viewModel.RegisterViewModel
 
 
 /**

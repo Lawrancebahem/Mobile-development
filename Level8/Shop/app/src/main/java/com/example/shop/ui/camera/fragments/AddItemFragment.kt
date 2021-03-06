@@ -1,10 +1,10 @@
-package com.example.shop.ui
+package com.example.shop.ui.camera.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -16,16 +16,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shop.R
-import com.example.shop.adapter.ImageAdapter
-import com.example.shop.adapter.SpinnerAdapter
+import com.example.shop.ui.camera.adapter.ImageAdapter
+import com.example.shop.ui.camera.adapter.SpinnerAdapter
 import com.example.shop.databinding.FragmentAddItemBinding
-import com.example.shop.viewModel.AdvertisementViewModel
+import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.shop.model.Category
 import com.example.shop.model.Product
+import com.example.shop.ui.main.MainActivity
+import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.utility.ImageConverter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -161,7 +163,7 @@ class AddItemFragment : Fragment() {
                 //observe success message
                 advertisementViewModel.success.observe(viewLifecycleOwner){
                     advertisementViewModel.bitmapList.value?.clear()
-                    findNavController().navigate(R.id.homeFragment)
+                    navigateToHome()
                 }
             }
         }
@@ -215,12 +217,18 @@ class AddItemFragment : Fragment() {
             // Delete selected note from database
             advertisementViewModel.bitmapList.value!!.clear()
             imageAdapter.notifyDataSetChanged()
-            findNavController().navigate(R.id.homeFragment)
+            navigateToHome()
+//            findNavController().navigate(R.id.homeFragment)
         }
         alertBuilder.create()
         alertBuilder.show()
     }
 
+
+    private fun navigateToHome(){
+        val i = Intent(context, MainActivity::class.java)
+        startActivity(i)
+    }
 
     /**
      * When clicking on item to delete

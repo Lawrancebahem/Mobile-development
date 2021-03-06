@@ -1,4 +1,4 @@
-package com.example.shop.adapter
+package com.example.shop.ui.camera.adapter
 
 import android.content.Context
 import android.widget.ArrayAdapter
