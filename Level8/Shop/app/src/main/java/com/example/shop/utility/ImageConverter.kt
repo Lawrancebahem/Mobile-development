@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
-import androidx.fragment.app.FragmentActivity
 import java.io.ByteArrayOutputStream
 
 class ImageConverter{

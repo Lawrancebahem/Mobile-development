@@ -6,6 +6,12 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.google.gson.GsonBuilder
+
+import com.google.gson.Gson
+
+
+
 
 class Api<out T>(private val cls: Class<T>) {
 
@@ -18,9 +24,7 @@ class Api<out T>(private val cls: Class<T>) {
         //heroku url
 //        private const val BASE_URL = "https://server-bd-shop.herokuapp.com/"
 
-
         private const val BASE_URL = LOCAL_URL
-
 
         private const val API_KEY = "api_key"
         private const val API_VALUE = "bb7c29934be6882f5417e3b31e8905be"
@@ -44,12 +48,14 @@ class Api<out T>(private val cls: Class<T>) {
 //                .addInterceptor(Intercepter())
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
+//        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create() //this line was missing
 
         return Retrofit
             .Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create(gson))
 //            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
             .create(cls)

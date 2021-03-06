@@ -27,7 +27,7 @@
                 tools:srcCompat="@drawable/test" />
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/likeBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
@@ -35,8 +35,6 @@
                 android:background="@drawable/circle"
                 android:isScrollContainer="false"
                 app:backgroundTint="@color/white"
-                app:icon="@drawable/heart"
-                app:iconGravity="top"
                 app:iconSize="22dp"
                 app:iconTint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"

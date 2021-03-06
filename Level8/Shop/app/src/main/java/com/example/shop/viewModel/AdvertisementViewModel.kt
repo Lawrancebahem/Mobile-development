@@ -26,10 +26,14 @@ class AdvertisementViewModel : ViewModel() {
 
     val product: LiveData<Product> get() = advertisementRepository.product
 
-    val productList:LiveData<ArrayList<Product>> =  advertisementRepository.productList
+    val productList: LiveData<ArrayList<Product>> = advertisementRepository.productList
 
     //when user clicks on a certain product
-    var selectedProductIndex:Int = 0
+    var selectedProductIndex: Int = 0
+
+
+    //user likes
+    val userLikes:LiveData<Set<Product>> = advertisementRepository.userLikes
 
     /**
      * add product
@@ -79,6 +83,48 @@ class AdvertisementViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 advertisementRepository.removeProduct(id)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
+
+
+    /**
+     * To insert a like, when the user clicks on the like button
+     */
+    fun insertLike(userId: Long, productId: Long) {
+        viewModelScope.launch {
+            try {
+                advertisementRepository.insertLike(userId, productId)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
+
+    /**
+     * to get all liked products of a user
+     */
+    fun getUserLikes(id: Long) {
+
+        viewModelScope.launch {
+            try {
+                advertisementRepository.getUserLikes(id)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+
+    }
+
+    /**
+     * to remove a like of user
+     */
+    fun removeLike(userId: Long, productId: Long) {
+        viewModelScope.launch {
+            try {
+                advertisementRepository.removeLike(userId, productId)
             } catch (ex: ApiError) {
                 _error.value = ex.message
             }

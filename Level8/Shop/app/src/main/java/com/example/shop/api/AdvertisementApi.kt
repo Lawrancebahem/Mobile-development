@@ -1,11 +1,7 @@
 package com.example.shop.api
 
 import com.example.shop.model.Product
-import com.example.shop.model.User
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface AdvertisementApi {
 
@@ -20,5 +16,15 @@ interface AdvertisementApi {
     
     @POST("/product/remove-item/{id}")
     suspend fun removeProduct(@Path("id") id:Long):Boolean
+
+    @POST("user/insert-like")
+    suspend fun insertLike(@Query("userId") userId:Long, @Query("productId") productId:Long):Boolean
+
+    @GET("user/get-liked-products/{id}")
+    suspend fun getUserLikes(@Path("id") id:Long):Set<Product>
+
+    @HTTP(method = "DELETE", path = "user/delete-like")
+    suspend fun removeLike(@Query("userId") userId:Long, @Query("productId") productId:Long):Boolean
+
 
 }

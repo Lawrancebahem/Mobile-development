@@ -11,7 +11,7 @@ class User(
         val lastName: String? = null,
         val email: String? = null,
         val password: String? = null,
-        val profilePicture: String? = null,
+        val profilePicture: String? = "",
         val admin: Boolean? = false,
         val isBlocked: Boolean? = false,
 ) {

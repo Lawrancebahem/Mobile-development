@@ -35,10 +35,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private val loginViewModel: LoginViewModel by viewModels()
     private val notLoggedInViewModel: NotLoggedInViewModel by viewModels()
     private lateinit var userDatabaseViewModel: UserDatabaseViewModel
     private lateinit var userRepository: UserRepository
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

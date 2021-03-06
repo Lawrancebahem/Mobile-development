@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +22,7 @@ import com.example.shop.databinding.FragmentAddItemBinding
 import com.example.shop.viewModel.AdvertisementViewModel
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.shop.model.Category
 import com.example.shop.model.Product
@@ -31,6 +33,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -47,6 +52,12 @@ class AddItemFragment : Fragment() {
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
     private lateinit var builder:AlertDialog.Builder
 
+    //with AM,PM
+//    val sdf = SimpleDateFormat("MMM-dd-yyyy HH:mm:ss aaa")
+
+
+    //to format the date
+    val sdf = SimpleDateFormat("MMM-dd-yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,8 +97,6 @@ class AddItemFragment : Fragment() {
         userDatabaseViewModel = ViewModelProvider(this).get(UserDatabaseViewModel::class.java)
         init()
     }
-
-
 
     @SuppressLint("ResourceAsColor")
     private fun init(){
@@ -141,10 +150,11 @@ class AddItemFragment : Fragment() {
                 val user = withContext(Dispatchers.IO){
                     userDatabaseViewModel.userRepository.getUser()
                 }
-                val product = Product( id = 0,title = title,
+                val product = Product( id = 0, title = title,
                         description =  description, price = price, category = category,
-                        user = user[0],images = getImagesInBase64())
+                        user = user[0], images = getImagesInBase64(), date = sdf.format(Date()))
 
+                Toast.makeText(context, product.date.toString(), Toast.LENGTH_SHORT).show()
                 //add product to the database
                 advertisementViewModel.insertProduct(product)
 
@@ -239,6 +249,7 @@ class AddItemFragment : Fragment() {
             }
         return builder
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         onClose()

@@ -2,6 +2,7 @@ package com.example.shop.ui
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.shop.adapter.ImageSliderAdapter
 import com.example.shop.databinding.ProductOverviewBinding
 import com.example.shop.utility.ImageConverter
 import com.example.shop.viewModel.AdvertisementViewModel
+
 class ProductOverview : Fragment() {
 
     private lateinit var binding: ProductOverviewBinding
@@ -54,16 +56,18 @@ class ProductOverview : Fragment() {
         binding.imageSlider.startAutoCycle()
 
         //set the profile picture of the user
-        if (selectedProduct.user?.profilePicture != null){
+        if (selectedProduct.user!!.profilePicture != ""){
             val userPic = selectedProduct.user.profilePicture
-            binding.userPic.setImageBitmap(ImageConverter.decode(userPic))
+            binding.userPic.setImageBitmap(ImageConverter.decode(userPic!!))
         }else{
-            binding.userPic.setImageResource(R.drawable.profile)
+            binding.userPic.setImageResource(R.drawable.profile_picture)
         }
 
         binding.vTit.text = selectedProduct.title
         binding.vDis.text = selectedProduct.description
-        (selectedProduct.user?.firstName + " " + selectedProduct.user?.lastName).also { binding.vUsNm.text = it }
+        binding.vDate.text = selectedProduct.date
+
+        (selectedProduct.user.firstName + " " + selectedProduct.user.lastName).also { binding.vUsNm.text = it }
         ("€"+selectedProduct.price.toString()).also { binding.vPrc.text = it }
     }
 

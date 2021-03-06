@@ -15,14 +15,18 @@ class AdvertisementRepository {
     private var _product: MutableLiveData<Product> = MutableLiveData()
     private var _success: MutableLiveData<Boolean> = MutableLiveData()
 
-    private val _productsList:MutableLiveData<ArrayList<Product>> = MutableLiveData()
+    private val _productsList: MutableLiveData<ArrayList<Product>> = MutableLiveData()
 
-    val productList:LiveData<ArrayList<Product>> get () =_productsList
+    val productList: LiveData<ArrayList<Product>> get() = _productsList
     val success: LiveData<Boolean> get() = _success
 
     var product: MutableLiveData<Product> = MutableLiveData()
 
 
+    //user likes
+    private val _userLikes: MutableLiveData<Set<Product>> = MutableLiveData()
+
+    val userLikes: LiveData<Set<Product>> = _userLikes
 
     /**
      * To get all products from the database
@@ -35,6 +39,7 @@ class AdvertisementRepository {
             throw ApiError(message, error)
         }
     }
+
     /**
      * To add new product into the database
      */
@@ -67,6 +72,45 @@ class AdvertisementRepository {
     suspend fun removeProduct(id: Long) {
         try {
             _success.value = advertisementApi.removeProduct(id)
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
+
+    /**
+     * To insert a like, when the user clicks on the like button
+     */
+    suspend fun insertLike(userId: Long, productId: Long) {
+
+        try {
+            _success.value = advertisementApi.insertLike(userId, productId)
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
+
+    /**
+     * to get all liked products of a user
+     */
+    suspend fun getUserLikes(id: Long) {
+
+        try {
+            _userLikes.value = advertisementApi.getUserLikes(id)
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
+
+
+    /**
+     * to remove a like of user
+     */
+    suspend fun removeLike(userId: Long, productId: Long) {
+        try {
+            _success.value = advertisementApi.removeLike(userId, productId)
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)

@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../../../layout/custom_preview.xml" value="0.27037037037037037" />
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20555555555555555" />
         <entry key="app/src/main/res/drawable/button_rounded.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/camera.xml" value="0.5" />
@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/drawable/clear.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/game.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/drawable/heart.xml" value="0.5" />
+        <entry key="app/src/main/res/drawable/heart_filled.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/home.xml" value="0.26851851851851855" />
         <entry key="app/src/main/res/drawable/home_fur.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.17685185185185184" />
@@ -42,7 +43,7 @@
         <entry key="app/src/main/res/layout/item_image.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_product.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_product_overview.xml" value="0.27760416666666665" />
-        <entry key="app/src/main/res/layout/product_overview.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/product_overview.xml" value="0.278125" />
         <entry key="app/src/main/res/layout/sample_my_view.xml" value="0.297554347826087" />
         <entry key="app/src/main/res/layout/text.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/menu-v26/menu_main.xml" value="0.5" />
