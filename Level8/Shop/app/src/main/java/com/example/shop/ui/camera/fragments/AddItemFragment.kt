@@ -9,24 +9,26 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shop.R
-import com.example.shop.ui.camera.adapter.ImageAdapter
-import com.example.shop.ui.camera.adapter.SpinnerAdapter
 import com.example.shop.databinding.FragmentAddItemBinding
-import com.example.shop.ui.main.viewModel.AdvertisementViewModel
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.example.shop.model.Category
 import com.example.shop.model.Product
+import com.example.shop.model.User
+import com.example.shop.ui.camera.adapter.ImageAdapter
+import com.example.shop.ui.camera.adapter.SpinnerAdapter
 import com.example.shop.ui.main.MainActivity
+import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.utility.ImageConverter
 import com.google.android.material.snackbar.Snackbar
@@ -34,7 +36,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,7 +53,8 @@ class AddItemFragment : Fragment() {
     private lateinit var binding: FragmentAddItemBinding
     private lateinit var imageAdapter: ImageAdapter
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
-    private lateinit var builder:AlertDialog.Builder
+
+    private lateinit var currentUser: LiveData<User>
 
     //with AM,PM
 //    val sdf = SimpleDateFormat("MMM-dd-yyyy HH:mm:ss aaa")
@@ -68,28 +70,6 @@ class AddItemFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentAddItemBinding.inflate(inflater, container, false)
-
-        val itemsSpinner = ArrayList<Category>()
-        for (i in Category.values()){
-            itemsSpinner.add(i)
-        }
-
-        val adapterSpinner = SpinnerAdapter(requireContext(), android.R.layout.simple_spinner_item, itemsSpinner)
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.categoryDrop.adapter = adapterSpinner
-
-
-        binding.categoryDrop.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-//                if (itemsSpinner[0]getString(R.string.choose)){
-//                    itemsSpinner.removeAt(0)
-//                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
-
         return binding.root
     }
 
@@ -97,12 +77,24 @@ class AddItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userDatabaseViewModel = ViewModelProvider(this).get(UserDatabaseViewModel::class.java)
+        currentUser = userDatabaseViewModel.userRepository.getUser()
         init()
     }
 
     @SuppressLint("ResourceAsColor")
-    private fun init(){
-        builder =  AlertDialog.Builder(requireContext())
+    private fun init() {
+
+        //fill the spinner
+        val itemsSpinner = ArrayList<Category>()
+        for (i in Category.values()) {
+            itemsSpinner.add(i)
+        }
+
+        //set the adpater of the spinner
+        val adapterSpinner = SpinnerAdapter(requireContext(), android.R.layout.simple_spinner_item, itemsSpinner)
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.categoryDrop.adapter = adapterSpinner
+
 
         //change the home indicator
         val closeIcon = requireContext().resources.getDrawable(R.drawable.clear)
@@ -117,22 +109,23 @@ class AddItemFragment : Fragment() {
         imageAdapter = ImageAdapter(advertisementViewModel.bitmapList.value!!, ::onDelete)
 
         //adapter layout
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.imageContainer.layoutManager = layoutManager
         binding.imageContainer.adapter = imageAdapter
         imageAdapter.notifyDataSetChanged()
 
 
-        binding.addMore.setOnClickListener{
+        binding.addMore.setOnClickListener {
             findNavController().navigate(R.id.cameraFragment)
         }
-        binding.postBtn.setOnClickListener{
+        binding.postBtn.setOnClickListener {
             addProduct()
         }
 
-
+        userDatabaseViewModel.userRepository.getUser()
         //observe error message
-        advertisementViewModel.error.observe(viewLifecycleOwner){
+        advertisementViewModel.error.observe(viewLifecycleOwner) {
             showSnackBarMessage(it)
         }
     }
@@ -140,30 +133,30 @@ class AddItemFragment : Fragment() {
     /**
      * To add the product with the related images to it, once the user clicks on post button
      */
-    private fun addProduct(){
-        val title:String = binding.title.text.toString()
-        val description:String = binding.description.text.toString()
-        val price:Double = binding.price.text.toString().toDouble()
-        val category:Category = binding.categoryDrop.selectedItem as Category
+    private fun addProduct() {
+        val title: String = binding.title.text.toString()
+        val description: String = binding.description.text.toString()
+        val price: Double = binding.price.text.toString().toDouble()
+        val category: Category = binding.categoryDrop.selectedItem as Category
         //validate fields
-        if (validateFields(title,description, price)){
-            CoroutineScope(Dispatchers.Main).launch{
+        if (validateFields(title, description, price)) {
+            CoroutineScope(Dispatchers.Main).launch {
                 //get current user
-                val user = withContext(Dispatchers.IO){
-                    userDatabaseViewModel.userRepository.getUser()
-                }
-                val product = Product( id = 0, title = title,
-                        description =  description, price = price, category = category,
-                        user = user[0], images = getImagesInBase64(), date = sdf.format(Date()))
+                currentUser.observe(viewLifecycleOwner) { user ->
+                    val product = Product(
+                        id = 0, title = title,
+                        description = description, price = price, category = category,
+                        user = user, images = getImagesInBase64(), date = sdf.format(Date())
+                    )
 
-                Toast.makeText(context, product.date.toString(), Toast.LENGTH_SHORT).show()
-                //add product to the database
-                advertisementViewModel.insertProduct(product)
+                    //add product to the database
+                    advertisementViewModel.insertProduct(product)
 
-                //observe success message
-                advertisementViewModel.success.observe(viewLifecycleOwner){
-                    advertisementViewModel.bitmapList.value?.clear()
-                    navigateToHome()
+                    //observe success message
+                    advertisementViewModel.success.observe(viewLifecycleOwner) {
+                        advertisementViewModel.bitmapList.value?.clear()
+                        navigateToHome()
+                    }
                 }
             }
         }
@@ -172,47 +165,48 @@ class AddItemFragment : Fragment() {
     /**
      * Validate the fields
      */
-    private fun validateFields(title:String, description:String, price:Double):Boolean{
+    private fun validateFields(title: String, description: String, price: Double): Boolean {
 
-        return when{
-            title.isEmpty() ->{
+        return when {
+            title.isEmpty() -> {
                 showSnackBarMessage(getString(R.string.errorTitle))
                 false
             }
-            description.isEmpty() ->{
+            description.isEmpty() -> {
                 showSnackBarMessage(getString(R.string.errorDescription))
                 false
             }
-            price.isNaN() || price <= 0 ->{
+            price.isNaN() || price <= 0 -> {
                 showSnackBarMessage(getString(R.string.errorPrice))
                 false
             }
-            else-> true
+            else -> true
         }
     }
 
     /**
      * get all images encoded into base64 from the bitmapList from  advertisementViewModel
      */
-    private fun getImagesInBase64():ArrayList<String>{
+    private fun getImagesInBase64(): ArrayList<String> {
 
-        val bitmapList:ArrayList<String> = ArrayList()
-        for (i in advertisementViewModel.bitmapList.value!!){
-            val encoded:String = ImageConverter.encode(Uri.EMPTY, requireActivity(), i)
+        val bitmapList: ArrayList<String> = ArrayList()
+        for (i in advertisementViewModel.bitmapList.value!!) {
+            val encoded: String = ImageConverter.encode(Uri.EMPTY, requireActivity(), i)
             bitmapList.add(encoded)
         }
         return bitmapList
     }
 
-    private fun showSnackBarMessage(message:String){
+    private fun showSnackBarMessage(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
 
     }
+
     /**
      * When the user wants to leave
      */
     private fun onClose() {
-        val alertBuilder = getDialog(getString(R.string.sureClose))
+        val alertBuilder = advertisementViewModel.getConfirmationDialog(getString(R.string.sureClose), requireContext())
         alertBuilder.setPositiveButton(getString(R.string.yes)) { dialog, id ->
             // Delete selected note from database
             advertisementViewModel.bitmapList.value!!.clear()
@@ -225,7 +219,7 @@ class AddItemFragment : Fragment() {
     }
 
 
-    private fun navigateToHome(){
+    private fun navigateToHome() {
         val i = Intent(context, MainActivity::class.java)
         startActivity(i)
     }
@@ -233,8 +227,8 @@ class AddItemFragment : Fragment() {
     /**
      * When clicking on item to delete
      */
-    private fun onDelete(index: Int){
-        val alertBuilder = getDialog(getString(R.string.sureDelete))
+    private fun onDelete(index: Int) {
+        val alertBuilder = advertisementViewModel.getConfirmationDialog(getString(R.string.sureDelete), requireContext())
         alertBuilder.setPositiveButton(getString(R.string.yes)) { dialog, id ->
             // Delete selected note from database
             advertisementViewModel.bitmapList.value!!.removeAt(index)
@@ -242,20 +236,6 @@ class AddItemFragment : Fragment() {
         }
         alertBuilder.create()
         alertBuilder.show()
-
-    }
-
-    /**
-     * To create dialog builder and return for further additions
-     */
-    private fun getDialog(message: String): AlertDialog.Builder {
-        builder.setMessage(message)
-            .setCancelable(false)
-            .setNegativeButton(getString(R.string.no)) { dialog, id ->
-                // Dismiss the dialog
-                dialog.dismiss()
-            }
-        return builder
     }
 
 

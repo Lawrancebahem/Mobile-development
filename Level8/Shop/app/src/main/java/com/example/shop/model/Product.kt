@@ -2,20 +2,21 @@ package com.example.shop.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+import java.io.Serializable
 
 @Entity(tableName = "productTable")
 class Product(
         @PrimaryKey(autoGenerate = true)
-        val id: Long? = 0,
+        val id: Long?,
         val title: String?,
         val description: String?,
         val price: Double?,
         val category: Category?,
         val images: ArrayList<String>?,
         val date: String,
-        val user: User?
-) {
+        val user: User?){
+
+
 
 
     override fun equals(other: Any?): Boolean {
@@ -36,6 +37,10 @@ class Product(
         result = 31 * result + (price?.hashCode() ?: 0)
         return result
     }
+
+
+
+
 }
 
 

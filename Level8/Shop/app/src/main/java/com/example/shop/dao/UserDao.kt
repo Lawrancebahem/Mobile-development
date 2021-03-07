@@ -1,5 +1,6 @@
 package com.example.myapplicationtest2.DAO
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.shop.model.User
 
@@ -13,7 +14,7 @@ interface UserDao {
     @Delete
     suspend fun logOut(user: User)
 
-    @Query("SELECT * FROM userTable")
-    suspend fun getUser():List<User>
+    @Query("SELECT * FROM userTable limit 1")
+    fun getUser():LiveData<User>
 
 }

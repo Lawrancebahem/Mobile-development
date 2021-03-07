@@ -25,6 +25,6 @@
     <item
         android:id="@+id/profBtn"
         android:icon="@drawable/profile"
-        android:title="@string/myProfile" />
+        android:title="@string/profile" />
 
 </menu>

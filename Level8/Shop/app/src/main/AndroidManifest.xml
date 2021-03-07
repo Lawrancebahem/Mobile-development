@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.shop">
+    package="com.example.shop" >
+
+<!--    to set parent to get the previous-->
+    <!--    android:parentActivityName=".ui.main.MainActivity"-->
+
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,8 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".ui.notification.NotificationActivity"></activity>
+        android:usesCleartextTraffic="true" >
+        <activity android:name=".ui.productPreview.ProductPreviewActivity"
+
+            >
+        </activity>
+        <activity android:name=".ui.notification.NotificationActivity" />
         <activity
             android:name=".ui.chat.ChatActivity"
             android:label="@string/title_activity_chat"
@@ -29,15 +37,11 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/Theme.Shop.NoActionBar" />
         <activity
-            android:name=".ui.Profile_activity"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.Shop.NoActionBar" />
-        <activity
             android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Shop.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -15,17 +17,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.myapplicationtest2.DAO.UserRepository
 import com.example.shop.R
 import com.example.shop.databinding.ActivityMainBinding
-import com.example.shop.ui.profile.ProfileActivity
+import com.example.shop.model.User
 import com.example.shop.ui.camera.CameraActivity
 import com.example.shop.ui.chat.ChatActivity
 import com.example.shop.ui.main.viewModel.NotLoggedInViewModel
 import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.ui.notification.NotificationActivity
+import com.example.shop.ui.profile.ProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val notLoggedInViewModel: NotLoggedInViewModel by viewModels()
     private lateinit var userDatabaseViewModel: UserDatabaseViewModel
     private lateinit var userRepository: UserRepository
-
+    private lateinit var currentUser:LiveData<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController)
 
         userDatabaseViewModel = ViewModelProvider(this).get(UserDatabaseViewModel::class.java)
+        currentUser = userDatabaseViewModel.userRepository.getUser()
         userRepository = userDatabaseViewModel.userRepository
         toggleMenu()
         configureBottomMenu()
@@ -126,17 +126,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToDestination(activity: Activity, info: String, imageName: String) {
         val actv = Intent(this@MainActivity, activity::class.java)
-
-        CoroutineScope(Dispatchers.Main).launch {
-            val user = withContext(Dispatchers.IO) {
-                userRepository.getUser()
-            }
-            if (user.isNotEmpty()) {
+        currentUser.observe(this@MainActivity, Observer { it ->
+            if (it != null) {
                 startActivity(actv)
             } else {
                 navigateToNotLoggedIn(info, imageName)
             }
-        }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
