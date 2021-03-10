@@ -73,4 +73,10 @@
     <string name="title_activity_camera">CameraActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
 
+    <string name="typeMessage">Type your message here</string>
+    <string name="send">Send</string>
+    <string name="cancel">CANCEL</string>
+
+    <string name="addMessage">Please add message</string>
+
 </resources>

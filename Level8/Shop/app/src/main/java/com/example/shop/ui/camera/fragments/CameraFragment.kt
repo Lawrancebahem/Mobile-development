@@ -43,6 +43,14 @@ import java.io.InputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
+import android.graphics.Bitmap
+
+
+
+
+
+
+
 
 /**
  * A simple [Fragment] subclass.
@@ -446,8 +454,7 @@ class CameraFragment : Fragment() {
         }
     }
 
-    var textureListener: TextureView.SurfaceTextureListener = object :
-            TextureView.SurfaceTextureListener {
+    var textureListener: TextureView.SurfaceTextureListener = object : TextureView.SurfaceTextureListener {
         //start the camera once the texture is ready
         override fun onSurfaceTextureAvailable(surfaceTexture: SurfaceTexture, i: Int, i1: Int) {
             openCamera()
@@ -522,8 +529,8 @@ class CameraFragment : Fragment() {
      * Recognise an image based on the given byteArray
      */
     private fun recogniseImage(data: ByteArray) {
-        val imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-
+        var  imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+        imageBitmap = rotateImage(imageBitmap, 90F)
         //set preview for the user
         previewCapturedImage(imageBitmap)
 
@@ -597,7 +604,7 @@ class CameraFragment : Fragment() {
         isSave = false
         hidePreview()
         val bmp = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.size)
-        val scaledBitmap: Bitmap = Bitmap.createScaledBitmap(bmp, 250, 200, false)
+        var scaledBitmap: Bitmap = Bitmap.createScaledBitmap(bmp, 250, 200, false)
 
 //        imageView.setImageBitmap(rotatedBitmap)
 
@@ -639,6 +646,15 @@ class CameraFragment : Fragment() {
                 R.string.amount,
                 advertisementViewModel.bitmapList.value!!.size
         )
+    }
+
+
+    fun rotateImage(src: Bitmap, degree: Float): Bitmap {
+        // create new matrix
+        val matrix = Matrix()
+        // setup rotation degree
+        matrix.postRotate(degree)
+        return Bitmap.createBitmap(src, 0, 0, src.width, src.height, matrix, true)
     }
 
 }

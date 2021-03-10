@@ -2,7 +2,6 @@ package com.example.shop.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
 @Entity(tableName = "productTable")
 class Product(
@@ -13,6 +12,7 @@ class Product(
         val price: Double?,
         val category: Category?,
         val images: ArrayList<String>?,
+        val seen:Long? = 0,
         val date: String,
         val user: User?){
 

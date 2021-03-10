@@ -10,8 +10,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.shop.R
 import com.example.shop.databinding.ActivityCameraBinding
-import com.example.shop.ui.profile.ProfileActivity
 import com.example.shop.ui.chat.ChatActivity
+import com.example.shop.ui.profile.ProfileActivity
 import com.example.shop.ui.main.MainActivity
 import com.example.shop.ui.notification.NotificationActivity
 import dagger.hilt.android.AndroidEntryPoint

@@ -16,7 +16,6 @@ import com.google.gson.Gson
 class Api<out T>(private val cls: Class<T>) {
 
 
-
     companion object {
 
         private const val LOCAL_URL = "http://192.168.178.22:8080/"
