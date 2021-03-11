@@ -3,123 +3,148 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollIndicators="top|left"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/imageContainer"
+
+
+
+    <View
+        android:id="@+id/viewSafeArea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/previewView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/dark_gray"
+        app:layout_constraintBottom_toTopOf="@+id/imgCnt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.camera.view.PreviewView>
+
+    <View
+        android:id="@+id/viewZoomBackground"
+        android:layout_width="@dimen/zoom_level_width"
+        android:layout_height="@dimen/zoom_level_height"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@drawable/shape_zoom_level_background"
+        app:layout_constraintEnd_toEndOf="@id/viewSafeArea"
+        app:layout_constraintStart_toStartOf="@id/viewSafeArea"
+        app:layout_constraintTop_toTopOf="@id/viewSafeArea" />
+
+    <TextView
+        android:id="@+id/textViewZoomLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:ems="5"
+        android:gravity="end"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@id/viewZoomBackground"
+        app:layout_constraintEnd_toStartOf="@id/seekBarZoom"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/viewZoomBackground"
+        app:layout_constraintTop_toTopOf="@id/viewZoomBackground"
+        tools:text="Zoom 10.0x" />
+
+    <SeekBar
+        android:id="@+id/seekBarZoom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/rectangle"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/capture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.21"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cameraTexture"
-        tools:ignore="SpeakableTextPresentCheck">
-
-
-        <!--        <androidx.recyclerview.widget.RecyclerView-->
-        <!--            android:id="@+id/imageContainer"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent" />-->
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        app:layout_constraintBottom_toBottomOf="@id/textViewZoomLevel"
+        app:layout_constraintEnd_toEndOf="@id/viewZoomBackground"
+        app:layout_constraintStart_toEndOf="@id/textViewZoomLevel"
+        app:layout_constraintTop_toTopOf="@id/textViewZoomLevel"
+        tools:max="100"
+        tools:progress="0" />
 
     <Button
-        android:id="@+id/capture"
+        android:id="@+id/buttonCaptureImage"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/circle"
         android:visibility="visible"
         app:backgroundTint="@color/light_blue_400"
-        app:icon="@drawable/camera"
+        app:icon="@drawable/ic_camera_action"
         app:iconSize="38dp"
         app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addBtn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/galleryBtn"
-        app:layout_constraintTop_toBottomOf="@+id/imageContainer" />
+        app:layout_constraintBottom_toBottomOf="@id/viewSafeArea"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/viewSafeArea"
+        app:layout_constraintStart_toStartOf="@id/viewSafeArea" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cameraTexture"
+    <Button
+        android:id="@+id/buttonToggleCamera"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="4dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:icon="@drawable/ic_switch_camera"
+        app:iconSize="38dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/viewSafeArea"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/viewSafeArea" />
+
+    <Button
+        android:id="@+id/buttonToggleFlash"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="4dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:icon="@drawable/ic_flash_off"
+        app:iconSize="38dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/viewSafeArea"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="@id/viewSafeArea" />
+
+<!--    <Button-->
+<!--        android:id="@+id/buttonToggleTorch"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:layout_marginBottom="4dp"-->
+<!--        android:background="?android:attr/selectableItemBackground"-->
+<!--        app:icon="@drawable/ic_torch_off"-->
+<!--        app:iconSize="38dp"-->
+<!--        app:iconTint="@color/white"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/buttonToggleFlash"-->
+<!--        app:layout_constraintDimensionRatio="1:1"-->
+<!--        app:layout_constraintStart_toStartOf="@id/viewSafeArea" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imgCnt"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom=".5dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageContainer"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle"
+        app:layout_constraintBottom_toTopOf="@+id/addBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skipBtn">
+        app:layout_constraintTop_toBottomOf="@+id/viewSafeArea" />
 
-        <TextureView
-            android:id="@+id/textureView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scrollbarSize="10dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgCnt" />
 
-        <ImageView
-            android:id="@+id/preview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textureView"
-            app:layout_constraintVertical_bias="0.0"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <Button
-            android:id="@+id/clearBtn"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/circle"
-            android:isScrollContainer="false"
-            android:visibility="invisible"
-            app:backgroundTint="@color/dark_gray"
-            app:icon="@drawable/clear"
-            app:iconSize="38dp"
-            app:iconTint="@color/gray_600"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/checkBtn"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textureView" />
-
-        <Button
-            android:id="@+id/checkBtn"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/circle"
-            android:isScrollContainer="false"
-            android:visibility="invisible"
-            app:backgroundTint="@color/green"
-            app:icon="@drawable/check"
-            app:iconSize="38dp"
-            app:iconTint="@color/gray_600"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textureView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/clearBtn" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/galleryBtn"
@@ -131,45 +156,14 @@
         app:iconSize="40dp"
         app:iconTint="@color/gray_600"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/capture"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/addBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageContainer" />
-
-    <TextView
-        android:id="@+id/skipBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/skip"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/cameraTexture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.972"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122" />
-
-    <Button
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded"
-        android:text="@string/Add"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/capture"
-        app:layout_constraintTop_toBottomOf="@+id/imageContainer"
-        app:layout_constraintVertical_bias="0.555"
-        app:tint="@color/dark_gray" />
+        app:layout_constraintTop_toBottomOf="@+id/imgCnt" />
 
     <TextView
         android:id="@+id/amountImg"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/circle"
         android:gravity="center"
         android:text="1"
@@ -177,8 +171,62 @@
         android:visibility="invisible"
         app:backgroundTint="@color/dark_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cameraTexture" />
+        app:layout_constraintTop_toBottomOf="@+id/viewSafeArea" />
+
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/profile_picture"
+        android:elevation="2dp"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/previewView"
+        app:layout_constraintEnd_toEndOf="@id/previewView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/previewView"
+        app:layout_constraintTop_toTopOf="@id/previewView"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="493dp"
+        android:background="@drawable/circle"
+        android:isScrollContainer="false"
+        android:visibility="invisible"
+        app:backgroundTint="@color/dark_gray"
+        app:icon="@drawable/clear"
+        app:iconSize="38dp"
+        app:iconTint="@color/gray_600"
+        app:layout_constraintBottom_toBottomOf="@+id/preview"
+        app:layout_constraintEnd_toStartOf="@+id/checkBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/preview" />
+
+    <Button
+        android:id="@+id/checkBtn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="493dp"
+        android:background="@drawable/circle"
+        android:isScrollContainer="false"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:icon="@drawable/check"
+        app:iconSize="38dp"
+        app:iconTint="@color/gray_600"
+        app:layout_constraintBottom_toBottomOf="@+id/preview"
+        app:layout_constraintEnd_toStartOf="@+id/preview"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/clearBtn" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

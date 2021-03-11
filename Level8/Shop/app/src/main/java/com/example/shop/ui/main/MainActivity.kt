@@ -70,8 +70,10 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeBtn -> {
-                    val i = Intent(this@MainActivity, MainActivity::class.java)
+                    val i = Intent(applicationContext, MainActivity::class.java)
                     startActivity(i)
+                    overridePendingTransition(0,0)
+                    finish()
                 }
                 R.id.chatBtn -> {
                     navigateToDestination(
@@ -125,10 +127,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToDestination(activity: Activity, info: String, imageName: String) {
-        val actv = Intent(this@MainActivity, activity::class.java)
+        val actv = Intent(applicationContext, activity::class.java)
         currentUser.observe(this@MainActivity, Observer { it ->
             if (it != null) {
                 startActivity(actv)
+                overridePendingTransition(0,0)
+                finish()
             } else {
                 navigateToNotLoggedIn(info, imageName)
             }

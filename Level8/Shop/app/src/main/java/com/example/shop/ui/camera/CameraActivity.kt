@@ -55,8 +55,10 @@ class CameraActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeBtn -> {
-                    val i = Intent(this@CameraActivity, MainActivity::class.java)
+                    val i = Intent(applicationContext, MainActivity::class.java)
                     startActivity(i)
+                    overridePendingTransition(0,0)
+                    finish()
                 }
                 R.id.chatBtn -> {
                     navigateToDestination(ChatActivity())
@@ -74,13 +76,15 @@ class CameraActivity : AppCompatActivity() {
                     navigateToDestination(ProfileActivity())
                 }
             }
+            finish()
             true
         }
     }
 
 
     private fun navigateToDestination(activity: Activity) {
-        val actv = Intent(this@CameraActivity, activity::class.java)
+        val actv = Intent(applicationContext, activity::class.java)
         startActivity(actv)
+        overridePendingTransition(0,0)
     }
 }

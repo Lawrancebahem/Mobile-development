@@ -40,14 +40,6 @@ class ProductPreviewActivity : AppCompatActivity() {
 
     private lateinit var userDatabaseViewModel: UserDatabaseViewModel
 
-    //with AM,PM
-//    val sdf = SimpleDateFormat("MMM-dd-yyyy HH:mm:ss aaa")
-
-
-    //to format the date
-    val sdf = SimpleDateFormat("MMM-dd-yyyy HH:mm:ss aaa")
-
-
     private val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -203,7 +195,7 @@ class ProductPreviewActivity : AppCompatActivity() {
 
             val receiver = selectedProduct.user!!
             //make message and add the sender and receiver
-            val message = Message(null, textMessage,sdf.format(Date()), currentUser.value!!.id, receiver.id,false)
+            val message = Message(null, textMessage,chatViewModel.sdf.format(Date()), currentUser.value!!.id, receiver.id,false)
             //add it into the database
             val conversation= Conversation(null,sender, receiver, arrayListOf(message))
             chatViewModel.addNewConversation(conversation)

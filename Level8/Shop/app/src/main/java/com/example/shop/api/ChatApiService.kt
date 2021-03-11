@@ -18,6 +18,8 @@ interface ChatApiService {
     suspend fun addNewConversation(@Body conversation: Conversation):Boolean
 
 
-    @POST("conversation/get-messages-conversation/{conversationId}")
+    @GET("conversation/get-messages-conversation/{conversationId}")
     suspend fun getConversationsMessages(@Path("conversationId")conversationId:Long):ArrayList<Message>
+
+
 }

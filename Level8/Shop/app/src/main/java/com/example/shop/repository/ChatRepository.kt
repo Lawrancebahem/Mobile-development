@@ -7,7 +7,6 @@ import com.example.shop.api.ApiError
 import com.example.shop.api.ChatApiService
 import com.example.shop.model.Conversation
 import com.example.shop.model.Message
-import com.example.shop.model.User
 
 class ChatRepository {
 
@@ -20,7 +19,11 @@ class ChatRepository {
 
     private val _conversationMessages:MutableLiveData<ArrayList<Message>> = MutableLiveData()
 
-    val  conversationMessages:LiveData<ArrayList<Message>> get() =  _conversationMessages
+    val  conversationMessages:LiveData<ArrayList<Message>> get() = _conversationMessages
+
+    private val _refreshedMessage:MutableLiveData<ArrayList<Message>> = MutableLiveData()
+
+    val refreshedMessage:LiveData<ArrayList<Message>> = _refreshedMessage
     /**
      * get all conversations of user
      */
@@ -68,11 +71,11 @@ class ChatRepository {
     suspend fun getConversationsMessages(conversationId:Long){
         try {
             _conversationMessages.value = chatApiService.getConversationsMessages(conversationId)
-
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)
         }
-
     }
+
+
 }

@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shop.R
 import com.example.shop.databinding.FragmentChatOverviewBinding
 import com.example.shop.model.Conversation
+import com.example.shop.model.ConversationComparator
 import com.example.shop.model.User
 import com.example.shop.ui.chat.adapter.ChatOverviewAdapter
 import com.example.shop.ui.chat.viewmodel.ChatViewModel
-import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -67,6 +67,7 @@ class ChatOverview : Fragment() {
         //observe the retrieved conversations
         chatViewModel.userConversations.observe(viewLifecycleOwner){
             conversationList = it
+            conversationList.sortWith(ConversationComparator())
             currentUser.observe(viewLifecycleOwner){user->
                 chatOverviewAdapter = ChatOverviewAdapter(conversationList, user.id, ::onPreviewConversation)
                 binding.rcChat.adapter = chatOverviewAdapter
@@ -86,7 +87,7 @@ class ChatOverview : Fragment() {
     }
 
     private fun onPreviewConversation(position:Int){
-        chatViewModel.selectedConversations.value = conversationList[position]
+        chatViewModel.selectedConversation.value = conversationList[position]
         chatViewModel.currentUserId.value = currentUser.value!!.id
         findNavController().navigate(R.id.action_chatOverview_to_chatRoom)
     }

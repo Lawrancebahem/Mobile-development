@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcRoom"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInput"
+        android:layout_above="@+id/txt"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/txt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -24,18 +26,21 @@
         android:layout_height="45dp"
         android:layout_marginRight="4dp"
         android:text="Send"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textInput"
+        app:icon="@drawable/send"
+        app:iconGravity="end"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textInput"></Button>
+        app:layout_constraintStart_toEndOf="@+id/txt"></Button>
 
     <EditText
-        android:id="@+id/textInput"
+        android:id="@+id/txt"
         android:layout_width="0dip"
         android:layout_height="45dp"
         android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSend"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rcRoom">
 
         <requestFocus></requestFocus>
     </EditText>

@@ -60,8 +60,10 @@ class ProfileActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeBtn -> {
-                    val i = Intent(this@ProfileActivity, MainActivity::class.java)
+                    val i = Intent(applicationContext, MainActivity::class.java)
                     startActivity(i)
+                    overridePendingTransition(0,0)
+                    finish()
                 }
                 R.id.chatBtn -> {
                     navigateToDestination(ChatActivity())
@@ -80,6 +82,7 @@ class ProfileActivity : AppCompatActivity() {
                     navigateToDestination(ProfileActivity())
                 }
             }
+            finish()
             true
         }
     }
@@ -88,8 +91,9 @@ class ProfileActivity : AppCompatActivity() {
      * helper method to navigate to a specific activity
      */
     private fun navigateToDestination(activity: Activity) {
-        val actv = Intent(this@ProfileActivity, activity::class.java)
+        val actv = Intent(applicationContext, activity::class.java)
         startActivity(actv)
+        overridePendingTransition(0,0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

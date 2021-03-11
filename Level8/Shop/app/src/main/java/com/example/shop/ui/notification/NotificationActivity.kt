@@ -34,8 +34,10 @@ class NotificationActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeBtn -> {
-                    val i = Intent(this@NotificationActivity, MainActivity::class.java)
+                    val i = Intent(applicationContext, MainActivity::class.java)
                     startActivity(i)
+                    overridePendingTransition(0,0)
+                    finish()
                 }
                 R.id.chatBtn -> {
                     navigateToDestination(ChatActivity())
@@ -53,6 +55,7 @@ class NotificationActivity : AppCompatActivity() {
                     navigateToDestination(ProfileActivity())
                 }
             }
+            finish()
             true
         }
     }
@@ -60,7 +63,8 @@ class NotificationActivity : AppCompatActivity() {
 
 
     private fun navigateToDestination(activity: Activity) {
-        val actv = Intent(this@NotificationActivity, activity::class.java)
+        val actv = Intent(applicationContext, activity::class.java)
         startActivity(actv)
+        overridePendingTransition(0,0)
     }
 }

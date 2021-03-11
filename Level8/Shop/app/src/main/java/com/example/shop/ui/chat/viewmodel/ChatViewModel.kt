@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shop.model.Conversation
 import com.example.shop.model.Message
-import com.example.shop.model.User
 import com.example.shop.repository.ChatRepository
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class ChatViewModel : ViewModel() {
 
-    private val chatRepository: ChatRepository = ChatRepository()
 
+    //date format for the message
+    val sdf = SimpleDateFormat("MMM-dd-yyyy hh:mm:ss aaa")
+
+    private val chatRepository: ChatRepository = ChatRepository()
 
     val userConversations: LiveData<ArrayList<Conversation>> = chatRepository.userConversations
 
@@ -21,9 +24,14 @@ class ChatViewModel : ViewModel() {
 
     val error: MutableLiveData<String> = MutableLiveData()
 
-    val selectedConversations:MutableLiveData<Conversation> = MutableLiveData()
+    val selectedConversation:MutableLiveData<Conversation> = MutableLiveData()
 
     val currentUserId:MutableLiveData<Long> = MutableLiveData()
+
+    val sentSuccessfully:MutableLiveData<Boolean> = MutableLiveData()
+
+    val refreshedMessages:LiveData<ArrayList<Message>> = chatRepository.refreshedMessage
+
     /**
      * get all conversations of user
      */
@@ -47,8 +55,9 @@ class ChatViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 chatRepository.addMessageToConversation(conversationId, message)
-
+                sentSuccessfully.value = true
             } catch (err: Throwable) {
+                sentSuccessfully.value = false
                 error.value = err.message
             }
         }
@@ -76,10 +85,10 @@ class ChatViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 chatRepository.getConversationsMessages(conversationId)
-
             } catch (err: Throwable) {
                 error.value = err.message
             }
         }
     }
+
 }
