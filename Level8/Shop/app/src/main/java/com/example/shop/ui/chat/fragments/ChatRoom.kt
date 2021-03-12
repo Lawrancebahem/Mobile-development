@@ -110,6 +110,9 @@ class ChatRoom : Fragment() {
         }
     }
 
+    /**
+     * To refresh the conversation, it checks first if there are new messages and after that updates the conversation
+     */
     private fun getConversationMessages() {
         val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object : Runnable {
@@ -121,12 +124,11 @@ class ChatRoom : Fragment() {
                             messagesList.clear()
                             messagesList.addAll(messages)
                             chatRoomAdapter.notifyDataSetChanged()
-                            binding.rcRoom.smoothScrollToPosition(messagesList.size - 1)
+                            binding.rcRoom.scrollToPosition(messagesList.size - 1)
                         }
                     }
                     mainHandler.postDelayed(this, 5000)
                 }
-
             }
         })
 

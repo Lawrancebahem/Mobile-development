@@ -558,6 +558,9 @@ class CameraFragment : Fragment() {
         binding.clearBtn.isVisible = show
         binding.checkBtn.isVisible = show
         binding.preview.isVisible = show
+        binding.buttonCaptureImage.isClickable = !show
+        binding.buttonToggleFlash.isClickable = !show
+        binding.buttonToggleCamera.isClickable = !show
     }
 
 
@@ -657,6 +660,7 @@ class CameraFragment : Fragment() {
                 }
             }
             imageAdapter.notifyDataSetChanged()
+            showButtonAndAmount()
         }
     }
 
