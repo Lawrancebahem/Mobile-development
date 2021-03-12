@@ -181,6 +181,9 @@ class ProductPreviewActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Handle the click event on sending a message
+     */
     private fun sendMessage() {
         val textMessage = binding.txtMsg.text.toString()
         //check if message empty

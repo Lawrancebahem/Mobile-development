@@ -86,9 +86,20 @@ class ChatOverview : Fragment() {
         }
     }
 
+    /**
+     * Navigate to chat room, and set messages that are received as read
+     */
     private fun onPreviewConversation(position:Int){
         chatViewModel.selectedConversation.value = conversationList[position]
         chatViewModel.currentUserId.value = currentUser.value!!.id
+
+        var senderId = if (conversationList[position].user1!!.id ==  currentUser.value!!.id){
+            conversationList[position].user2!!.id
+        }else{
+            conversationList[position].user1!!.id
+
+        }
+        chatViewModel.setMessagesRead(conversationList[position].id!!,  senderId)
         findNavController().navigate(R.id.action_chatOverview_to_chatRoom)
     }
 

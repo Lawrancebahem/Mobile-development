@@ -1,25 +1,26 @@
 package com.example.shop.ui.chat.adapter
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shop.R
 import com.example.shop.model.Message
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import android.text.format.DateUtils
-import android.util.Log
-import java.text.ParseException
 
 
 class ChatRoomAdapter(val messages: ArrayList<Message>, val currentUserId: Long) :
     RecyclerView.Adapter<ChatRoomAdapter.ChatRoomViewHolder>() {
     private val sdf = SimpleDateFormat("MMM-dd-yyyy HH:mm:ss aaa")
     private val justTime = SimpleDateFormat("hh:mm aaa")
-    private val TODAY  = "Today"
-    private val YESTERDAY= "Yesterday"
+    private val TODAY = "Today"
+    private val YESTERDAY = "Yesterday"
+
     inner class ChatRoomViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         private val textField: TextView = view.findViewById(R.id.msgText)
@@ -38,12 +39,25 @@ class ChatRoomAdapter(val messages: ArrayList<Message>, val currentUserId: Long)
             } else {
                 processDate(dateTextView, message.date, null, true)
             }
+            if (currentUserId == message.sender) {
+                val button: Button = view.findViewById(R.id.chk)
+                if (message.read!!) {
+                    button.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.twochecks, 0, 0)
+                } else {
+                    button.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.onecheck,0 , 0)
+                }
+            }
         }
 
         /**
          * Return the date above the message either it's today, yesterday or a date
          */
-        private fun processDate(tv: TextView, dateAPIStr: String, dateAPICompareStr: String?, isFirstItem: Boolean) {
+        private fun processDate(
+            tv: TextView,
+            dateAPIStr: String,
+            dateAPICompareStr: String?,
+            isFirstItem: Boolean
+        ) {
             val f = SimpleDateFormat("MMM-dd-yyyy")
             if (isFirstItem) {
                 //first item always got date/today to shows
@@ -52,7 +66,8 @@ class ChatRoomAdapter(val messages: ArrayList<Message>, val currentUserId: Long)
                 try {
                     dateFromAPI = f.parse(dateAPIStr)
                     if (DateUtils.isToday(dateFromAPI.time)) tv.text = TODAY
-                    else if (DateUtils.isToday(dateFromAPI.time + DateUtils.DAY_IN_MILLIS)) tv.text = YESTERDAY
+                    else if (DateUtils.isToday(dateFromAPI.time + DateUtils.DAY_IN_MILLIS)) tv.text =
+                        YESTERDAY
                     else tv.text = dateFromAPI.toString()
                     tv.includeFontPadding = false
                     tv.visibility = View.VISIBLE
@@ -66,7 +81,8 @@ class ChatRoomAdapter(val messages: ArrayList<Message>, val currentUserId: Long)
                 if (!dateOne!!.toString().equals(dateTwo!!.toString(), ignoreCase = true)) {
                     try {
                         if (DateUtils.isToday(dateOne.time)) tv.text = TODAY
-                        else if (DateUtils.isToday(dateOne.time + DateUtils.DAY_IN_MILLIS)) tv.text = YESTERDAY
+                        else if (DateUtils.isToday(dateOne.time + DateUtils.DAY_IN_MILLIS)) tv.text =
+                            YESTERDAY
                         else tv.text = dateOne.toString()
                         tv.includeFontPadding = false
                         tv.visibility = View.VISIBLE

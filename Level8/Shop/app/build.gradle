@@ -104,5 +104,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
 
+//
+//    //Socket
+//    implementation 'com.github.nkzawa:socket.io-client:0.6.0'
+//
+
 
 }

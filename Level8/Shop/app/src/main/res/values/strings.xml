@@ -81,9 +81,6 @@
     <string name="title_activity_camera_x">CameraX</string>
 
 
-
-
-
     <string name="menu_camera_view">Built-in Camera View</string>
     <string name="menu_image_analyzer">Image Analyzer</string>
     <string name="menu_image_capture">Image Capture</string>

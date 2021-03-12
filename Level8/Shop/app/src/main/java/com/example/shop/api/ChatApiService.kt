@@ -21,5 +21,6 @@ interface ChatApiService {
     @GET("conversation/get-messages-conversation/{conversationId}")
     suspend fun getConversationsMessages(@Path("conversationId")conversationId:Long):ArrayList<Message>
 
-
+    @POST("conversation/set-read/{conversationId}/{userId}")
+    suspend fun setMessagesRead(@Path("conversationId") conversationId: Long, @Path("userId") userId:Long)
 }

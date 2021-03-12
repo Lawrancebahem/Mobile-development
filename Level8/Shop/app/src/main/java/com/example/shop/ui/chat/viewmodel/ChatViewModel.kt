@@ -91,4 +91,17 @@ class ChatViewModel : ViewModel() {
         }
     }
 
+    /**
+     * To set messages as read
+     */
+    fun setMessagesRead(conversationId: Long,userId:Long) {
+        viewModelScope.launch {
+            try {
+                chatRepository.setMessagesRead(conversationId, userId)
+            } catch (err: Throwable) {
+                error.value = err.message
+            }
+        }
+    }
+
 }

@@ -7,6 +7,8 @@ import com.example.shop.api.ApiError
 import com.example.shop.api.ChatApiService
 import com.example.shop.model.Conversation
 import com.example.shop.model.Message
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 class ChatRepository {
 
@@ -77,5 +79,15 @@ class ChatRepository {
         }
     }
 
-
+    /**
+     * To set messages as read
+     */
+    suspend fun setMessagesRead(conversationId: Long,userId:Long){
+        try {
+         chatApiService.setMessagesRead(conversationId, userId)
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
 }
