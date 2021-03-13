@@ -178,4 +178,17 @@ class AdvertisementViewModel : ViewModel() {
             }
         }
     }
+
+    /**
+     * To get all products that are based on the category value
+     */
+    fun getProductsBasedOnCategory(categoryId:Int){
+        viewModelScope.launch {
+            try {
+                advertisementRepository.getProductsBasedOnCategory(categoryId)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
 }

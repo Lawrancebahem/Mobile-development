@@ -1,6 +1,7 @@
 package com.example.shop.ui.main.fragments
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -27,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
+open class HomeFragment : Fragment(), SearchView.OnQueryTextListener, View.OnClickListener{
 
     private lateinit var binding: FragmentHomeBinding
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
@@ -55,13 +56,25 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        binding.c0.setOnClickListener(this)
+        binding.c1.setOnClickListener(this)
+        binding.c2.setOnClickListener(this)
+        binding.c3.setOnClickListener(this)
+        binding.c4.setOnClickListener(this)
+        binding.c5.setOnClickListener(this)
+        binding.c6.setOnClickListener(this)
+        binding.c7.setOnClickListener(this)
+        binding.c8.setOnClickListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_search, menu)
-        val item: MenuItem = menu.findItem(R.id.menu_search)
-        val searchView: SearchView = item.actionView as SearchView
-        searchView.setOnQueryTextListener(this)
+        try {
+            inflater.inflate(R.menu.menu_search, menu)
+            val item: MenuItem = menu.findItem(R.id.menu_search)
+            val searchView: SearchView = item.actionView as SearchView
+            searchView.setOnQueryTextListener(this)
+        }catch (ex:Exception){
+        }
     }
 
 
@@ -77,6 +90,12 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
         //observe the products
         advertisementViewModel.productList.observe(viewLifecycleOwner) { products ->
+            //If the products list is empty show the textView
+            if (products.isEmpty()){
+                binding.empty.visibility =  View.VISIBLE
+            }else{
+                binding.empty.visibility =  View.GONE
+            }
             //load the liked products but this user into the set array
             advertisementViewModel.userLikes.observe(viewLifecycleOwner) { likedProducts ->
                 //observe the user
@@ -168,6 +187,9 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         alertBuilder.show()
     }
 
+    /**
+     * When submitting, get the products that are related to the search term
+     */
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query?.length!! > 0){
             advertisementViewModel.getProductsBasedOnSearch(query)
@@ -178,5 +200,14 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(newText: String?): Boolean {
         Log.d("The text change is ", newText.toString())
         return true
+    }
+
+    /**
+     * When clicking on category button, it will get all products that belong to a certain category
+     */
+    override fun onClick(v: View?) {
+        val nameId  = resources.getResourceEntryName(v!!.id)
+        val categoryId = nameId.replace("c","").trim().toInt()
+        advertisementViewModel.getProductsBasedOnCategory(categoryId)
     }
 }

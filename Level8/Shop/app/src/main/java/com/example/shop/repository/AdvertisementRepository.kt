@@ -148,4 +148,17 @@ class AdvertisementRepository {
             throw ApiError(message, error)
         }
     }
+
+
+    /**
+     * To get all products that are based on the category value
+     */
+    suspend fun getProductsBasedOnCategory(categoryId:Int){
+        try {
+            _productsList.value = advertisementApi.getProductsBasedOnCategory(categoryId)
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
 }

@@ -23,12 +23,13 @@ interface AdvertisementApi {
     @GET("user/get-liked-products/{id}")
     suspend fun getUserLikes(@Path("id") id:Long):Set<Product>
 
-
     @GET("user/get-user-products/{id}")
     suspend fun getUserProducts(@Path("id") id:Long):ArrayList<Product>
 
     @GET("/product/searchProduct/{searchKey}")
     suspend fun getProductsBasedOnSearch(@Path("searchKey") searchKey:String):ArrayList<Product>
+    @GET("product/product-category/{categoryId}")
+    suspend fun getProductsBasedOnCategory(@Path("categoryId") categoryId:Int):ArrayList<Product>
 
     @HTTP(method = "DELETE", path = "user/delete-like")
     suspend fun removeLike(@Query("userId") userId:Long, @Query("productId") productId:Long):Boolean

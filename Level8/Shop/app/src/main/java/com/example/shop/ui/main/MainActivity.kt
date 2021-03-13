@@ -3,9 +3,12 @@ package com.example.shop.ui.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,7 @@ import com.example.shop.databinding.ActivityMainBinding
 import com.example.shop.model.User
 import com.example.shop.ui.camera.CameraActivity
 import com.example.shop.ui.chat.ChatActivity
+import com.example.shop.ui.main.fragments.HomeFragment
 import com.example.shop.ui.main.viewModel.NotLoggedInViewModel
 import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.ui.notification.NotificationActivity
@@ -28,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -144,4 +148,5 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
 }

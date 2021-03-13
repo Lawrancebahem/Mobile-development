@@ -102,5 +102,6 @@
     <string name="luma_value">Luma : %1$.2f</string>
     <string name="zoom_ratio">Zoom %1$.1fx</string>
     <string name="permission_denied">Please grant all camera-related permission</string>
+    <string name="emptyList">There are no products</string>
 
 </resources>
