@@ -1,7 +1,6 @@
 package com.example.shop.ui.camera.fragments
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -144,7 +140,7 @@ class AddItemFragment : Fragment() {
                 //get current user
                 currentUser.observe(viewLifecycleOwner) { user ->
                     val product = Product(
-                        id = 0, title = title,
+                        productId = 0, title = title,
                         description = description, price = price, category = category,
                         user = user, images = getImagesInBase64(), date = sdf.format(Date())
                     )

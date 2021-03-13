@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -19,7 +20,6 @@ import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.ui.productPreview.ProductPreviewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-
 /**
  * A simple [Fragment] subclass.
  * Use the [HomeFragment.newInstance] factory method to
@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private lateinit var binding: FragmentHomeBinding
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
@@ -59,6 +59,9 @@ class HomeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
+        val item: MenuItem = menu.findItem(R.id.menu_search)
+        val searchView: SearchView = item.actionView as SearchView
+        searchView.setOnQueryTextListener(this)
     }
 
 
@@ -104,8 +107,12 @@ class HomeFragment : Fragment() {
      */
     private fun onProductClick(index: Int) {
         val selectedProduct = advertisementViewModel.productList.value!![index]
+        Log.d(
+            "The clicked product id",
+            advertisementViewModel.productList.value!![index].toString()
+        )
         val intent = Intent(requireContext(), ProductPreviewActivity::class.java)
-        intent.putExtra("selectedProductId", selectedProduct.id)
+        intent.putExtra("selectedProductId", selectedProduct.productId)
         startActivity(intent)
     }
 
@@ -144,17 +151,32 @@ class HomeFragment : Fragment() {
     /**
      * When the user clicks on the delete icon to remove a product
      */
-    private fun onDeleteProduct(product: Product){
-        val alertBuilder = advertisementViewModel.getConfirmationDialog(getString(R.string.sureDelete), requireContext())
+    private fun onDeleteProduct(product: Product) {
+        val alertBuilder = advertisementViewModel.getConfirmationDialog(
+            getString(R.string.sureDelete),
+            requireContext()
+        )
         alertBuilder.setPositiveButton(getString(R.string.yes)) { dialog, id ->
             // Delete selected note from database
 
             productAdapter.productList.remove(product)
             (productAdapter.usersLikes as HashSet<Product>).remove(product)
-            advertisementViewModel.removeProduct(product.id!!)
+            advertisementViewModel.removeProduct(product.productId!!)
             productAdapter.notifyDataSetChanged()
         }
         alertBuilder.create()
         alertBuilder.show()
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query?.length!! > 0){
+            advertisementViewModel.getProductsBasedOnSearch(query)
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        Log.d("The text change is ", newText.toString())
+        return true
     }
 }

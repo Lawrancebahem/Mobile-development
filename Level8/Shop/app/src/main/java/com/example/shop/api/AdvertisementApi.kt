@@ -27,6 +27,8 @@ interface AdvertisementApi {
     @GET("user/get-user-products/{id}")
     suspend fun getUserProducts(@Path("id") id:Long):ArrayList<Product>
 
+    @GET("/product/searchProduct/{searchKey}")
+    suspend fun getProductsBasedOnSearch(@Path("searchKey") searchKey:String):ArrayList<Product>
 
     @HTTP(method = "DELETE", path = "user/delete-like")
     suspend fun removeLike(@Query("userId") userId:Long, @Query("productId") productId:Long):Boolean

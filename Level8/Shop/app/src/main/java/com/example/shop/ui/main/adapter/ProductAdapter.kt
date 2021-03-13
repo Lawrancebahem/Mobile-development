@@ -69,7 +69,7 @@ class ProductAdapter(
             binding.likeBtn.setOnClickListener {
                 if (binding.likeBtn.text == "") {
                     binding.likeBtn.text = "c"
-                    addLike(product.id!!)
+                    addLike(product.productId!!)
                     binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(
                         0,
                         R.drawable.heart_filled,
@@ -78,7 +78,7 @@ class ProductAdapter(
                     )
                 } else {
                     binding.likeBtn.text = ""
-                    removeLike(product.id!!)
+                    removeLike(product.productId!!)
                     binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(
                         0,
                         R.drawable.heart,

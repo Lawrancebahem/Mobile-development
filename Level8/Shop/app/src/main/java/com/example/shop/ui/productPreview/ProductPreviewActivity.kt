@@ -23,10 +23,8 @@ import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.utility.ImageConverter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 @AndroidEntryPoint
 class ProductPreviewActivity : AppCompatActivity() {
@@ -102,11 +100,9 @@ class ProductPreviewActivity : AppCompatActivity() {
                 }
             }
 
-
             val bitmapList: ArrayList<Bitmap> = getBitmapArrayFromString(selectedProduct.images!!)
             imageSliderAdapter = ImageSliderAdapter(bitmapList)
             binding.imageSlider.setSliderAdapter(imageSliderAdapter)
-
 
             //some configuration for the image slider
 //        binding.imageSlider.setIndicatorAnimation(IndicatorAnimationType.SWAP); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -128,6 +124,8 @@ class ProductPreviewActivity : AppCompatActivity() {
             binding.vTit.text = selectedProduct.title
             binding.vDis.text = selectedProduct.description
             binding.vDate.text = selectedProduct.date
+            binding.amSee.text = selectedProduct.seen.toString()
+            binding.amFav.text = selectedProduct.totalLikes.toString()
 
             (selectedProduct.user!!.firstName + " " + selectedProduct.user!!.lastName).also {
                 binding.vUsNm.text = it
@@ -136,6 +134,9 @@ class ProductPreviewActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Convert the base64 string into bitmap
+     */
     private fun getBitmapArrayFromString(base64List: ArrayList<String>): ArrayList<Bitmap> {
         val arrayList: ArrayList<Bitmap> = ArrayList()
         for (i in base64List) {

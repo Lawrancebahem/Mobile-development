@@ -102,7 +102,7 @@ class MyAdvertisementFragment : Fragment() {
     private fun onProductClick(index: Int) {
         val selectedProduct = userAddProducts[index]
         val intent = Intent(requireContext(), ProductPreviewActivity::class.java)
-        intent.putExtra("selectedProductId", selectedProduct.id)
+        intent.putExtra("selectedProductId", selectedProduct.productId)
         startActivity(intent)
     }
 
@@ -154,7 +154,7 @@ class MyAdvertisementFragment : Fragment() {
             // Delete selected note from database
             productAdapter.productList.remove(product)
             (productAdapter.usersLikes as HashSet<Product>).remove(product)
-            advertisementViewModel.removeProduct(product.id!!)
+            advertisementViewModel.removeProduct(product.productId!!)
             productAdapter.notifyDataSetChanged()        }
         alertBuilder.create()
         alertBuilder.show()

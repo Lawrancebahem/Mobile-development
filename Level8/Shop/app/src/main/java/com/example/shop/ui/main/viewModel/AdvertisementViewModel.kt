@@ -163,4 +163,19 @@ class AdvertisementViewModel : ViewModel() {
             }
         return builder
     }
+
+
+
+    /**
+     * To get all products that are based on the search key
+     */
+    fun getProductsBasedOnSearch(searchKey:String){
+        viewModelScope.launch {
+            try {
+                advertisementRepository.getProductsBasedOnSearch(searchKey)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
 }

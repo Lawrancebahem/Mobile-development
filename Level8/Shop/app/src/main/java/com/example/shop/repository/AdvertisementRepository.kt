@@ -8,6 +8,7 @@ import com.example.shop.api.AdvertisementApi
 import com.example.shop.api.Api
 import com.example.shop.api.ApiError
 import com.example.shop.model.Product
+import retrofit2.http.Body
 
 class AdvertisementRepository {
 
@@ -129,6 +130,19 @@ class AdvertisementRepository {
     suspend fun removeLike(userId: Long, productId: Long) {
         try {
             _success.value = advertisementApi.removeLike(userId, productId)
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
+
+
+    /**
+     * To get all products that are based on the search key
+     */
+    suspend fun getProductsBasedOnSearch(searchKey:String){
+        try {
+            _productsList.value = advertisementApi.getProductsBasedOnSearch(searchKey)
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)
