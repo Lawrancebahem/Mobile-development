@@ -62,6 +62,13 @@ class MainActivity : AppCompatActivity(){
 
         //set the first icon as checked
         binding.navigationBottom.menu.getItem(0).isChecked = true
+
+        try {
+            val destination = intent.getSerializableExtra("destination") as Int
+            navController.navigate(destination)
+
+        }catch (ex:Exception){
+        }
     }
 
 

@@ -25,7 +25,6 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

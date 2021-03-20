@@ -20,6 +20,7 @@
         android:paddingBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,13 +28,13 @@
             android:id="@+id/navBtns"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:columnCount="9"
+            android:columnCount="12"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:rowCount="9">
+            android:rowCount="12">
 
             <Button
-                android:id="@+id/c1"
+                android:id="@+id/c0"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -48,8 +49,9 @@
                 app:iconSize="38dp"
                 app:iconTint="@color/gray_600" />
 
+
             <Button
-                android:id="@+id/c3"
+                android:id="@+id/c11"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -63,8 +65,9 @@
                 app:iconSize="38dp"
                 app:iconTint="@color/gray_600" />
 
+
             <Button
-                android:id="@+id/c4"
+                android:id="@+id/c1"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -79,7 +82,7 @@
                 app:iconTint="@color/gray_600" />
 
             <Button
-                android:id="@+id/c5"
+                android:id="@+id/c8"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -94,7 +97,7 @@
                 app:iconTint="@color/gray_600" />
 
             <Button
-                android:id="@+id/c0"
+                android:id="@+id/c2"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -109,7 +112,7 @@
                 app:iconTint="@color/gray_600" />
 
             <Button
-                android:id="@+id/c6"
+                android:id="@+id/c10"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -124,7 +127,7 @@
                 app:iconTint="@color/gray_600" />
 
             <Button
-                android:id="@+id/c8"
+                android:id="@+id/c5"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -139,7 +142,7 @@
                 app:iconTint="@color/gray_600" />
 
             <Button
-                android:id="@+id/c7"
+                android:id="@+id/c4"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -154,7 +157,7 @@
                 app:iconTint="@color/gray_600" />
 
             <Button
-                android:id="@+id/c2"
+                android:id="@+id/c7"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="5dp"
@@ -165,6 +168,53 @@
                 android:isScrollContainer="false"
                 app:backgroundTint="@color/dark_gray"
                 app:icon="@drawable/tv"
+                app:iconSize="38dp"
+                app:iconTint="@color/gray_600" />
+
+
+            <Button
+                android:id="@+id/c6"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/circle"
+                android:isScrollContainer="false"
+                app:backgroundTint="@color/dark_gray"
+                app:icon="@drawable/ic_animal_paw_print"
+                app:iconSize="38dp"
+                app:iconTint="@color/gray_600" />
+
+
+            <Button
+                android:id="@+id/c3"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/circle"
+                android:isScrollContainer="false"
+                app:backgroundTint="@color/dark_gray"
+                app:icon="@drawable/computer"
+                app:iconSize="38dp"
+                app:iconTint="@color/gray_600" />
+
+            <Button
+                android:id="@+id/c9"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/circle"
+                android:isScrollContainer="false"
+                app:backgroundTint="@color/dark_gray"
+                app:icon="@drawable/ic_black_jacket"
                 app:iconSize="38dp"
                 app:iconTint="@color/gray_600" />
 
@@ -275,6 +325,45 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:text="@string/car" />
+
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="9"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="@string/animals" />
+
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="10"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="@string/computer" />
+
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="11"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="@string/Fashion" />
 
         </GridLayout>
     </HorizontalScrollView>

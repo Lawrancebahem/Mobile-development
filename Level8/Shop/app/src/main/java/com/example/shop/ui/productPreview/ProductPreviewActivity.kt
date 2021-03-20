@@ -1,6 +1,5 @@
 package com.example.shop.ui.productPreview
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.animation.Animation
@@ -10,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.shop.R
 import com.example.shop.databinding.ActivityProductPreviewBinding
 import com.example.shop.model.Conversation
@@ -24,7 +24,6 @@ import com.example.shop.utility.ImageConverter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ProductPreviewActivity : AppCompatActivity() {
@@ -68,7 +67,7 @@ class ProductPreviewActivity : AppCompatActivity() {
             onMessageClick()
         }
 
-        binding.sendBtn.setOnClickListener{
+        binding.sendBtn.setOnClickListener {
             sendMessage()
         }
 
@@ -86,22 +85,24 @@ class ProductPreviewActivity : AppCompatActivity() {
 
     }
 
-
-    private fun previewProduct(){
+    /**
+     * To preview product
+     */
+    private fun previewProduct() {
 
         advertisementViewModel.product.observe(this) {
             selectedProduct = it
 
 
             //hide the message button if the same user has added the product
-            currentUser.observe(this){
-                if (it.id == selectedProduct.user!!.id){
+            currentUser.observe(this) { user ->
+                if (user == null || user.id == selectedProduct.user!!.id) {
                     binding.msgBtn.isVisible = false
                 }
             }
 
-            val bitmapList: ArrayList<Bitmap> = getBitmapArrayFromString(selectedProduct.images!!)
-            imageSliderAdapter = ImageSliderAdapter(bitmapList)
+            val imagesURL: ArrayList<String> = selectedProduct.images!!
+            imageSliderAdapter = ImageSliderAdapter(imagesURL)
             binding.imageSlider.setSliderAdapter(imageSliderAdapter)
 
             //some configuration for the image slider
@@ -116,7 +117,7 @@ class ProductPreviewActivity : AppCompatActivity() {
             //set the profile picture of the user
             if (selectedProduct.user!!.profilePicture != "") {
                 val userPic = selectedProduct.user!!.profilePicture
-                binding.userPic.setImageBitmap(ImageConverter.decode(userPic!!))
+                Glide.with(this).load(userPic).into(binding.userPic)
             } else {
                 binding.userPic.setImageResource(R.drawable.profile_picture)
             }
@@ -132,17 +133,6 @@ class ProductPreviewActivity : AppCompatActivity() {
             }
             ("€" + selectedProduct.price.toString()).also { binding.vPrc.text = it }
         }
-    }
-
-    /**
-     * Convert the base64 string into bitmap
-     */
-    private fun getBitmapArrayFromString(base64List: ArrayList<String>): ArrayList<Bitmap> {
-        val arrayList: ArrayList<Bitmap> = ArrayList()
-        for (i in base64List) {
-            arrayList.add(ImageConverter.decode(i))
-        }
-        return arrayList
     }
 
 
@@ -189,19 +179,27 @@ class ProductPreviewActivity : AppCompatActivity() {
         val textMessage = binding.txtMsg.text.toString()
         //check if message empty
         if (textMessage.isEmpty()) {
-            Snackbar.make(binding.mesgBox, getString(R.string.addMessage), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.mesgBox, getString(R.string.addMessage), Snackbar.LENGTH_SHORT)
+                .show()
             return
         }
 
 //        get the current user from the database
 //        Observe the user
-        currentUser.observe(this ){sender ->
+        currentUser.observe(this) { sender ->
 
             val receiver = selectedProduct.user!!
             //make message and add the sender and receiver
-            val message = Message(null, textMessage,chatViewModel.sdf.format(Date()), currentUser.value!!.id, receiver.id,false)
+            val message = Message(
+                null,
+                textMessage,
+                chatViewModel.sdf.format(Date()),
+                currentUser.value!!.id,
+                receiver.id,
+                false
+            )
             //add it into the database
-            val conversation= Conversation(null,sender, receiver, arrayListOf(message))
+            val conversation = Conversation(null, sender, receiver, arrayListOf(message))
             chatViewModel.addNewConversation(conversation)
             hideMessageBox()
         }

@@ -3,6 +3,7 @@ package com.example.shop.ui.main.viewModel
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,11 +17,11 @@ import kotlinx.coroutines.launch
 class AdvertisementViewModel : ViewModel() {
 
 
-    var bitmapList: MutableLiveData<ArrayList<Bitmap>> = MutableLiveData()
+    var bitMapList: MutableLiveData<ArrayList<Bitmap>> = MutableLiveData()
     private lateinit var builder: AlertDialog.Builder
 
     init {
-        bitmapList.value = ArrayList()
+        bitMapList.value = ArrayList()
     }
 
     private val advertisementRepository: AdvertisementRepository = AdvertisementRepository()

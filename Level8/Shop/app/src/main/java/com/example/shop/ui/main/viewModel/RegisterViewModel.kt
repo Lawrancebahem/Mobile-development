@@ -19,7 +19,9 @@ class RegisterViewModel : ViewModel() {
 
     val error: LiveData<String> = _error
     val success: LiveData<String> = _success
-    val user:LiveData<User> = registerRepository.user
+    val user: LiveData<User> = registerRepository.user
+
+    val codeResendSuccessFully: LiveData<Boolean> = registerRepository.success
 
     /**
      * To create new user
@@ -29,6 +31,34 @@ class RegisterViewModel : ViewModel() {
             try {
                 registerRepository.createNewUser(user)
                 _success.value = SUCCESS_MESSAGE
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
+
+
+    /**
+     * To resend a verification code
+     */
+    fun resendVerificationCode(email: String) {
+        viewModelScope.launch {
+            try {
+                registerRepository.resendVerificationCode(email)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
+
+    /**
+     * To update the profile
+     */
+    fun updateProfile(user: User) {
+
+        viewModelScope.launch {
+            try {
+                registerRepository.updateProfile(user)
             } catch (ex: ApiError) {
                 _error.value = ex.message
             }

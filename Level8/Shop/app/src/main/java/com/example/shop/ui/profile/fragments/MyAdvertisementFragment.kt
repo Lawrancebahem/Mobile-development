@@ -18,6 +18,8 @@ import com.example.shop.ui.main.adapter.ProductAdapter
 import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.ui.productPreview.ProductPreviewActivity
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,6 +39,7 @@ class MyAdvertisementFragment : Fragment() {
     private lateinit var productAdapter: ProductAdapter
 
     private lateinit var currentUser: LiveData<User>
+    private lateinit var storage: FirebaseStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +57,10 @@ class MyAdvertisementFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         init()
+
+        storage = FirebaseStorage.getInstance()
+
     }
 
     /**
@@ -81,15 +85,18 @@ class MyAdvertisementFragment : Fragment() {
 
                 //observe the user
                 currentUser.observe(viewLifecycleOwner) { user ->
-                    productAdapter = ProductAdapter(
-                        userAddProducts,
-                        ::onProductClick,
-                        ::addLike,
-                        ::removeLike,
-                        userLikedProducts,
-                        user.id,
-                        ::onDeleteProduct
-                    )
+                    if (user != null){
+                        productAdapter = ProductAdapter(
+                            userAddProducts,
+                            ::onProductClick,
+                            ::addLike,
+                            ::removeLike,
+                            userLikedProducts,
+                            user.id,
+                            ::onDeleteProduct
+                        )
+                    }
+
                     binding.rcView.adapter = productAdapter
                 }
             }
@@ -130,7 +137,9 @@ class MyAdvertisementFragment : Fragment() {
      */
     private fun getUsersLikes() {
         currentUser.observe(viewLifecycleOwner) {
-            advertisementViewModel.getUserLikes(it.id)
+            if (it != null){
+                advertisementViewModel.getUserLikes(it.id)
+            }
         }
     }
 
@@ -140,7 +149,9 @@ class MyAdvertisementFragment : Fragment() {
      */
     private fun getUserAddedProducts() {
         currentUser.observe(viewLifecycleOwner) {
-            advertisementViewModel.getUserProducts(it.id)
+            if (it != null){
+                advertisementViewModel.getUserProducts(it.id)
+            }
         }
 
     }
@@ -155,7 +166,14 @@ class MyAdvertisementFragment : Fragment() {
             productAdapter.productList.remove(product)
             (productAdapter.usersLikes as HashSet<Product>).remove(product)
             advertisementViewModel.removeProduct(product.productId!!)
-            productAdapter.notifyDataSetChanged()        }
+            productAdapter.notifyDataSetChanged()
+
+            //delete the images from the fire base storage
+            for (i in product.images!!){
+                val fireImage: StorageReference = storage.getReferenceFromUrl(i)
+                fireImage.delete()
+            }
+        }
         alertBuilder.create()
         alertBuilder.show()
     }

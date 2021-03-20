@@ -1,7 +1,6 @@
 package com.example.shop.ui.camera.fragments
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipData
@@ -12,7 +11,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.SeekBar
@@ -31,13 +29,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akexorcist.example.camerax.helper.ShortenMultiplePermissionListener
 import com.akexorcist.example.camerax.helper.ShortenSeekBarChangeListener
 import com.akexorcist.example.camerax.helper.applyWindowInserts
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage
 import com.example.shop.R
 import com.example.shop.databinding.FragmentCameraBinding
+import com.example.shop.ml.ModelTF
 import com.example.shop.ui.camera.adapter.ImageAdapter
 import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import okio.FileNotFoundException
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -52,8 +56,6 @@ import java.io.InputStream
 class CameraFragment : Fragment() {
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
 
-    private val fileName = "labels.txt"
-    private lateinit var labelsString: String
     private val REQUEST_PERMISSION_CODE_GALLERY = 100
     private val RESULT_CODE = 1002
 
@@ -102,14 +104,11 @@ class CameraFragment : Fragment() {
         binding.previewView.setOnTouchListener(onPreviewTouchListener)
         binding.seekBarZoom.setOnSeekBarChangeListener(onSeekBarChangeListener)
 
-        imageAdapter = ImageAdapter(advertisementViewModel.bitmapList.value!!, ::onDelete)
+        imageAdapter = ImageAdapter(advertisementViewModel.bitMapList.value!!, ::onDelete)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.imgCnt.layoutManager = layoutManager
         binding.imgCnt.adapter = imageAdapter
-
-        labelsString = requireActivity().application.assets.open(fileName).bufferedReader()
-            .use { it.readText() }
 
         requestRuntimePermission()
         orientationEventListener.enable()
@@ -132,62 +131,15 @@ class CameraFragment : Fragment() {
 
 
     /**
-     * Recognise an image based on the given byteArray
-     */
-//    private fun recogniseImage(data: ByteArray) {
-//        var  imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-//        imageBitmap = rotateImage(imageBitmap, 90F)
-//        //set preview for the user
-//        previewCapturedImage(imageBitmap)
-//
-//        val resizedBitmap: Bitmap = Bitmap.createScaledBitmap(imageBitmap, 224, 224, true)
-//        val model = ModelTF.newInstance(requireContext())
-//        val tbuffer = TensorImage.fromBitmap(resizedBitmap)
-//        val byteBuffer = tbuffer.buffer
-//        // Creates inputs for reference.
-//        val inputFeature0 =
-//            TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.UINT8)
-//        inputFeature0.loadBuffer(byteBuffer)
-//
-//        // Runs model inference and gets result.
-//        val outputs = model.process(inputFeature0)
-//        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
-//
-//        val townList = inputString.split("\n")
-//        val max = getMax(outputFeature0.floatArray)
-//
-////        binding.textView14.text = townList[max]
-//        // Releases model resources if no longer used.
-//        model.close()
-//    }
-
-
-    /**
-     * To get the max floating index, which is the index of the label
-     */
-    private fun getMax(array: FloatArray): Int {
-        var index = 0;
-        var min = 0.0f
-        for (i in array.indices) {
-            if (array[i] > min) {
-                index = i
-                min = array[i]
-            }
-        }
-        return index
-    }
-
-
-    /**
      * To show the the add button and the amount of taken images
      */
     private fun showButtonAndAmount() {
-        binding.amountImg.isVisible = advertisementViewModel.bitmapList.value!!.size > 0
-        binding.addBtn.isVisible = advertisementViewModel.bitmapList.value!!.size > 0
-        binding.imgCnt.isVisible = advertisementViewModel.bitmapList.value!!.size > 0
+        binding.amountImg.isVisible = advertisementViewModel.bitMapList.value!!.size > 0
+        binding.addBtn.isVisible = advertisementViewModel.bitMapList.value!!.size > 0
+        binding.imgCnt.isVisible = advertisementViewModel.bitMapList.value!!.size > 0
         binding.amountImg.text = getString(
             R.string.amount,
-            advertisementViewModel.bitmapList.value!!.size
+            advertisementViewModel.bitMapList.value!!.size
         )
     }
 
@@ -410,6 +362,8 @@ class CameraFragment : Fragment() {
         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
             confirmCapturing()
             showResultMessage(getString(com.example.shop.R.string.image_capture_success))
+
+
         }
 
         override fun onError(exception: ImageCaptureException) {
@@ -499,7 +453,7 @@ class CameraFragment : Fragment() {
             .setCancelable(false)
             .setPositiveButton(getString(R.string.yes)) { dialog, id ->
                 // Delete selected note from database
-                advertisementViewModel.bitmapList.value!!.removeAt(index)
+                advertisementViewModel.bitMapList.value!!.removeAt(index)
                 imageAdapter.notifyDataSetChanged()
                 showButtonAndAmount()
             }
@@ -516,8 +470,10 @@ class CameraFragment : Fragment() {
      */
     private fun addImageToContainer(scaledBitmap: Bitmap) {
         try {
-            advertisementViewModel.bitmapList.value!!.add(scaledBitmap)
+            advertisementViewModel.bitMapList.value!!.add(scaledBitmap)
             imageAdapter.notifyDataSetChanged()
+            val blob = ByteArrayOutputStream()
+            scaledBitmap.compress(Bitmap.CompressFormat.PNG, 0 /* Ignored for PNGs */, blob)
             showButtonAndAmount()
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -533,15 +489,17 @@ class CameraFragment : Fragment() {
         //get the image from the internal storage
         val f = File(requireContext().filesDir.absoluteFile.toString(), "temp.jpg")
         val b = BitmapFactory.decodeStream(FileInputStream(f))
+
         //set the image as preview
-        binding.preview.setImageBitmap(b)
+        val scaledBitmap = rotateImage(b, 90)
+        binding.preview.setImageBitmap(scaledBitmap)
 
         binding.clearBtn.setOnClickListener {
             showCapturedImageWithConfirmation(false)
         }
         binding.checkBtn.setOnClickListener {
             showCapturedImageWithConfirmation(false)
-            val scaledBitmap: Bitmap = resizeImage(b)
+            val scaledBitmap: Bitmap = resizeImage(scaledBitmap)
             addImageToContainer(scaledBitmap)
         }
     }
@@ -635,7 +593,7 @@ class CameraFragment : Fragment() {
 
                         val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
                         val resized = resizeImage(bitmap)
-                        advertisementViewModel.bitmapList.value!!.add(resized)
+                        advertisementViewModel.bitMapList.value!!.add(resized)
                     } catch (e: Exception) {
                     }
                 }
@@ -652,8 +610,7 @@ class CameraFragment : Fragment() {
                     val blob = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* Ignored for PNGs */, blob)
 
-//                    recogniseImage(blob.toByteArray())
-                    advertisementViewModel.bitmapList.value!!.add(resized)
+                    advertisementViewModel.bitMapList.value!!.add(resized)
 
                 } catch (e: Exception) {
 

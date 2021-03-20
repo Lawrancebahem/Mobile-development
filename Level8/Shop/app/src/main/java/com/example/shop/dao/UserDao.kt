@@ -14,6 +14,9 @@ interface UserDao {
     @Delete
     suspend fun logOut(user: User)
 
+    @Update
+    suspend fun update(user: User)
+
     @Query("SELECT * FROM userTable limit 1")
     fun getUser():LiveData<User>
 

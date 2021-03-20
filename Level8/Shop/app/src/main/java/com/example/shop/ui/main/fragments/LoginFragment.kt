@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.myapplicationtest2.DAO.UserRepository
 import com.example.shop.R
 import com.example.shop.databinding.FragmentLoginBinding
-import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.ui.main.viewModel.LoginViewModel
+import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,8 +60,6 @@ class LoginFragment : Fragment() {
         loginViewModel.error.observe(viewLifecycleOwner) {
             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
         }
-
-
 
         userDatabaseViewModel = ViewModelProvider(this).get(UserDatabaseViewModel::class.java)
         userRepository = userDatabaseViewModel.userRepository

@@ -103,5 +103,16 @@
     <string name="zoom_ratio">Zoom %1$.1fx</string>
     <string name="permission_denied">Please grant all camera-related permission</string>
     <string name="emptyList">There are no products</string>
-
+    <string name="ok">OK</string>
+    <string name="verifyEmail">Verify your e-mailaddress</string>
+    <string name="emailVerficiationInfo">A verification code has been sent to your e-email address. Follow the instructions provided in the email to verify</string>
+    <string name="resendCode">RESEND CODE</string>
+    <string name="resendCodeSuccess">The code has been resent successfully</string>
+    <string name="update">UPDATE</string>
+    <string name="logout">LOG OUT</string>
+    <string name="detecting">Detecting an appropriate category</string>
+    <string name="foundCategory">We think the item you added is of %s category, we have already chosen this category but you can always change it</string>
+    <string name="animals">Animals</string>
+    <string name="Fashion">Fashion</string>
+    <string name="computer">Computer</string>
 </resources>

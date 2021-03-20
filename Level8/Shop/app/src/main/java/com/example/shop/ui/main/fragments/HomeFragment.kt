@@ -19,6 +19,8 @@ import com.example.shop.ui.main.adapter.ProductAdapter
 import com.example.shop.ui.main.viewModel.AdvertisementViewModel
 import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
 import com.example.shop.ui.productPreview.ProductPreviewActivity
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -36,6 +38,9 @@ open class HomeFragment : Fragment(), SearchView.OnQueryTextListener, View.OnCli
     private lateinit var productAdapter: ProductAdapter
 
     private lateinit var currentUser: LiveData<User>
+
+    private lateinit var storage: FirebaseStorage
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +70,10 @@ open class HomeFragment : Fragment(), SearchView.OnQueryTextListener, View.OnCli
         binding.c6.setOnClickListener(this)
         binding.c7.setOnClickListener(this)
         binding.c8.setOnClickListener(this)
+
+        //initialize firebase
+        storage = FirebaseStorage.getInstance()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -182,6 +191,14 @@ open class HomeFragment : Fragment(), SearchView.OnQueryTextListener, View.OnCli
             (productAdapter.usersLikes as HashSet<Product>).remove(product)
             advertisementViewModel.removeProduct(product.productId!!)
             productAdapter.notifyDataSetChanged()
+
+
+            //delete the images from the fire base storage
+            for (i in product.images!!){
+                val fireImage: StorageReference = storage.getReferenceFromUrl(i)
+                fireImage.delete()
+            }
+
         }
         alertBuilder.create()
         alertBuilder.show()

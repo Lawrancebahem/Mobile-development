@@ -8,12 +8,16 @@ import javax.inject.Inject
 class UserRepository @Inject constructor (private val userDao: UserDao){
 
 
-    suspend fun logIn(product: User){
-        userDao.logIn(product)
+    suspend fun logIn(user: User){
+        userDao.logIn(user)
     }
 
-    suspend fun logOut(product: User){
-        userDao.logOut(product)
+    suspend fun logOut(user: User){
+        userDao.logOut(user)
+    }
+
+    suspend fun update(user: User){
+        userDao.update(user)
     }
 
     fun getUser():LiveData<User>{

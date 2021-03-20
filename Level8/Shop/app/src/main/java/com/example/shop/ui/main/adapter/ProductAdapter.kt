@@ -1,11 +1,13 @@
 package com.example.shop.ui.main.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.shop.R
 import com.example.shop.databinding.ItemProductBinding
 import com.example.shop.model.Product
@@ -19,6 +21,7 @@ class ProductAdapter(
     val userId: Long,
     val deleteListener: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+    private lateinit var context: Context
 
     inner class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
@@ -32,14 +35,15 @@ class ProductAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bindData(product: Product) {
-            val sampleImageBitmap = ImageConverter.decode(product.images!![0])
-            binding.imagePro.setImageBitmap(sampleImageBitmap)
+            val sampleImageBitmap = product.images!![0]
+            Glide.with(context).load(sampleImageBitmap).into(binding.imagePro)
+
             binding.titlePro.text = product.title
             binding.descPro.text = product.description
             binding.pricePr.text = "€" + product.price.toString()
 
 
-//            //if the this product is for the user show the delete icon and add delete listener
+//            //if this product is for the user show the delete icon and add delete listener
             if (userId == product.user?.id){
                 binding.deleteBtn.isVisible = true
                 binding.deleteBtn.setOnClickListener{
@@ -100,8 +104,9 @@ class ProductAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
+        context = parent.context
         return ProductViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_product, parent, false)
         )
     }
 

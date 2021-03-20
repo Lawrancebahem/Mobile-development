@@ -14,11 +14,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.example.shop.utility.ImageConverter
 import com.example.shop.R
 import com.example.shop.databinding.FragmentRegsiterBinding
 import com.example.shop.model.User
 import com.example.shop.ui.main.viewModel.RegisterViewModel
+import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.util.*
 
 
 /**
@@ -32,9 +35,13 @@ class RegisterFragment : Fragment() {
 
     private val registerViewModel: RegisterViewModel by activityViewModels()
 
+
+    private lateinit var userDatabaseViewModel: UserDatabaseViewModel
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var storage: FirebaseStorage
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentRegsiterBinding.inflate(inflater, container, false)
@@ -44,19 +51,14 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
+        storage = FirebaseStorage.getInstance()
     }
-
 
     /**
      * Set event listeners on buttons
      */
     private fun init() {
 
-        registerViewModel.success.observe(viewLifecycleOwner) {
-            showToastMessage(it)
-            findNavController().navigate(R.id.homeFragment)
-        }
         registerViewModel.error.observe(viewLifecycleOwner) {
             showToastMessage(it)
         }
@@ -68,18 +70,35 @@ class RegisterFragment : Fragment() {
         binding.registerBtn.setOnClickListener {
             onRegister()
         }
+
+        binding.okBtn.setOnClickListener {
+            binding.overbox.visibility = View.GONE
+            binding.infoBox.visibility = View.GONE
+            findNavController().navigate(R.id.loginFragment)
+        }
+
+        binding.resendCode.setOnClickListener {
+            val email = binding.email.text.toString()
+            registerViewModel.resendVerificationCode(email)
+
+            registerViewModel.codeResendSuccessFully.observe(viewLifecycleOwner) {
+                showToastMessage(getString(R.string.resendCodeSuccess))
+            }
+        }
+
+        registerViewModel.success.observe(viewLifecycleOwner) {
+            binding.overbox.visibility = View.VISIBLE
+            binding.infoBox.visibility = View.VISIBLE
+        }
     }
 
     /**
      * Handle register button click
      */
     private fun onRegister() {
-        val user: User? = validateFields()
-        if (user != null) {
-            registerViewModel.createNewUser(user)
-
-        } else {
-            showToastMessage(R.string.invalidFields.toString())
+        val isValid = validateFields()
+        if (!isValid) {
+            showToastMessage(getString(R.string.invalidFields))
         }
     }
 
@@ -106,30 +125,47 @@ class RegisterFragment : Fragment() {
     /**
      * To validate the fields
      */
-    private fun validateFields(): User? {
+    private fun validateFields(): Boolean {
         val firstName = binding.firstName.text.toString()
         val lastName = binding.lastName.text.toString()
         val email = binding.email.text.toString()
         val password = binding.password.text.toString()
-        var profileImage = ""
+        val profileImage = ""
         return when {
-            firstName.isEmpty() -> null
-            lastName.isEmpty() -> null
-            email.isEmpty() -> null
-            password.isEmpty() -> null
+            firstName.isEmpty() -> false
+            lastName.isEmpty() -> false
+            email.isEmpty() -> false
+            password.isEmpty() -> false
             else -> {
                 if (filePath != null) {
-                    profileImage = ImageConverter.encode(filePath!!, requireActivity(),null)
+                    val path: String = "fireimages/" + UUID.randomUUID() + ".png" // path image
+                    val fireImages: StorageReference = storage.getReference(path)
+                    // wee need to add the picture to firebase sotrage
+                    fireImages.putFile(filePath!!).addOnSuccessListener {
+                        //this is the new way to do it
+                        fireImages.downloadUrl.addOnCompleteListener {
+                            val profileImageUrl = it.result.toString()
+                            val user = User(0, firstName, lastName, email, password, profileImageUrl)
+                            registerViewModel.createNewUser(user)
+                        }
+                    }
+                    return true
+                } else {
+                    //We send the user to database without profile image
+                    val user = User(0, firstName, lastName, email, password, profileImage)
+                    registerViewModel.createNewUser(user)
+                    return true
                 }
-                return User(0, firstName, lastName, email, password, profileImage)
             }
         }
     }
 
+    /**
+     * To show a toast message
+     */
     private fun showToastMessage(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

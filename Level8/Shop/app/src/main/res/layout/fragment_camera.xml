@@ -231,6 +231,4 @@
         app:layout_constraintStart_toEndOf="@+id/clearBtn" />
 
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
