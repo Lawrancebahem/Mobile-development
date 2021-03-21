@@ -82,7 +82,7 @@ class ChatOverview : Fragment() {
     private fun getUserConversations(){
         //get the user id and retrieve his conversations
         currentUser.observe(viewLifecycleOwner){
-            chatViewModel.getUserConversations(it.id)
+            chatViewModel.getUserConversations(it.id, currentUser.value!!.verificationToken!!.token!!)
         }
     }
 
@@ -99,7 +99,8 @@ class ChatOverview : Fragment() {
             conversationList[position].user1!!.id
 
         }
-        chatViewModel.setMessagesRead(conversationList[position].id!!,  senderId)
+        val token = currentUser.value!!.verificationToken!!.token
+        chatViewModel.setMessagesRead(conversationList[position].id!!,  senderId, token!!)
         findNavController().navigate(R.id.action_chatOverview_to_chatRoom)
     }
 

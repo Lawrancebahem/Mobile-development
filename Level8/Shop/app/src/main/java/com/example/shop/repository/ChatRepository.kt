@@ -29,9 +29,9 @@ class ChatRepository {
     /**
      * get all conversations of user
      */
-    suspend fun getUserConversations(id:Long){
+    suspend fun getUserConversations(id:Long, auth:String){
         try {
-            _userConversations.value = chatApiService.getUserConversation(id)
+            _userConversations.value = chatApiService.getUserConversation(id, auth)
 
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
@@ -42,10 +42,10 @@ class ChatRepository {
     /**
      * add message to conversation
      */
-    suspend fun addMessageToConversation(conversationId:Long, message: Message){
+    suspend fun addMessageToConversation(conversationId:Long, message: Message, auth:String){
 
         try {
-           _success.value = chatApiService.addMessageToConversation(conversationId, message)
+           _success.value = chatApiService.addMessageToConversation(conversationId, message, auth)
 
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
@@ -56,9 +56,9 @@ class ChatRepository {
     /**
      * add new conversation between two users
      */
-    suspend fun addNewConversation( conversation: Conversation){
+    suspend fun addNewConversation( conversation: Conversation, auth:String){
         try {
-            _success.value = chatApiService.addNewConversation(conversation)
+            _success.value = chatApiService.addNewConversation(conversation, auth)
 
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
@@ -70,9 +70,9 @@ class ChatRepository {
     /**
      * get all messages of certain conversation
      */
-    suspend fun getConversationsMessages(conversationId:Long){
+    suspend fun getConversationsMessages(conversationId:Long, auth:String){
         try {
-            _conversationMessages.value = chatApiService.getConversationsMessages(conversationId)
+            _conversationMessages.value = chatApiService.getConversationsMessages(conversationId, auth)
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)
@@ -82,9 +82,9 @@ class ChatRepository {
     /**
      * To set messages as read
      */
-    suspend fun setMessagesRead(conversationId: Long,userId:Long){
+    suspend fun setMessagesRead(conversationId: Long,userId:Long, auth:String){
         try {
-         chatApiService.setMessagesRead(conversationId, userId)
+         chatApiService.setMessagesRead(conversationId, userId, auth)
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)

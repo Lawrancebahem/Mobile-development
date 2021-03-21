@@ -200,7 +200,7 @@ class ProductPreviewActivity : AppCompatActivity() {
             )
             //add it into the database
             val conversation = Conversation(null, sender, receiver, arrayListOf(message))
-            chatViewModel.addNewConversation(conversation)
+            chatViewModel.addNewConversation(conversation, sender!!.verificationToken!!.token!!)
             hideMessageBox()
         }
     }

@@ -3,22 +3,30 @@ package com.example.shop.ui.chat.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shop.databinding.FragmentChatRoomBinding
 import com.example.shop.model.Message
+import com.example.shop.model.User
 import com.example.shop.ui.chat.adapter.ChatRoomAdapter
 import com.example.shop.ui.chat.viewmodel.ChatViewModel
+import com.example.shop.ui.main.viewModel.UserDatabaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
+
+@AndroidEntryPoint
 class ChatRoom : Fragment() {
 
     private var _binding: FragmentChatRoomBinding? = null
@@ -29,6 +37,8 @@ class ChatRoom : Fragment() {
 
     private var receiverId: Long? = null
 
+    private lateinit var currentUser: LiveData<User>
+    private lateinit var userDatabaseViewModel: UserDatabaseViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -59,17 +69,23 @@ class ChatRoom : Fragment() {
      * Setup for the adpater
      */
     private fun init() {
+
+        userDatabaseViewModel = ViewModelProvider(this).get(UserDatabaseViewModel::class.java)
+
+        //get the current user
+        currentUser = userDatabaseViewModel.userRepository.getUser()
+
         chatViewModel.selectedConversation.observe(viewLifecycleOwner) { conversation ->
             messagesList = conversation.messages!!
-            chatViewModel.currentUserId.observe(viewLifecycleOwner) { currentUser ->
+            currentUser.observe(viewLifecycleOwner) { currentUser ->
                 //get receiver id
-                receiverId = if (conversation.user1!!.id != currentUser) {
+                receiverId = if (conversation.user1!!.id != currentUser.id) {
                     conversation.user1.id
                 } else {
                     conversation.user2!!.id
                 }
 
-                chatRoomAdapter = ChatRoomAdapter(messagesList, currentUser)
+                chatRoomAdapter = ChatRoomAdapter(messagesList, currentUser.id)
                 val layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 layoutManager.stackFromEnd = true
@@ -104,7 +120,8 @@ class ChatRoom : Fragment() {
 
             chatViewModel.addMessageToConversation(
                 chatViewModel.selectedConversation.value!!.id!!,
-                message
+                message,
+                currentUser.value!!.verificationToken!!.token!!
             )
 
         }
@@ -117,7 +134,7 @@ class ChatRoom : Fragment() {
         val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object : Runnable {
             override fun run() {
-                chatViewModel.getConversationsMessages(chatViewModel.selectedConversation.value!!.id!!)
+                chatViewModel.getConversationsMessages(chatViewModel.selectedConversation.value!!.id!!,currentUser.value!!.verificationToken!!.token!!)
                 if (view != null) {
                     chatViewModel.conversationMessages.observe(viewLifecycleOwner) { messages ->
                         if (messages.size != messagesList.size) {

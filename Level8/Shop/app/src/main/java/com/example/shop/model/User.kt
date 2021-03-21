@@ -14,6 +14,7 @@ class User(
         val profilePicture: String? = "",
         val admin: Boolean? = false,
         val isBlocked: Boolean? = false,
+        val verificationToken:VerificationToken? = null
 ) {
 
     override fun toString(): String {

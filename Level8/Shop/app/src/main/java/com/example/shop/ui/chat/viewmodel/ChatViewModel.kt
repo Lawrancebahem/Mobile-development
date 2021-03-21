@@ -35,10 +35,10 @@ class ChatViewModel : ViewModel() {
     /**
      * get all conversations of user
      */
-    fun getUserConversations(id: Long) {
+    fun getUserConversations(id: Long, auth:String) {
         viewModelScope.launch {
             try {
-                chatRepository.getUserConversations(id)
+                chatRepository.getUserConversations(id, auth)
 
             } catch (err: Throwable) {
                 error.value = err.message
@@ -50,11 +50,11 @@ class ChatViewModel : ViewModel() {
     /**
      * add message to conversation
      */
-    fun addMessageToConversation(conversationId: Long, message: Message) {
+    fun addMessageToConversation(conversationId: Long, message: Message, auth:String) {
 
         viewModelScope.launch {
             try {
-                chatRepository.addMessageToConversation(conversationId, message)
+                chatRepository.addMessageToConversation(conversationId, message, auth)
                 sentSuccessfully.value = true
             } catch (err: Throwable) {
                 sentSuccessfully.value = false
@@ -67,10 +67,10 @@ class ChatViewModel : ViewModel() {
     /**
      * add new conversation between two users
      */
-    fun addNewConversation(conversation: Conversation) {
+    fun addNewConversation(conversation: Conversation, auth:String) {
         viewModelScope.launch {
             try {
-                chatRepository.addNewConversation(conversation)
+                chatRepository.addNewConversation(conversation, auth)
 
             } catch (err: Throwable) {
                 error.value = err.message
@@ -81,10 +81,10 @@ class ChatViewModel : ViewModel() {
     /**
      * get all messages of certain conversation
      */
-    fun getConversationsMessages(conversationId: Long) {
+    fun getConversationsMessages(conversationId: Long, auth:String) {
         viewModelScope.launch {
             try {
-                chatRepository.getConversationsMessages(conversationId)
+                chatRepository.getConversationsMessages(conversationId, auth)
             } catch (err: Throwable) {
                 error.value = err.message
             }
@@ -94,10 +94,10 @@ class ChatViewModel : ViewModel() {
     /**
      * To set messages as read
      */
-    fun setMessagesRead(conversationId: Long,userId:Long) {
+    fun setMessagesRead(conversationId: Long,userId:Long, auth:String) {
         viewModelScope.launch {
             try {
-                chatRepository.setMessagesRead(conversationId, userId)
+                chatRepository.setMessagesRead(conversationId, userId, auth)
             } catch (err: Throwable) {
                 error.value = err.message
             }
