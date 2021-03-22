@@ -20,10 +20,10 @@ class LoginViewModel : ViewModel() {
     /**
      * When logging, handle error as well
      */
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, randomCode:Int) {
         viewModelScope.launch {
             try {
-                loginRepository.login(email, password)
+                loginRepository.login(email, password, randomCode)
             } catch (ex: ApiError) {
                 _error.value = ex.message
             }

@@ -16,9 +16,9 @@ class LoginRepository {
     /**
      * Authenticate login
      */
-    suspend fun login(email: String, password: String) {
+    suspend fun login(email: String, password: String, randomCode:Int) {
         try {
-            _user.value = loginApiService.login(email, password)
+            _user.value = loginApiService.login(email, password, randomCode)
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)

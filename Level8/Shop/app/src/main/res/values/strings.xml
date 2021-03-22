@@ -115,4 +115,5 @@
     <string name="animals">Animals</string>
     <string name="Fashion">Fashion</string>
     <string name="computer">Computer</string>
+    <string name="randomCode">Enter the code that you have received on your email</string>
 </resources>

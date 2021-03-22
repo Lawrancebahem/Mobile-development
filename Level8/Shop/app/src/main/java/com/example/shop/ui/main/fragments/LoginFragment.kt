@@ -83,9 +83,13 @@ class LoginFragment : Fragment() {
     private fun onLogin() {
         val email = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
-        loginViewModel.login(email, password)
+        var randomCode = 0
+         if (binding.rndomCode.text!!.isNotEmpty()){
+            randomCode = binding.rndomCode.text.toString().toInt()
+        }
 
-
+        loginViewModel.login(email, password,randomCode)
+        binding.randomCodeInput.visibility = View.VISIBLE
     }
 
 

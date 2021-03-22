@@ -9,5 +9,5 @@ interface LoginApiService{
     suspend fun getUser(@Path("id") id:Long): User
 
     @POST("user/login")
-    suspend fun login(@Query("email")email:String, @Query("password")password:String):User
+    suspend fun login(@Query("email")email:String, @Query("password")password:String,  @Query("code")randomCode:Int):User
 }
