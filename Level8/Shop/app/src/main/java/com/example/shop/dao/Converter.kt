@@ -2,6 +2,7 @@ package com.example.shop.dao
 
 import androidx.room.TypeConverter
 import com.example.shop.model.VerificationToken
+import java.sql.Timestamp
 import java.util.*
 
 class Converter {
@@ -17,4 +18,15 @@ class Converter {
         verificationToken.token = value
         return  verificationToken
     }
+
+
+
+
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Timestamp?{
+        return Timestamp(value!!)
+    }
+
+    @TypeConverter
+    fun toTimestamp(timestamp: Timestamp?): Long? = timestamp?.time
 }

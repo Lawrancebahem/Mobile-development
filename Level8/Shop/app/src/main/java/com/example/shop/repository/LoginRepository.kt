@@ -13,12 +13,23 @@ class LoginRepository {
     private var _user: MutableLiveData<User> = MutableLiveData()
     val user: LiveData<User> get() = _user
 
+    private var _statusResponse:MutableLiveData<Int> = MutableLiveData()
+
+    val statusResponse:LiveData<Int> = _statusResponse
+
     /**
      * Authenticate login
      */
     suspend fun login(email: String, password: String, randomCode:Int) {
         try {
-            _user.value = loginApiService.login(email, password, randomCode)
+            val response = loginApiService.login(email, password, randomCode)
+
+            try {
+                _user.value = response.body()
+            }catch (e:Exception){
+
+            }
+            _statusResponse.value = response.code()
         } catch (error: Throwable) {
             val message = ApiError.getErrorMessage(error.message.toString())
             throw ApiError(message, error)

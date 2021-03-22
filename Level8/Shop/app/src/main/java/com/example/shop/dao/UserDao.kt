@@ -3,6 +3,7 @@ package com.example.myapplicationtest2.DAO
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.shop.model.User
+import java.sql.Timestamp
 
 
 @Dao

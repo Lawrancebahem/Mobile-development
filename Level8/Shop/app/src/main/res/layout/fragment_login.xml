@@ -11,14 +11,14 @@
         android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded"
         android:text="@string/login"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/randomCodeInput" />
+        app:layout_constraintTop_toBottomOf="@+id/rsnBtn" />
 
     <TextView
         android:id="@+id/forgoBtn"
@@ -134,10 +134,10 @@
         android:id="@+id/randomCodeInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
-        android:visibility="invisible"
+        android:layout_marginEnd="5dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
@@ -149,6 +149,16 @@
             android:hint="@string/randomCode"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/rsnBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/resendCode"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/randomCodeInput" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

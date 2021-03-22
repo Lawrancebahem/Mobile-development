@@ -17,10 +17,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application) =
-            Room.databaseBuilder(app, UserRoomDatabase::class.java, UserRoomDatabase.DATABASE_NAME).build()
+    fun provideDatabase(app: Application) = Room.databaseBuilder(app, UserRoomDatabase::class.java, UserRoomDatabase.DATABASE_NAME).build()
 
     @Provides
     @Singleton
     fun provideDao(database:UserRoomDatabase) = database.productDao()
+
+
+    @Provides
+    @Singleton
+    fun provideRandomCodeDao(database:UserRoomDatabase) = database.randomCodeDao()
 }

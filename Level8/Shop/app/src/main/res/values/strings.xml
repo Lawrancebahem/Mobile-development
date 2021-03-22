@@ -116,4 +116,6 @@
     <string name="Fashion">Fashion</string>
     <string name="computer">Computer</string>
     <string name="randomCode">Enter the code that you have received on your email</string>
+    <string name="countdownCode">Resend code %s</string>
+    <string name="verificationCodeRequired">Please fill the verification code</string>
 </resources>

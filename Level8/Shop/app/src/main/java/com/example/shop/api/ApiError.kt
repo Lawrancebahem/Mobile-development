@@ -6,12 +6,13 @@ class ApiError(message: String, cause: Throwable) : Throwable(message, cause) {
 
     companion object {
 
-        private const val PRECONDITION_FAILED = "HTTP 412"
-        private const val FORBIDDEN = "HTTP 403"
-        private const val NOT_FOUND = "HTTP 404"
-        private const val UNAUTHORIZED = "HTTP 401"
-        private const val INSUFFICIENT_STORAGE = "HTTP 507"
-        private const val NOT_VERIFIED = "HTTP 422"
+         const val PRECONDITION_FAILED = "HTTP 412"
+         const val FORBIDDEN = "HTTP 403"
+         const val NOT_FOUND = "HTTP 404"
+         const val UNAUTHORIZED = "HTTP 401"
+         const val INSUFFICIENT_STORAGE = "HTTP 507"
+         const val NOT_VERIFIED = "HTTP 422"
+         const val ACCEPTED = "HTTP 202"
 
         /**
          * To determine an error message based on the returned code
@@ -22,10 +23,11 @@ class ApiError(message: String, cause: Throwable) : Throwable(message, cause) {
             when (error.trim()) {
                 FORBIDDEN -> message = "You're not an authorized admin"
                 NOT_FOUND -> message = "Email is not registered yet, please register!"
-                UNAUTHORIZED -> message = "Email/password are not correct"
+                UNAUTHORIZED -> message = "Email/password/verification are not correct"
                 INSUFFICIENT_STORAGE -> message = "The database is full!!"
                 PRECONDITION_FAILED -> message = "Is already in use"
                 NOT_VERIFIED -> message = "Please verify your email"
+                ACCEPTED -> message = "We've send you an email with code"
             }
             return message
         }

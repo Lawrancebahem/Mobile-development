@@ -17,6 +17,8 @@ class LoginViewModel : ViewModel() {
     val error: LiveData<String> = _error
     val user: LiveData<User> = loginRepository.user
 
+    val statusResponse:LiveData<Int> = loginRepository.statusResponse
+
     /**
      * When logging, handle error as well
      */
