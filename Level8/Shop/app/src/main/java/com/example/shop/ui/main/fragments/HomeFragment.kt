@@ -5,6 +5,8 @@ import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -61,6 +63,8 @@ open class HomeFragment : Fragment(), SearchView.OnQueryTextListener, View.OnCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        val actionBar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
+        actionBar?.title = getString(R.string.home)
         binding.c0.setOnClickListener(this)
         binding.c1.setOnClickListener(this)
         binding.c2.setOnClickListener(this)

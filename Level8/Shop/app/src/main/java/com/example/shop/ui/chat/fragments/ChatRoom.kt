@@ -3,15 +3,17 @@ package com.example.shop.ui.chat.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shop.R
 import com.example.shop.databinding.FragmentChatRoomBinding
 import com.example.shop.model.Message
 import com.example.shop.model.User
@@ -79,10 +81,13 @@ class ChatRoom : Fragment() {
             messagesList = conversation.messages!!
             currentUser.observe(viewLifecycleOwner) { currentUser ->
                 //get receiver id
-                receiverId = if (conversation.user1!!.id != currentUser.id) {
-                    conversation.user1.id
+                if (conversation.user1!!.id != currentUser.id) {
+                    receiverId = conversation.user1.id
                 } else {
-                    conversation.user2!!.id
+                    receiverId = conversation.user2!!.id
+                    val actionBar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
+                    val receiverName = conversation.user2.firstName +  " " + conversation.user2.lastName
+                    actionBar?.title = receiverName
                 }
 
                 chatRoomAdapter = ChatRoomAdapter(messagesList, currentUser.id)
@@ -134,7 +139,10 @@ class ChatRoom : Fragment() {
         val mainHandler = Handler(Looper.getMainLooper())
         mainHandler.post(object : Runnable {
             override fun run() {
-                chatViewModel.getConversationsMessages(chatViewModel.selectedConversation.value!!.id!!,currentUser.value!!.verificationToken!!.token!!)
+                chatViewModel.getConversationsMessages(
+                    chatViewModel.selectedConversation.value!!.id!!,
+                    currentUser.value!!.verificationToken!!.token!!
+                )
                 if (view != null) {
                     chatViewModel.conversationMessages.observe(viewLifecycleOwner) { messages ->
                         if (messages.size != messagesList.size) {

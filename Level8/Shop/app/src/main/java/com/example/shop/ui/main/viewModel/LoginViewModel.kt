@@ -31,4 +31,17 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
+
+    /**
+     * To reset the password
+     */
+    fun resetPassword(email:String){
+        viewModelScope.launch {
+            try {
+                loginRepository.resetPassword(email)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
 }

@@ -1,16 +1,6 @@
 <resources>
     <string name="app_name">Shop</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
@@ -62,7 +52,7 @@
     <string name="errorDescription">Please fill the description</string>
 
     <string-array name="category_list"></string-array>
-    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile">Profile</string>
     <string name="myProf">My Profile</string>
     <string name="myAdvert">My Advertisements</string>
     <string name="myFav">My Favourites</string>
@@ -70,17 +60,16 @@
     <string name="camera">Camera</string>
     <string name="notification">Notification</string>
     <string name="profile">Profile</string>
-    <string name="title_activity_camera">CameraActivity</string>
-    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_camera">Camera</string>
+    <string name="title_activity_chat">Chat</string>
 
     <string name="typeMessage">Type your message here</string>
     <string name="send">Send</string>
     <string name="cancel">CANCEL</string>
 
     <string name="addMessage">Please add message</string>
-    <string name="title_activity_camera_x">CameraX</string>
-
-
+    <string name="title_activity_camera_x">Camera</string>
+    <string name="authentication_required">AUTHENTICATION REQUIRED</string>
     <string name="menu_camera_view">Built-in Camera View</string>
     <string name="menu_image_analyzer">Image Analyzer</string>
     <string name="menu_image_capture">Image Capture</string>
@@ -104,7 +93,8 @@
     <string name="permission_denied">Please grant all camera-related permission</string>
     <string name="emptyList">There are no products</string>
     <string name="ok">OK</string>
-    <string name="verifyEmail">Verify your e-mailaddress</string>
+
+    <string name="verifyEmail">Verify your e-mail address</string>
     <string name="emailVerficiationInfo">A verification code has been sent to your e-email address. Follow the instructions provided in the email to verify</string>
     <string name="resendCode">RESEND CODE</string>
     <string name="resendCodeSuccess">The code has been resent successfully</string>
@@ -118,4 +108,14 @@
     <string name="randomCode">Enter the code that you have received on your email</string>
     <string name="countdownCode">Resend code %s</string>
     <string name="verificationCodeRequired">Please fill the verification code</string>
+    <string name="incorrectCode">The code is not correct</string>
+    <string name="email_password_incorrect">Email/password are not correct</string>
+    <string name="email_unknown">Email is not registered yet, please register!</string>
+
+    <string name="product_overview">PRODUCT OVERVIEW</string>
+    <string name="reset_password_text">Reset your password</string>
+    <string name="reset">RESET</string>
+    <string name="type_email">Type your email here</string>
+    <string name="email_required">The email is required</string>
+    <string name="email_sent">Check your email to reset your password</string>
 </resources>

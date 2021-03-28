@@ -6,11 +6,6 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.google.gson.GsonBuilder
-
-import com.google.gson.Gson
-
-
 
 
 class Api<out T>(private val cls: Class<T>) {
@@ -18,12 +13,19 @@ class Api<out T>(private val cls: Class<T>) {
 
     companion object {
 
+         const val ACCEPTED_CODE = 202
+         const val OK_CODE = 200
+         const val ERROR_CODE = 400
+         const val NOT_VERIFIED = 422
+         const val UNAUTHORIZED = 401
+         const val NOT_FOUND = 404
+
         private const val LOCAL_URL = "http://192.168.178.22:8080/"
 
         //heroku url
-//        private const val BASE_URL = "https://server-bd-shop.herokuapp.com/"
+        private const val BASE_URL = "https://backend-server-shop.herokuapp.com/"
 
-        private const val BASE_URL = LOCAL_URL
+//        private const val BASE_URL = LOCAL_URL
 
         private const val API_KEY = "api_key"
         private const val API_VALUE = "bb7c29934be6882f5417e3b31e8905be"

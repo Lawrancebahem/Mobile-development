@@ -16,6 +16,8 @@ import android.view.*
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.annotation.FloatRange
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -87,9 +89,12 @@ class CameraFragment : Fragment() {
         return binding.root
     }
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        val actionBar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
+        actionBar?.title = getString(R.string.camera).uppercase()
         showButtonAndAmount()
 
     }

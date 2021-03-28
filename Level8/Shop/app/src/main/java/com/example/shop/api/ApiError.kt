@@ -27,7 +27,7 @@ class ApiError(message: String, cause: Throwable) : Throwable(message, cause) {
                 INSUFFICIENT_STORAGE -> message = "The database is full!!"
                 PRECONDITION_FAILED -> message = "Is already in use"
                 NOT_VERIFIED -> message = "Please verify your email"
-                ACCEPTED -> message = "We've send you an email with code"
+                ACCEPTED -> message = "We've sent you an email with code"
             }
             return message
         }

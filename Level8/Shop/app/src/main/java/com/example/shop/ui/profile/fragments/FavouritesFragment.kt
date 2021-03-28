@@ -21,6 +21,10 @@ import com.example.shop.ui.productPreview.ProductPreviewActivity
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
+import android.os.Build
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+
 
 /**
  * A simple [Fragment] subclass.
@@ -56,7 +60,6 @@ open class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
         storage = FirebaseStorage.getInstance()
 
     }

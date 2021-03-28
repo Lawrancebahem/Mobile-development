@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -35,9 +37,10 @@ class NotLoggedIn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.logBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_notLoggedIn_to_loginFragment)
-        }
+            findNavController().navigate(R.id.action_notLoggedIn_to_loginFragment) }
 
+        val actionBar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
+        actionBar?.title = getString(R.string.authentication_required)
         displayInfo()
 
     }

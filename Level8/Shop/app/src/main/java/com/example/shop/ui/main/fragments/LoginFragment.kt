@@ -1,5 +1,6 @@
 package com.example.shop.ui.main.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -7,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -14,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.myapplicationtest2.DAO.UserRepository
 import com.example.shop.R
+import com.example.shop.api.Api
 import com.example.shop.api.ApiError
 import com.example.shop.dao.RandomCodeRepository
 import com.example.shop.databinding.FragmentLoginBinding
@@ -70,6 +74,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val actionBar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
+        actionBar?.title = getString(R.string.login)
         binding.loginBtn.setOnClickListener {
             onLogin(JUST_LOGIN)
         }
@@ -81,6 +87,16 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
+        // on forgot button click
+        binding.forgoBtn.setOnClickListener{
+            binding.resetBox.visibility = View.VISIBLE
+            binding.overbox.visibility = View.VISIBLE
+        }
+
+        //on reset button click
+        binding.reset.setOnClickListener{
+            onResetPassword()
+        }
 
         loginViewModel.error.observe(viewLifecycleOwner) {
             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
@@ -100,8 +116,9 @@ class LoginFragment : Fragment() {
         }
 
 
+        // handle login response status
         loginViewModel.statusResponse.observe(viewLifecycleOwner){status->
-            if (status == 200){
+            if (status == Api.OK_CODE){
                 //Check if there is no code sent, that is stored in the room database
                 randomCodeTime.observe(viewLifecycleOwner) {
                     if (it == null) {
@@ -116,9 +133,9 @@ class LoginFragment : Fragment() {
                         }
                     }
                 }
-            }else if (status == 400){
-                showSnackBarMessage("The code is not correct")
-            }else if (status == 202){
+            }else if (status ==  Api.ERROR_CODE){
+                showSnackBarMessage(getString(R.string.incorrectCode))
+            }else if (status ==  Api.ACCEPTED_CODE){
                 val user = loginViewModel.user.value
                 // when the user is returned, this means the verification is done and the user is allowed to log in
                 if (user?.verificationToken?.token != null) {
@@ -130,6 +147,12 @@ class LoginFragment : Fragment() {
                         findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }
                 }
+            }else if (status == Api.NOT_VERIFIED){
+                showSnackBarMessage(getString(R.string.verifyEmail))
+            }else if (status == Api.UNAUTHORIZED){
+                showSnackBarMessage(getString(R.string.email_password_incorrect))
+            }else if (status == Api.NOT_FOUND){
+                showSnackBarMessage(getString(R.string.email_unknown))
             }
         }
 
@@ -208,7 +231,7 @@ class LoginFragment : Fragment() {
         super.onPause()
     }
 
-    //calculate expire date
+    //calculate expire date of the generated code
     private fun calculateExpireType(): Timestamp {
         val cal = Calendar.getInstance()
         cal.add(Calendar.MINUTE, EXPIRATION_TIME)
@@ -227,9 +250,29 @@ class LoginFragment : Fragment() {
         }
     }
 
+
+    /**
+     * When the user clicks on reset password
+     */
+    private fun onResetPassword(){
+        val email = binding.resetEmailInput.text.toString()
+        if (email.isEmpty()){
+            showSnackBarMessage(getString(R.string.email_required))
+        }else{
+            loginViewModel.resetPassword(email)
+            loginViewModel.statusResponse.observe(viewLifecycleOwner){
+                if (it == Api.ACCEPTED_CODE){
+                    binding.sucessMessage.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
     fun showSnackBarMessage(message: kotlin.String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
