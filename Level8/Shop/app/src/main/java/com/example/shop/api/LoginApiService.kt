@@ -14,4 +14,12 @@ interface LoginApiService{
 
     @POST("user/reset-password")
     suspend fun resetPassword(@Query("email")email:String):Response<Boolean>
+
+    @POST("user/reset-password/check-code")
+    suspend fun checkResetPasswordCode(@Query("email")email:String, @Query("code")randomCode:Int):Response<Boolean>
+
+    @POST("user/new-password")
+    suspend fun setNewPassword(@Query("email")email:String, @Query("password") password: String, @Query("code")randomCode:Int):Response<Boolean>
+
+
 }

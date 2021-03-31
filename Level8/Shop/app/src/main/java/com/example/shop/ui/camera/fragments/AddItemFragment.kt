@@ -3,7 +3,6 @@ package com.example.shop.ui.camera.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -75,7 +74,11 @@ class AddItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         binding = FragmentAddItemBinding.inflate(inflater, container, false)
         storage = FirebaseStorage.getInstance()
@@ -92,7 +95,7 @@ class AddItemFragment : Fragment() {
         init()
 
 
-        binding.kBtn.setOnClickListener{
+        binding.kBtn.setOnClickListener {
             binding.overbox.visibility = View.GONE
             binding.categoryBox.visibility = View.GONE
         }
@@ -108,7 +111,8 @@ class AddItemFragment : Fragment() {
         }
 
         //set the adpater of the spinner
-        val adapterSpinner = SpinnerAdapter(requireContext(), android.R.layout.simple_spinner_item, itemsSpinner)
+        val adapterSpinner =
+            SpinnerAdapter(requireContext(), android.R.layout.simple_spinner_item, itemsSpinner)
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.categoryDrop.adapter = adapterSpinner
 
@@ -126,7 +130,8 @@ class AddItemFragment : Fragment() {
         imageAdapter = ImageAdapter(advertisementViewModel.bitMapList.value!!, ::onDelete)
 
         //adapter layout
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.imageContainer.layoutManager = layoutManager
         binding.imageContainer.adapter = imageAdapter
         imageAdapter.notifyDataSetChanged()
@@ -144,8 +149,6 @@ class AddItemFragment : Fragment() {
         advertisementViewModel.error.observe(viewLifecycleOwner) {
             showSnackBarMessage(it)
         }
-
-
 
         //recognise an image of the viewModel images
         val sampleImage = advertisementViewModel.bitMapList.value!![0]
@@ -180,26 +183,34 @@ class AddItemFragment : Fragment() {
                             .addOnSuccessListener {
                                 //this is the new way to do it
                                 fireImages.downloadUrl.addOnCompleteListener { task ->
-                                        val profileImageUrl = task.result.toString()
-                                        imagesUrl.add(profileImageUrl)
+                                    val profileImageUrl = task.result.toString()
+                                    imagesUrl.add(profileImageUrl)
 
-                                        //if all images are processed
-                                        if (imagesUrl.size == hashMap.size) {
-                                            val product = Product(productId = 0, title = title, description = description,
-                                                price = price, category = category, user = user, images = imagesUrl, date = sdf.format(Date()))
+                                    //if all images are processed
+                                    if (imagesUrl.size == hashMap.size) {
+                                        val product = Product(
+                                            productId = 0,
+                                            title = title,
+                                            description = description,
+                                            price = price,
+                                            category = category,
+                                            user = user,
+                                            images = imagesUrl,
+                                            date = sdf.format(Date())
+                                        )
 
-                                            //add product to the database
-                                            advertisementViewModel.insertProduct(product)
+                                        //add product to the database
+                                        advertisementViewModel.insertProduct(product)
 
-                                            //observe success message
-                                            advertisementViewModel.success.observe(
-                                                viewLifecycleOwner
-                                            ) {
-                                                advertisementViewModel.bitMapList.value?.clear()
-                                                navigateToHome()
-                                            }
+                                        //observe success message
+                                        advertisementViewModel.success.observe(
+                                            viewLifecycleOwner
+                                        ) {
+                                            advertisementViewModel.bitMapList.value?.clear()
+                                            navigateToHome()
                                         }
                                     }
+                                }
                             }
                     }
                 }
@@ -295,8 +306,6 @@ class AddItemFragment : Fragment() {
     }
 
 
-
-
     /**
      * Recognise an image based on the given byteArray
      */
@@ -323,7 +332,7 @@ class AddItemFragment : Fragment() {
         Handler().postDelayed(
             {
                 binding.progressBar.visibility = View.INVISIBLE
-            binding.catoInfo.text = getString(R.string.foundCategory,categoryList[max])
+                binding.catoInfo.text = getString(R.string.foundCategory, categoryList[max])
                 binding.categoryDrop.setSelection(max)
             },
             2000 // value in milliseconds

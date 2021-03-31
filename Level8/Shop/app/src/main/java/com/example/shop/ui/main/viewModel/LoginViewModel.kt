@@ -17,12 +17,14 @@ class LoginViewModel : ViewModel() {
     val error: LiveData<String> = _error
     val user: LiveData<User> = loginRepository.user
 
-    val statusResponse:LiveData<Int> = loginRepository.statusResponse
+
+    var statusResponse: LiveData<Int> = loginRepository.statusResponse
+
 
     /**
      * When logging, handle error as well
      */
-    fun login(email: String, password: String, randomCode:Int) {
+    fun login(email: String, password: String, randomCode: Int) {
         viewModelScope.launch {
             try {
                 loginRepository.login(email, password, randomCode)
@@ -35,10 +37,37 @@ class LoginViewModel : ViewModel() {
     /**
      * To reset the password
      */
-    fun resetPassword(email:String){
+    fun resetPassword(email: String) {
         viewModelScope.launch {
             try {
                 loginRepository.resetPassword(email)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
+
+    /**
+     * To check the reset password code
+     */
+    fun checkResetPasswordCode(email: String, randomCode: Int) {
+        viewModelScope.launch {
+            try {
+                loginRepository.checkResetPasswordCode(email, randomCode)
+            } catch (ex: ApiError) {
+                _error.value = ex.message
+            }
+        }
+    }
+
+
+    /**
+     * To set a new password
+     */
+    fun setNewPassword(email: String, password: String, randomCode: Int) {
+        viewModelScope.launch {
+            try {
+                loginRepository.setNewPassword(email, password, randomCode)
             } catch (ex: ApiError) {
                 _error.value = ex.message
             }

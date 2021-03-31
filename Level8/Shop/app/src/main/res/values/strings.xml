@@ -64,7 +64,7 @@
     <string name="title_activity_chat">Chat</string>
 
     <string name="typeMessage">Type your message here</string>
-    <string name="send">Send</string>
+    <string name="send">SEND</string>
     <string name="cancel">CANCEL</string>
 
     <string name="addMessage">Please add message</string>
@@ -118,4 +118,13 @@
     <string name="type_email">Type your email here</string>
     <string name="email_required">The email is required</string>
     <string name="email_sent">Check your email to reset your password</string>
+    <string name="enter_code">Enter the code</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_password">Reset password</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="type_new_password">Type your new pasword here</string>
+    <string name="confirm_password">Confirm your new password</string>
+    <string name="password_unequal">The passwords did not match</string>
+    <string name="password_updated">The password has been successfully updated</string>
 </resources>

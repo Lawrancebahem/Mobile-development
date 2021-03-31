@@ -52,4 +52,31 @@ class LoginRepository {
         }
     }
 
+    /**
+     * To check the reset password code
+     */
+    suspend fun checkResetPasswordCode(email:String, randomCode:Int){
+        try {
+            val response = loginApiService.checkResetPasswordCode(email, randomCode)
+            _statusResponse.value = response.code()
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
+
+    /**
+     * To set a new password
+     */
+    suspend fun setNewPassword(email:String, password: String,randomCode:Int){
+        try {
+            val response = loginApiService.setNewPassword(email,password,randomCode)
+            _statusResponse.value = response.code()
+        } catch (error: Throwable) {
+            val message = ApiError.getErrorMessage(error.message.toString())
+            throw ApiError(message, error)
+        }
+    }
+
+
 }

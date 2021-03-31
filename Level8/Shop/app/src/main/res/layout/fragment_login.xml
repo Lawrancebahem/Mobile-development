@@ -167,14 +167,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resetBox"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
         android:background="@drawable/rounded"
-        android:backgroundTint="@color/dark_gray"
+        android:backgroundTint="@color/white"
         android:elevation="4dp"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="5dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/overbox"
         app:layout_constraintEnd_toEndOf="@+id/overbox"
         app:layout_constraintStart_toStartOf="@+id/overbox"
@@ -183,10 +184,12 @@
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:gravity="center"
             android:text="@string/reset_password_text"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -196,21 +199,52 @@
             android:id="@+id/reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
             android:layout_marginBottom="4dp"
-            android:text="@string/reset"
+            android:text="@string/send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/cnBtn"
+            app:layout_constraintTop_toBottomOf="@+id/codeInput" />
+
+        <Button
+            android:id="@+id/cnBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            app:layout_constraintBaseline_toBaselineOf="@+id/reset"
+            app:layout_constraintEnd_toStartOf="@+id/reset"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/codeInput"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sucess_message" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout12">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cdInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_code"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout12"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="5dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6">
 
@@ -220,22 +254,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/type_email" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/sucess_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded"
-            android:backgroundTint="@color/green"
-            android:gravity="center"
-            android:text="@string/email_sent"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout12" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,7 +265,7 @@
         android:background="@color/transparent"
         android:elevation="3dp"
         android:orientation="vertical"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
