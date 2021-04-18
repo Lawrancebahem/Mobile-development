@@ -60,11 +60,11 @@ class ChatActivity : AppCompatActivity() {
                         CameraActivity()
                     )
                 }
-                R.id.notfBtn -> {
-                    navigateToDestination(
-                        NotificationActivity()
-                    )
-                }
+//                R.id.notfBtn -> {
+//                    navigateToDestination(
+//                        NotificationActivity()
+//                    )
+//                }
                 else -> {
                     navigateToDestination(ProfileActivity())
                 }

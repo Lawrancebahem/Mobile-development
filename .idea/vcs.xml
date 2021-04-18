@@ -2,7 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/Level1/MadLevel1Example" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/Level8/be-app" vcs="Git" />
   </component>
 </project>

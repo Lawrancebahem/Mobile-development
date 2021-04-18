@@ -16,10 +16,10 @@
         android:icon="@drawable/camera"
         android:title="@string/camera" />
 
-    <item
-        android:id="@+id/notfBtn"
-        android:icon="@drawable/notification"
-        android:title="@string/notification" />
+<!--    <item-->
+<!--        android:id="@+id/notfBtn"-->
+<!--        android:icon="@drawable/notification"-->
+<!--        android:title="@string/notification" />-->
 
 
     <item

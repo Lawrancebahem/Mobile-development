@@ -48,7 +48,7 @@ class ProfileActivity : AppCompatActivity() {
         configureBottomMenu()
 
         //set the fifth icon as checked
-        binding.navigationBottom.menu.getItem(4).isChecked = true
+        binding.navigationBottom.menu.getItem(3).isChecked = true
     }
 
 
@@ -73,11 +73,11 @@ class ProfileActivity : AppCompatActivity() {
                         CameraActivity()
                     )
                 }
-                R.id.notfBtn -> {
-                    navigateToDestination(
-                        NotificationActivity()
-                    )
-                }
+//                R.id.notfBtn -> {
+//                    navigateToDestination(
+//                        NotificationActivity()
+//                    )
+//                }
                 else -> {
                     navigateToDestination(ProfileActivity())
                 }

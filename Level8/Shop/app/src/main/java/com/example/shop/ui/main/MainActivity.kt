@@ -100,13 +100,13 @@ class MainActivity : AppCompatActivity(){
                         "camera"
                     )
                 }
-                R.id.notfBtn -> {
-                    navigateToDestination(
-                        NotificationActivity(),
-                        "Please log in to be able to see your notification",
-                        "notification"
-                    )
-                }
+//                R.id.notfBtn -> {
+//                    navigateToDestination(
+//                        NotificationActivity(),
+//                        "Please log in to be able to see your notification",
+//                        "notification"
+//                    )
+//                }
                 else -> {
                     navigateToDestination(
                         ProfileActivity(),
